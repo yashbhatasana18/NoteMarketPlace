@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- important meta tags -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <!-- Title -->
+    <title>Sign Up | Notes Marketplace</title>
+
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="../images/favicon.ico">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
+          rel="stylesheet"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body id="loginScreen">
+<!-- Logo -->
+<section id="top-logo">
+    <div class="center">
+        <!-- Logo -->
+        <div class="row logo">
+            <div class="col-md-12">
+                <img src="../images/top-logo.png" alt="logo" class="img-fluid"/>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Signup Box -->
+<section id="signup-box">
+    <div class="center">
+        <!-- Login Box -->
+        <div class="row box">
+            <div class="col-md-12 m-0 p-0">
+
+                <!-- Box -->
+                <form>
+                    <h1 class="text-center">Create An Account</h1>
+                    <p id="text-login" class="text-center">
+                        Enter your details to signup
+                    </p>
+                    <div id="success-inform" class="form-group text-center">
+                        <p><img src="../images/Success-Green.png" alt="success-image" style="height: 20px;width: 20px;"> Your
+                            account has been succesdfully created.</p>
+                    </div>
+                    <!-- First Name -->
+                    <div class="form-group">
+                        <label for="first-name-1">First Name <span>*</span></label>
+                        <input type="text" class="form-control" id="first-name-1" placeholder="Enter Email"
+                               value="Yash"/>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="form-group">
+                        <label for="last-name">Last Name <span>*</span></label>
+                        <input type="text" class="form-control" id="last-name" placeholder="Enter your last name"/>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email-1">Email <span>*</span></label>
+                        <input type="email" class="form-control" id="email-1" placeholder="Enter your email address"/>
+                    </div>
+
+                    <!-- Password-->
+                    <div class="form-group">
+                        <label for="password-1">Password</label>
+                        <input type="password" class="form-control" id="password-1" placeholder="Enter your password">
+                    </div>
+
+                    <!-- Confirm Password-->
+                    <div class="form-group">
+                        <label for="confirm-password-1">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm-password-1"
+                               placeholder="Re enter your password">
+                    </div>
+
+                    <!-- Signup Button -->
+                    <button id="login-btn" type="submit" class="btn">Sign up</button>
+                    <p class="text-center p-0 m-0">
+                        Alrady have an account? <a href="Login.html">Login</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Jquery -->
+<script src="js/jquery.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="js/bootstrap/bootstrap.min.js"></script>
+
+<!-- Custom JS -->
+<script src="js/script.js"></script>
+</body>
+
+</html>

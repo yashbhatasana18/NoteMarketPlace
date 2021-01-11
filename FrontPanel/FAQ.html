@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | Notes Marketplace</title>
+
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="../images/favicon.ico">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="css/responsive.css">
+
+</head>
+<body>
+<!-- Navigation -->
+<header>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container p-0">
+            <div class="row">
+
+                <!-- Logo -->
+                <div class="col-md-3 navbar-header">
+                    <a class="navbar-brand text-left" href="HomePage.html">
+                        <img src="../images/logo.png" alt="logo">
+                    </a>
+                </div>
+
+                <!-- Link -->
+                <div class="text-right col-md-9 collapse navbar-collapse p-0" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="Search.html">Search Notes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="AddNotes.html">Sell Your Notes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="BuyerRequest.html">Buyer Requests</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="FAQ.html">FAQ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    <img src="../images/reviewer-1.png" width="30" height="30" alt="user-image"
+                                         class="d-inline-block align-top avatar-header rounded-circle">
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="MyProfile.html">My Profile</a>
+                                    <a class="dropdown-item" href="MyDownload.html">My Download</a>
+                                    <a class="dropdown-item" href="MySoldNote.html">My Sold Notes</a>
+                                    <a class="dropdown-item" href="MyRejectedNote.html">My Rejected Notes</a>
+                                    <a class="dropdown-item" href="ChangePassword.html">Change Password</a>
+                                    <a class="dropdown-item btn-logout" href="Login.html">LogOut</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="Login.html">LogOut</a></li>
+                    </ul>
+                </div>
+
+                <!-- Mobile link -->
+                <div class="mobile-nav col-md-8 text-right">
+                    <img src="../images/menu.png" alt="menu" id="mobile-nav-open-btn" class="text-right">
+                </div>
+
+                <div id="mobile-nav" class="text-left">
+                        <span id="mobile-nav-close-btn">
+                            <img src="../images/xmark.png" alt="close-image">
+                        </span>
+                    <div id="mobile-nav-content">
+                        <ul class="nav navig">
+                            <li class="nav-item"><a class="nav-link" href="Search.html">Search Notes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="AddNotes.html">Sell Your Notes</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="BuyerRequest.html">Buyer Requests</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="FAQ.html">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li>
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <a href="#collapseExample3" data-toggle="collapse" role="button"
+                                       aria-expanded="false" aria-controls="collapseExample3"
+                                       class="nav-link nav-link-custom">
+                                        <img src="../images/reviewer-1.png" width="30" height="30" alt="user-image"
+                                             class="d-inline-block align-top avatar-header rounded-circle">
+                                    </a>
+
+                                    <div id="collapseExample3" class="collapse">
+                                        <a class="dropdown-item" href="MyProfile.html">My Profile</a>
+                                        <a class="dropdown-item" href="MyDownload.html">My Download</a>
+                                        <a class="dropdown-item" href="MySoldNote.html">My Sold Notes</a>
+                                        <a class="dropdown-item" href="MyRejectedNote.html">My Rejected Notes</a>
+                                        <a class="dropdown-item" href="ChangePassword.html">Change Password</a>
+                                        <a class="dropdown-item btn-logout" href="Login.html">LogOut</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="Login.html">LogOut</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<!-- End Navigation -->
+
+<!-- Head -->
+<section class="head">
+    <div class="head-content">
+        <div class="container">
+            <div class="row">
+                <div class="head-content-inner">
+                    <div class="head-heading">
+                        Frequently Asked Questions
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Head -->
+
+<!-- Collapse  -->
+<section>
+    <div class="container">
+        <div class="row heading">
+            <div class="col-md-12 p-0">
+                <h1 class="uploaders">General Questions</h1>
+            </div>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="card col-md-12 m-0 p-0">
+                <div id="headingone">
+                    <h2 class="mb-0 panel-title">
+                        <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
+                             data-target="#collapseOne" aria-expanded="false" aria-controls="collapseThree">
+                            What is Marketplace-Notes?
+                        </div>
+                    </h2>
+                </div>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingThree"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
+                        consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa officia?
+                        Aspernatur delectus, accusantium laboriosam provident eos quaerat cum assumenda.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="card col-md-12 m-0 p-0">
+                <div id="headingone">
+                    <h2 class="mb-0 panel-title">
+                        <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
+                             data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseThree">
+                            What do the University say?
+                        </div>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingThree"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
+                        consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa officia?
+                        Aspernatur delectus, accusantium laboriosam provident eos quaerat cum assumenda.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="card col-md-12 m-0 p-0">
+                <div id="headingone">
+                    <h2 class="mb-0 panel-title">
+                        <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
+                             data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Is this legal?
+                        </div>
+                    </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
+                        consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa officia?
+                        Aspernatur delectus, accusantium laboriosam provident eos quaerat cum assumenda.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row heading">
+            <div class="col-md-12 p-0">
+                <h1 class="uploaders">Uploaders</h1>
+            </div>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="card col-md-12 m-0 p-0">
+                <div id="headingone">
+                    <h2 class="mb-0 panel-title">
+                        <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
+                             data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                            What can't I sell?
+                        </div>
+                    </h2>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingThree"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
+                        consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa officia?
+                        Aspernatur delectus, accusantium laboriosam provident eos quaerat cum assumenda.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="card col-md-12 m-0 p-0">
+                <div id="headingone">
+                    <h2 class="mb-0 panel-title">
+                        <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
+                             data-target="#collapseFive" aria-expanded="false" aria-controls="collapseThree">
+                            What notes can I sell?
+                        </div>
+                    </h2>
+                </div>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingThree"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
+                        consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa officia?
+                        Aspernatur delectus, accusantium laboriosam provident eos quaerat cum assumenda.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row heading">
+            <div class="col-md-12 p-0">
+                <h1 class="downloaders">Downloaders</h1>
+            </div>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="card col-md-12 m-0 p-0">
+                <div id="headingone">
+                    <h2 class="mb-0 panel-title">
+                        <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
+                             data-target="#collapseSix" aria-expanded="false" aria-controls="collapseThree">
+                            How do I buy notes?
+                        </div>
+                    </h2>
+                </div>
+                <div id="collapseSix" class="collapse" aria-labelledby="headingThree"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
+                        consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa officia?
+                        Aspernatur delectus, accusantium laboriosam provident eos quaerat cum assumenda.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="card col-md-12 m-0 p-0">
+                <div id="headingone">
+                    <h2 class="mb-0 panel-title">
+                        <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
+                             data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseThree">
+                            Can I edit the notes I purchased?
+                        </div>
+                    </h2>
+                </div>
+                <div id="collapseSeven" class="collapse" aria-labelledby="headingThree"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
+                        consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa officia?
+                        Aspernatur delectus, accusantium laboriosam provident eos quaerat cum assumenda.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- End Collapse  -->
+
+<hr>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <!-- Copyright -->
+            <div class="col-md-6 col-sm-8 foot-text text-left">
+                <p>Copyright &copy; TatvaSoft All Rights Reserved.</p>
+            </div>
+            <!-- Social Icon -->
+            <div class="col-md-6 col-sm-4 foot-icon col-sm-4 text-right">
+                <ul class="social-list">
+                    <li>
+                        <a href="#">
+                            <img src="../images/facebook.png" alt="facebook-image">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="../images/twitter.png" alt="twitter-image">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="../images/linkedin.png" alt="linkedin-image">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer -->
+
+<!-- JavaScript -->
+<!-- JQuery -->
+<script src="js/jquery.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="js/bootstrap/bootstrap.min.js"></script>
+
+<!-- Custom JS -->
+<script src="js/script.js"></script>
+</body>
+</html>
