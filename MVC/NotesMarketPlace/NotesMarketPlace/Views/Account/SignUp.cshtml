@@ -1,0 +1,110 @@
+﻿@model NotesMarketPlace.Models.SignUpModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+    <title>SignUp</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/favicon.ico">
+
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!--bootstrap css-->
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/Content/Account/signup.css">
+
+    <!--Responsive CSS-->
+    <link rel="stylesheet" href="~/Content/AdminPanel/css/responsive.css">
+</head>
+<body>
+
+    <!-- Sign-up page -->
+    <div class="main-wrap">
+        <div class="container-login" style="background-image: url('../../Content/images/banner-with-overlay.jpg');">
+
+            <div class="wrap-login">
+
+                <span class="login-form-title">
+                    <img src="~/Content/images/top-logo.png">
+                </span>
+                @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { @class = "login-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="signup-heading">
+                        <h4 class="text-center">Create an Account</h4>
+                        <p class="text-center">Enter your details to signup</p>
+
+                        <small id="signup-successfully" class="form-text text-center" style="color: rgb(14, 185, 14);">
+                            @*<img src="~/Content/images/Success-Green.png" alt="success-image" style="height: 20px;width: 20px;">*@
+                            @ViewBag.message
+                        </small>
+                    </div>
+
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FirstName, "First Name *")
+
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @id = "first-name", @placeholder = "Enter Your First Name" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LastName, "Last Name *")
+
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @id = "last-name", @placeholder = "Enter Your Last Name" } })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmailID, "Email *")
+
+                        @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control", @id = "email", @placeholder = "Enter your email address" } })
+                        @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, "Password")
+
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @id = "password", @placeholder = "Enter your password", name = "password" } })
+                        <img src="~/Content/images/eye.png" toggle="#password" class="field-icon toggle-password">
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ConfirmPassword, "Confirm Password")
+
+                        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @id = "confirmPassword", @placeholder = "Re-enter your password", name = "password" } })
+                        <img src="~/Content/images/eye.png" toggle="#confirmPassword" class="field-icon toggle-password">
+                        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+
+                    <input type="submit" class="btn btn-primary btn-lg btn-block m-b-20" id="login-btn" name="SIGN UP" style="border-color:#6255a5" />
+
+                    <p class="text-center" id="not-account">Already have an account? @Html.ActionLink("Login", "Login")</p>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- Sign-up page end-->
+    <!-- JQuery -->
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <!-- Custom Js-->
+    <script src="~/Content/AdminPanel/js/script.js"></script>
+
+</body>
+</html>
+

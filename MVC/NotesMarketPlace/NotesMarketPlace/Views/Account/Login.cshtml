@@ -1,0 +1,99 @@
+﻿@model NotesMarketPlace.Models.LoginModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+    <title>Login</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/favicon.ico">
+
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!--bootstrap css-->
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/Content/Account/signup.css">
+
+    <!--Responsive CSS-->
+    <link rel="stylesheet" href="~/Content/AdminPanel/css/responsive.css">
+</head>
+<body>
+
+    <!-- login form -->
+    <div class="main-wrap">
+        <div class="container-login" style="background-image: url('../../Content/images/banner-with-overlay.jpg');">
+
+            <div class="wrap-login">
+
+                <span class="login-form-title">
+                    <img src="~/Content/images/top-logo.png" alt="Logo">
+                </span>
+
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
+                {
+                    <div class="heading">
+                        <h4 class="text-center">Login</h4>
+                        <p class="text-center">Enter your email address and passwod to login</p>
+                    </div>
+
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    <div class="form-group m-b-30">
+                        @Html.LabelFor(model => model.EmailID, "Email")
+
+                        @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control", @id = "login-email", @placeholder = "Enter Email" } })
+                        @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="row">
+                            <div class="col-md-6" style="width: 30%;">
+                                @Html.LabelFor(model => model.Password, "Password", new { @style = "display: inline-block;" })
+                            </div>
+                            <div class="col-md-6" style="width: 70%;margin-top: 0; text-align: right;color:#6255a5 !important">
+                                @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account", new { @style = "color: #6255a5 !important;" })
+                            </div>
+                        </div>
+
+                        <div class="inputContainer">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @id = "password", @placeholder = "Enter your password", name = "password" } })
+                            <img src="~/Content/images/eye.png" toggle="#password" class="field-icon toggle-password">
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        @*<small id="error-password" class="form-text text-muted"><span>The password that you've enter is incorrect.</span></small>*@
+                    </div>
+
+                    <div class="form-group login-checkbox">
+                        <input type="checkbox" id="login-check">
+                        <label for="login-check">Remember Me</label>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary btn-lg btn-block m-b-20" id="login-btn" value="LOGIN" style="border-color: #6255a5" />
+
+                    <p class="text-center" id="not-account">Don't have an account? <span>@Html.ActionLink("SignUp", "SignUp") </span></p>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- login form end -->
+    <!-- JQuery -->
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <!-- Custom Js-->
+    <script src="~/Content/AdminPanel/js/script.js"></script>
+
+</body>
+</html>

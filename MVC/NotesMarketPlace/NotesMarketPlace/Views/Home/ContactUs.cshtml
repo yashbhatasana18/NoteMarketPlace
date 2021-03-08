@@ -1,0 +1,70 @@
+﻿
+@model NotesMarketPlace.Models.ContactUsModel
+
+@{
+    ViewBag.Title = "ContactUs";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<!-- Head -->
+<section class="head">
+    <div class="head-content">
+        <div class="container">
+            <div class="row">
+                <div class="head-content-inner">
+                    <div class="head-heading">
+                        Contact US
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Head -->
+<!-- Contact US  -->
+<section class="container">
+
+    <div class="row heading">
+        <div class="col-md-12">
+            <h1 class="title">Get In Touch</h1>
+            <p id="pera1">Let us know how to get back to you</p>
+        </div>
+    </div>
+    @using (Html.BeginForm("ContactUs", "Home", FormMethod.Post))
+    {
+        <div class="row heading">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="exampleInputFullName1">Full Name <span>*</span></label>
+
+                    @Html.TextBoxFor(model => model.FullName, new { @class = "form-control", placeholder = "Enter your full name" })
+
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address <span>*</span></label>
+
+                    @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", type = "email", placeholder = "Enter your email address" })
+
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputSubject1">Subject <span>*</span></label>
+
+                    @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", placeholder = "Enter your subject"})
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="exampleInputComment1">Comments / Questions <span>*</span></label>
+
+                    @Html.TextAreaFor(model => model.Comments, new { @class = "form-control", placeholder = "Comments..."})
+                </div>
+            </div>
+        </div>
+        <div class="row btn-contactus-submit">
+            <div class="form-group">
+                <button id="btnSubmit" class="btn" type="submit">SUBMIT</button>
+            </div>
+        </div>
+    }
+</section>
+<!-- End Contact US   -->

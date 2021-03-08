@@ -1,0 +1,21 @@
+﻿/* Extra Small Devices */
+@media(max-width: 480px) {
+    .login-form {
+        padding: 50px 30px;
+    }
+
+    #not-account {
+        font-size: 14px;
+    }
+}
+
+/* Extra Small Devices */
+@media(max-width: 320px) {
+    .login-form {
+        padding: 50px 30px;
+    }
+
+    #not-account {
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,6 @@
+E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace.Models\bin\Debug\NotesMarketPlace.Models.dll
+E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace.Models\bin\Debug\NotesMarketPlace.Models.pdb
+E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.csproj.CoreCompileInputs.cache
+E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.dll
+E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.pdb
+E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.csprojAssemblyReference.cache

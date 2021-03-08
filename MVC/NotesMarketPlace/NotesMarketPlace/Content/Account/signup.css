@@ -1,0 +1,287 @@
+﻿* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    height: 100%;
+    font-family: Open Sans;
+}
+
+.m-b-20 {
+    margin-bottom: 20px;
+}
+
+.m-t-30 {
+    margin-top: 30px;
+}
+
+.m-t-100 {
+    margin-top: 100px;
+}
+
+.m-t-160 {
+    margin-top: 160px;
+}
+
+.m-t-60 {
+    margin-top: 60px;
+}
+
+
+/* =========================================
+                SignUp Page
+============================================ */
+
+.main-wrap {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.container-login {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    z-index: 1;
+}
+
+    .container-login::before {
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+
+.wrap-login {
+    width: 580px;
+    border-radius: 5px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    overflow: hidden;
+    background: transparent;
+}
+
+.login-form {
+    width: 100%;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 50px;
+}
+
+.login-form-title {
+    font-size: 15px;
+    color: #fff;
+    line-height: 1.2;
+    text-align: center;
+    display: block;
+    padding-bottom: 25px;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #333333;
+    padding-bottom: 10px;
+}
+
+
+.form-group input {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #000;
+    height: 50px;
+    border: 1px solid #6255a5;
+}
+
+.form-wrap .form-group input {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #8a8a8a;
+    height: 50px;
+    border: 1px solid #d1d1d1;
+}
+
+    .form-wrap .form-group input[type="date"] {
+        font-family: Open Sans !important;
+        font-weight: 400 !important;
+        color: #8a8a8a;
+    }
+
+.form-group .input-group .custom-select option {
+    font-weight: 400 !important;
+    font-family: Open Sans !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+    color: #8a8a8a !important;
+}
+
+.form-group .input-group select {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #8a8a8a;
+    height: 50px;
+    border: 1px solid #d1d1d1;
+}
+
+.form-group label span {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #6255a5;
+    margin-bottom: 10px;
+}
+
+.login-checkbox input {
+    border: 1px solid #d1d1d1;
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+}
+
+.login-checkbox input {
+    border: 1px solid #d1d1d1;
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    margin-bottom: 35px;
+}
+
+.login-checkbox label {
+    padding-left: 20px;
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #333333;
+    margin-top: -60px;
+    margin-left: 20px;
+}
+
+#not-account {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #333333;
+}
+
+    #not-account a {
+        color: #6255a5;
+    }
+
+.login-form .m-b-30 {
+    margin-bottom: 30px;
+}
+
+.inputContainer span {
+    float: right;
+    margin-left: -25px;
+    margin-top: -32px;
+    padding-right: 30px;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+
+h4 {
+    margin-bottom: 20px;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 38px;
+    color: #6255a5;
+}
+
+.heading p {
+    margin-bottom: 45px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 19px;
+    color: #333333;
+}
+
+p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #666666;
+    margin: 0px;
+}
+
+.signup-heading p {
+    font-family: Open Sans;
+    margin-bottom: 25px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 19px;
+    color: #333333;
+}
+
+#signup-successfully p {
+    font-family: Open Sans;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 20px;
+    color: #32a852;
+    text-align: center;
+}
+
+#login-btn {
+    background: #6255a5;
+    border-radius: 3px;
+    text-decoration-color: #fff;
+    font-family: Open Sans;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+input {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #000;
+}
+
+label {
+    margin: 0;
+    display: block;
+}
+
+#error-password span {
+    margin-bottom: 20px;
+    font-family: Open Sans;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 20px;
+    color: #ff3636;
+}
+
+.container-login .field-icon {
+    float: right;
+    position: relative;
+    top: -35px;
+    right: 15px;
+    font-size: 25px;
+    color: darkgray;
+}

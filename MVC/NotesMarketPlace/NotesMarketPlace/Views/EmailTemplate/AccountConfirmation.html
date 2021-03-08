@@ -1,0 +1,157 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Email Verification</title>
+
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="~/Content/bootstrap/bootstrap.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        table {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        thead img {
+            margin-left: -35px;
+            margin-bottom: 30px;
+        }
+
+        .text-1 {
+            font-family: 'Open Sans';
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 30px;
+            color: #6255a5;
+        }
+
+        .text-2 {
+            font-family: 'Open Sans';
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 22px;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        .text-3 {
+            font-family: 'Open Sans';
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 22px;
+            color: #333333;
+            margin-bottom: 50px;
+        }
+
+        .btn-verify {
+            width: 540px;
+            height: 50px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 22px;
+            color: #fff;
+            background-color: #6255a5;
+            border-radius: 3px;
+            padding: 12px;
+        }
+
+        @media (max-width: 767px) {
+
+            .btn-verify {
+                width: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            thead img {
+                width: 180px;
+            }
+
+            .btn-verify {
+                width: 280px;
+                height: 40px;
+            }
+
+            .text-1 {
+                font-size: 24px;
+            }
+
+            .text-2 {
+                font-size: 16px;
+            }
+
+            .text-3 {
+                font-size: 14px;
+            }
+
+            .btn-verify {
+                font-size: 16px;
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 320px) {
+
+            .btn-verify {
+                width: 240px;
+                height: 40px;
+            }
+
+            .text-1 {
+                font-size: 22px;
+            }
+
+            .text-2 {
+                font-size: 15px;
+            }
+
+            .text-3 {
+                font-size: 13px;
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <table>
+        <thead>
+        <th>
+            <img src="https://drive.google.com/uc?id=16Z6vmKf6ZmJYsjnBuUS-rR-LoDEdNafB" alt="logo">
+        </th>
+        </thead>
+        <tbody>
+            <tr style="height: 60px;">
+                <td class="text-1">Email Verification</td>
+            </tr>
+            <tr style="height: 40px;">
+                <td class="text-2">Dear {Username},</td>
+            </tr>
+            <tr style="height: 60px;">
+                <td class="text-3">
+                    Thanks for Signing up! <br>
+                    Simply click below for email verification.
+                </td>
+            </tr>
+            <tr style="height: 120px;">
+                <td>
+                    <a href="{ConfirmationLink}" class="btn btn-verify" style="color:white; text-decoration:none;">VERIFY EMAIL ADDRESS</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
