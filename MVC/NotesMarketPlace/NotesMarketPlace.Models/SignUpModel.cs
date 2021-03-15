@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace NotesMarketPlace.Models
 {
@@ -50,5 +51,7 @@ namespace NotesMarketPlace.Models
         public int? ModifiedBy { get; set; }
 
         public bool IsActive { get; set; }
+
+        public UserRolesModel UserRoles { get; set; }    
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
+using NotesMarketPlace.DB;
 
 namespace NotesMarketPlace
 {
@@ -37,7 +38,15 @@ namespace NotesMarketPlace
 
         public override string[] GetRolesForUser(string username)
         {
-            throw new NotImplementedException();
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var result = (from user in context.Users
+                              join role in context.UserRoles on user.RoleID equals role.UserRolesID
+                              where user.EmailID == username
+                              select role.Name).ToArray();
+
+                return result;
+            }
         }
 
         public override string[] GetUsersInRole(string roleName)

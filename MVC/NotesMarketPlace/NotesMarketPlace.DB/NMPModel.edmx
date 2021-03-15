@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NotesMarketPlaceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NotesMarketPlaceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Countries">
           <Key>
             <PropertyRef Name="CountriesID" />
@@ -459,18 +459,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Users_UserRoles">
-          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="1" />
-          <End Role="Users" Type="Self.Users" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserRoles">
-              <PropertyRef Name="UserRolesID" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -496,12 +484,24 @@
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_Notes_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NotesTitle" Type="varchar" Mode="In" />
+          <Parameter Name="Category" Type="int" Mode="In" />
+          <Parameter Name="NoteType" Type="int" Mode="In" />
+          <Parameter Name="University" Type="int" Mode="In" />
+          <Parameter Name="Course" Type="int" Mode="In" />
+          <Parameter Name="Country" Type="int" Mode="In" />
+          <Parameter Name="Rating" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_Users_DeleteByPK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_Users_SelectAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="NotesMarketPlaceModelStoreContainer">
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
@@ -594,13 +594,8 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
-          <AssociationSet Name="FK_Users_UserRoles" Association="Self.FK_Users_UserRoles">
-            <End Role="UserRoles" EntitySet="UserRoles" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NotesMarketPlaceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1236,6 +1231,27 @@
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
           <FunctionImport Name="SP_Users_SelectAll" ReturnType="Collection(NotesMarketPlaceModel.SP_Users_SelectAll_Result)" />
+          <FunctionImport Name="SP_Notes_Search" ReturnType="Collection(NotesMarketPlaceModel.SP_Notes_Search_Result)">
+            <Parameter Name="NotesTitle" Mode="In" Type="String" />
+            <Parameter Name="Category" Mode="In" Type="Int32" />
+            <Parameter Name="NoteType" Mode="In" Type="Int32" />
+            <Parameter Name="University" Mode="In" Type="Int32" />
+            <Parameter Name="Course" Mode="In" Type="Int32" />
+            <Parameter Name="Country" Mode="In" Type="Int32" />
+            <Parameter Name="Rating" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Users_DeleteByPK">
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SearchNotes" EntitySet="SellerNotes" ReturnType="Collection(NotesMarketPlaceModel.SellerNotes)">
+            <Parameter Name="NotesTitle" Mode="In" Type="String" />
+            <Parameter Name="Category" Mode="In" Type="Int32" />
+            <Parameter Name="NoteType" Mode="In" Type="Int32" />
+            <Parameter Name="University" Mode="In" Type="Int32" />
+            <Parameter Name="Course" Mode="In" Type="Int32" />
+            <Parameter Name="Country" Mode="In" Type="Int32" />
+            <Parameter Name="Rating" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1261,6 +1277,10 @@
           <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
           <Property Type="Int32" Name="ModifiedBy" Nullable="true" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_Notes_Search_Result">
+          <Property Type="Int64" Name="SrNo" Nullable="true" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1550,6 +1570,16 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Notes_Search" FunctionName="NotesMarketPlaceModel.Store.SP_Notes_Search">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NotesMarketPlaceModel.SP_Notes_Search_Result">
+                <ScalarProperty Name="SrNo" ColumnName="SrNo" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Users_DeleteByPK" FunctionName="NotesMarketPlaceModel.Store.SP_Users_DeleteByPK" />
+          <FunctionImportMapping FunctionImportName="SearchNotes" FunctionName="NotesMarketPlaceModel.Store.SP_Notes_Search" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

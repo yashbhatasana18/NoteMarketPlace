@@ -454,18 +454,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Users_UserRoles">
-    <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="1" />
-    <End Role="Users" Type="Self.Users" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="UserRoles">
-        <PropertyRef Name="UserRolesID" />
-      </Principal>
-      <Dependent Role="Users">
-        <PropertyRef Name="RoleID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
   <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -491,12 +479,24 @@
     <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
     <Parameter Name="owner_id" Type="int" Mode="In" />
   </Function>
+  <Function Name="SP_Notes_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="NotesTitle" Type="varchar" Mode="In" />
+    <Parameter Name="Category" Type="int" Mode="In" />
+    <Parameter Name="NoteType" Type="int" Mode="In" />
+    <Parameter Name="University" Type="int" Mode="In" />
+    <Parameter Name="Course" Type="int" Mode="In" />
+    <Parameter Name="Country" Type="int" Mode="In" />
+    <Parameter Name="Rating" Type="int" Mode="In" />
+  </Function>
   <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
     <Parameter Name="owner_id" Type="int" Mode="In" />
     <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="SP_Users_DeleteByPK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserID" Type="int" Mode="In" />
+  </Function>
   <Function Name="SP_Users_SelectAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="NotesMarketPlaceModelStoreContainer">
     <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
@@ -588,10 +588,6 @@
     <AssociationSet Name="FK_UserProfile_Users" Association="Self.FK_UserProfile_Users">
       <End Role="Users" EntitySet="Users" />
       <End Role="UserProfile" EntitySet="UserProfile" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Users_UserRoles" Association="Self.FK_Users_UserRoles">
-      <End Role="UserRoles" EntitySet="UserRoles" />
-      <End Role="Users" EntitySet="Users" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

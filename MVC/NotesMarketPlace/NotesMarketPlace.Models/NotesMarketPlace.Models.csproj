@@ -44,11 +44,18 @@
   <ItemGroup>
     <Compile Include="AddNotesModel.cs" />
     <Compile Include="ContactUsModel.cs" />
+    <Compile Include="CountriesModel.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
     <Compile Include="LoginModel.cs" />
+    <Compile Include="NoteCategoriesModel.cs" />
+    <Compile Include="NoteTypesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchNotesModel.cs" />
+    <Compile Include="SellerNotesAttachements.cs" />
     <Compile Include="SignUpModel.cs" />
+    <Compile Include="SystemConfigurationsModel.cs" />
+    <Compile Include="UserProfileModel.cs" />
+    <Compile Include="UserRolesModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

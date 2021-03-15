@@ -314,6 +314,8 @@
     <Content Include="Views\Home\SearchNotes.cshtml" />
     <Content Include="Views\Home\BuyerRequest.cshtml" />
     <Content Include="Views\Home\SellYourNotes.cshtml" />
+    <Content Include="Views\Account\GetAllUsers.cshtml" />
+    <Content Include="Views\Account\GetUsers.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

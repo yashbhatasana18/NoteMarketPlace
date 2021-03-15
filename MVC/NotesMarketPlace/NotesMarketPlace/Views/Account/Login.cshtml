@@ -40,6 +40,7 @@
 
                 @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
                 {
+                    @Html.AntiForgeryToken()
                     <div class="heading">
                         <h4 class="text-center">Login</h4>
                         <p class="text-center">Enter your email address and passwod to login</p>

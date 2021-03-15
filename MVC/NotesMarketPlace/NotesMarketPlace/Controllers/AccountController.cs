@@ -22,6 +22,42 @@ namespace NotesMarketPlace.Controllers
             repository = new SignUpRepository();
         }
 
+        public ActionResult GetAllUsers()
+        {
+            var result = repository.GetAllUser();
+            return View(result);
+        }
+
+        public ActionResult GetUsers(int id)
+        {
+            var result = repository.GetUser(id);
+            return View(result);
+        }
+
+        public ActionResult EditUsers(int id)
+        {
+            var result = repository.GetUser(id);
+            return View(result);
+        }
+
+        [HttpPost]
+        public ActionResult EditUsers(SignUpModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                int id = repository.AddUser(model);
+
+                if (id > 0)
+                {
+                    ModelState.Clear();
+                    ViewBag.message = "Your account has been successfully created.Check your mail for activation.";
+                }
+
+                BuildEmailTemplate(id);
+            }
+            return View(model);
+        }
+
         #region SignUp
         public ActionResult SignUp()
         {
@@ -70,12 +106,6 @@ namespace NotesMarketPlace.Controllers
             }
         }
         #endregion Login
-
-        public ActionResult LogOut()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "Account");
-        }
 
         #region Mail Send
         public static void SendEmail(MailMessage mail)
@@ -248,5 +278,11 @@ namespace NotesMarketPlace.Controllers
         }
 
         #endregion ForgotPassword
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Account");
+        }
     }
 }

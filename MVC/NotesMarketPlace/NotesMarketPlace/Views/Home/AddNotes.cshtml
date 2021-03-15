@@ -1,4 +1,5 @@
-﻿
+﻿@model NotesMarketPlace.Models.AddNotesModel
+
 @{
     ViewBag.Title = "AddNotes";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
@@ -51,19 +52,24 @@
 </section>
 <!-- End Head -->
 <!-- Add Notes  -->
+
 <section class="container">
-    <form>
-        <!-- Basic Note Details -->
-        <div class="row heading">
-            <div class="col-md-12 p-0">
-                <h1 class="title">Basic Note Details</h1>
-            </div>
+    <!-- Basic Note Details -->
+    <div class="row heading">
+        <div class="col-md-12 p-0">
+            <h1 class="title">Basic Note Details</h1>
         </div>
+    </div>
+    @using (Html.BeginForm("AddNotes", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="inputTitle">Title <span>*</span></label>
-                    <input type="text" class="form-control" id="inputTitle" placeholder="Enter your notes title">
+                    @Html.LabelFor(model => model.Title, "Title *", new { @for = "inputTitle" })
+                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "Enter your notes title", id = "inputTitle" })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                 </div>
 
                 <label for="file-image">Display Picture</label>
@@ -87,21 +93,18 @@
 
                 <div class="form-group">
                     <label id="type" for="dropdownType">Type</label>
-                    <select id="dropdownType" class="form-control">
-                        <option selected>Select your note type</option>
-                        <option>Type-1</option>
-                        <option>Type-2</option>
-                    </select>
+                    @*@Html.DropDownListFor(model => model.NoteType, new SelectList(ViewBag.NotesType, "NoteTypesID", "Name"), "Select Your Note Type", new { @class = "form-control", id = "dropdownType" })*@
+                    @Html.DropDownListFor(Model => Model.NoteType, new SelectList(ViewBag.NotesType, "Value", "Text"), "Select Your Note Type", new { @class = "form-control", @id = "dropdownType" })
+                    @*@Html.DropDownListFor(model => model.NoteType, (SelectList)ViewBag.DropDownList, "---Select a value---", new { htmlAttributes = new { @class = "form-control" } })*@
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="dropdownCategory">Category <span>*</span></label>
-                    <select id="dropdownCategory" class="form-control">
-                        <option selected>Select your category</option>
-                        <option>Category-1</option>
-                        <option>Category-2</option>
-                    </select>
+                    @*@Html.DropDownListFor(model => model.Category, new SelectList(ViewBag.NotesCategory, "NoteCategoriesID", "Name"), "Select Your Note Category", new { @class = "form-control", id = "dropdownCategory" })*@
+                    @Html.DropDownListFor(Model => Model.Category, new SelectList(ViewBag.NotesCategory, "text", "value"), "Select Your Note Category", new { @class = "form-control", @id = "dropdownCategory" })
+
+                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
                 </div>
 
                 <label for="file-image">Upload Notes <span>*</span></label>
@@ -124,9 +127,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label id="noOfPages" for="inputNumberofPages">Number of Pages</label>
-                    <input type="text" class="form-control" id="inputNumberofPages"
-                           placeholder="Enter number of note pages">
+                    @Html.LabelFor(model => model.NumberOfPages, "Number of Pages", new { @for = "inputNumberofPages", id = "noOfPages" })
+                    @Html.TextBoxFor(model => model.NumberOfPages, new { @class = "form-control", placeholder = "Enter number of note pages", id = "inputNumberofPages" })
                 </div>
             </div>
         </div>
@@ -151,11 +153,9 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="dropdownCountry">Country</label>
-                    <select id="dropdownCountry" class="form-control">
-                        <option selected>Select your country</option>
-                        <option>India</option>
-                        <option>USA</option>
-                    </select>
+                    @Html.DropDownListFor(Model => Model.Country, new SelectList(ViewBag.Country, "text", "value"), "Select Your Country", new { @class = "form-control", @id = "dropdownCountry" })
+                    
+                    @*@Html.DropDownListFor(model => model.CountryList, new SelectList(ViewBag.Country, "CountriesID", "Name"), "Select Your Country", new { @class = "form-control", id = "dropdownCountry" })*@
                 </div>
             </div>
             <div class="col-md-6">
@@ -200,6 +200,7 @@
                 <h1 class="title" style="margin-top: 40px;">Selling Information</h1>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-6">
                 <label>Sell For <span>*</span></label>
@@ -228,7 +229,7 @@
                     <label for="file-upload" id="file-drag" class="customInput">
                         <img id="file-image" src="#" alt="Preview" class="hidden">
                         <div id="start">
-                            <img src="~/Content/images/upload-file.png"" height="46" width="50" />
+                            <img src="~/Content/images/upload-file.png" height="46" width="50" />
                             <div>Upload a file</div>
                             <div id="notimage" class="hidden">Please select an image</div>
                         </div>
@@ -245,13 +246,14 @@
 
         <div class="row">
             <div class="form-group">
-                <a href="#" id="btnSubmit" class="btn">SUBMIT</a>
+                <button id="btnSubmit" type="submit" class="btn">SUBMIT</button>
             </div>
 
             <div class="form-group">
-                <a href="#" id="btnPublish" class="btn" style="margin-left: 30px;">PUBLISH</a>
+                <button id="btnPublish" type="submit" class="btn" style="margin-left: 30px;" formaction="@(ViewBag.Edit == true ? "Publish?id=" + Model.SellerNotesID : "Publish")">PUBLISH</button>
             </div>
         </div>
-    </form>
+    }
 </section>
+
 <!-- End Add Notes   -->

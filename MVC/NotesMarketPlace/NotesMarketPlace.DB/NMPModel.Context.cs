@@ -149,5 +149,113 @@ namespace NotesMarketPlace.DB
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Users_SelectAll_Result>("SP_Users_SelectAll");
         }
+    
+        public virtual ObjectResult<SP_Notes_Search_Result> SP_Notes_Search(string notesTitle, Nullable<int> category, Nullable<int> noteType, Nullable<int> university, Nullable<int> course, Nullable<int> country, Nullable<int> rating)
+        {
+            var notesTitleParameter = notesTitle != null ?
+                new ObjectParameter("NotesTitle", notesTitle) :
+                new ObjectParameter("NotesTitle", typeof(string));
+    
+            var categoryParameter = category.HasValue ?
+                new ObjectParameter("Category", category) :
+                new ObjectParameter("Category", typeof(int));
+    
+            var noteTypeParameter = noteType.HasValue ?
+                new ObjectParameter("NoteType", noteType) :
+                new ObjectParameter("NoteType", typeof(int));
+    
+            var universityParameter = university.HasValue ?
+                new ObjectParameter("University", university) :
+                new ObjectParameter("University", typeof(int));
+    
+            var courseParameter = course.HasValue ?
+                new ObjectParameter("Course", course) :
+                new ObjectParameter("Course", typeof(int));
+    
+            var countryParameter = country.HasValue ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(int));
+    
+            var ratingParameter = rating.HasValue ?
+                new ObjectParameter("Rating", rating) :
+                new ObjectParameter("Rating", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Notes_Search_Result>("SP_Notes_Search", notesTitleParameter, categoryParameter, noteTypeParameter, universityParameter, courseParameter, countryParameter, ratingParameter);
+        }
+    
+        public virtual int SP_Users_DeleteByPK(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Users_DeleteByPK", userIDParameter);
+        }
+    
+        public virtual ObjectResult<SellerNotes> SearchNotes(string notesTitle, Nullable<int> category, Nullable<int> noteType, Nullable<int> university, Nullable<int> course, Nullable<int> country, Nullable<int> rating)
+        {
+            var notesTitleParameter = notesTitle != null ?
+                new ObjectParameter("NotesTitle", notesTitle) :
+                new ObjectParameter("NotesTitle", typeof(string));
+    
+            var categoryParameter = category.HasValue ?
+                new ObjectParameter("Category", category) :
+                new ObjectParameter("Category", typeof(int));
+    
+            var noteTypeParameter = noteType.HasValue ?
+                new ObjectParameter("NoteType", noteType) :
+                new ObjectParameter("NoteType", typeof(int));
+    
+            var universityParameter = university.HasValue ?
+                new ObjectParameter("University", university) :
+                new ObjectParameter("University", typeof(int));
+    
+            var courseParameter = course.HasValue ?
+                new ObjectParameter("Course", course) :
+                new ObjectParameter("Course", typeof(int));
+    
+            var countryParameter = country.HasValue ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(int));
+    
+            var ratingParameter = rating.HasValue ?
+                new ObjectParameter("Rating", rating) :
+                new ObjectParameter("Rating", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SellerNotes>("SearchNotes", notesTitleParameter, categoryParameter, noteTypeParameter, universityParameter, courseParameter, countryParameter, ratingParameter);
+        }
+    
+        public virtual ObjectResult<SellerNotes> SearchNotes(string notesTitle, Nullable<int> category, Nullable<int> noteType, Nullable<int> university, Nullable<int> course, Nullable<int> country, Nullable<int> rating, MergeOption mergeOption)
+        {
+            var notesTitleParameter = notesTitle != null ?
+                new ObjectParameter("NotesTitle", notesTitle) :
+                new ObjectParameter("NotesTitle", typeof(string));
+    
+            var categoryParameter = category.HasValue ?
+                new ObjectParameter("Category", category) :
+                new ObjectParameter("Category", typeof(int));
+    
+            var noteTypeParameter = noteType.HasValue ?
+                new ObjectParameter("NoteType", noteType) :
+                new ObjectParameter("NoteType", typeof(int));
+    
+            var universityParameter = university.HasValue ?
+                new ObjectParameter("University", university) :
+                new ObjectParameter("University", typeof(int));
+    
+            var courseParameter = course.HasValue ?
+                new ObjectParameter("Course", course) :
+                new ObjectParameter("Course", typeof(int));
+    
+            var countryParameter = country.HasValue ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(int));
+    
+            var ratingParameter = rating.HasValue ?
+                new ObjectParameter("Rating", rating) :
+                new ObjectParameter("Rating", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SellerNotes>("SearchNotes", mergeOption, notesTitleParameter, categoryParameter, noteTypeParameter, universityParameter, courseParameter, countryParameter, ratingParameter);
+        }
     }
 }
