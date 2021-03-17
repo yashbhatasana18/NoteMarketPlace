@@ -98,20 +98,34 @@ namespace NotesMarketPlace.DB.DBOperations
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                var user = context.Users.FirstOrDefault(x => x.UserID == id);
+                var user = new Users();
                 if (user != null)
                 {
                     user.FirstName = model.FirstName;
-                    user.RoleID = model.RoleID;
                     user.LastName = model.LastName;
                     user.EmailID = model.EmailID;
                     user.Password = model.Password;
-                    user.IsEmailVerified = model.IsEmailVerified;
                     user.ModifiedDate = DateTime.Now;
                     user.ModifiedBy = model.UserID;
                 }
+                context.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 context.SaveChanges();
                 return true;
+            }
+        }
+
+        public bool DeleteUsers(int id)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var user = new Users()
+                {
+                    UserID = id
+                };
+                context.Entry(user).State = System.Data.Entity.EntityState.Deleted;
+                context.SaveChanges();
+
+                return false;
             }
         }
     }

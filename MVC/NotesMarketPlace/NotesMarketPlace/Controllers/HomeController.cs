@@ -237,50 +237,18 @@ namespace NotesMarketPlace.Controllers
         [HttpGet]
         public ActionResult AddNotes()
         {
-            using (var context = new NotesMarketPlaceEntities())
+
+            using (NotesMarketPlaceEntities context = new NotesMarketPlaceEntities())
             {
 
-                IEnumerable<SelectListItem> NoteCategories = context.NoteCategories.Select(c => new SelectListItem { Value = c.NoteCategoriesID.ToString(), Text = c.Name });
-                IEnumerable<SelectListItem> NoteTypes = context.NoteTypes.Select(c => new SelectListItem { Value = c.NoteTypesID.ToString(), Text = c.Name });
-                IEnumerable<SelectListItem> Countries = context.Countries.Select(c => new SelectListItem { Value = c.CountriesID.ToString(), Text = c.Name });
+                var NoteCategoryList = context.NoteCategories.ToList();
+                ViewBag.NotesCategory = new SelectList(NoteCategoryList, "NoteCategoriesID", "Name");
 
-                ViewBag.NoteCategories = NoteCategories;
-                ViewBag.NoteTypes = NoteTypes;
-                ViewBag.Countries = Countries;
+                //ViewBag.NotesCategory = context.NoteCategories.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.NoteCategoriesID.ToString(), Text = c.Name }).ToList();
+                ViewBag.NotesType = context.NoteTypes.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.NoteTypesID.ToString(), Text = c.Name }).ToList();
+                ViewBag.Country = context.Countries.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.CountriesID.ToString(), Text = c.Name }).ToList();
+
                 return View();
-
-                //ViewBag.NotesCategory = context.NoteCategories.Select(n =>
-                //    new SelectListItem
-                //    {
-                //        Text = n.NoteCategoriesID.ToString(),
-                //        Value = n.Name
-                //    }).ToList();
-
-                //ViewBag.NotesType = context.NoteTypes.Select(n =>
-                //    new SelectListItem
-                //    {
-                //        Text = n.NoteTypesID.ToString(),
-                //        Value = n.Name
-                //    }).ToList();
-
-                //IList<SelectListItem> lst = new List<SelectListItem>();
-                //lst.Add(new SelectListItem()
-                //{
-                //    Value = lst.Name,
-                //    Text = lst.NoteTypesID.ToString()
-                //});
-                //ViewBag.DropDownList = new SelectList(p.EmailList, "Value", "Text");
-
-                //ViewBag.Country = context.Countries.Select(n =>
-                //    new SelectListItem
-                //    {
-                //        Text = n.CountriesID.ToString(),
-                //        Value = n.Name
-                //    }).ToList();
-
-                //ViewBag.NotesCategory = context.NoteCategories.Where(m => m.IsActive == true).ToList();
-                //ViewBag.NotesType = context.NoteTypes.Where(m => m.IsActive == true).ToList();
-                //ViewBag.Country = context.Countries.Where(m => m.IsActive == true).ToList();
             }
         }
 
@@ -289,8 +257,13 @@ namespace NotesMarketPlace.Controllers
         [Authorize(Roles = "Member")]
         public ActionResult AddNotes(AddNotesModel model)
         {
-            if (ModelState.IsValid)
+            using (var context = new NotesMarketPlaceEntities())
             {
+                //Users user = new Users();
+                //if (ModelState.IsValid)
+                //{
+                //var result = Session["Result"];
+                
                 int id = addNoteRepository.AddNotes(model);
 
                 if (id > 0)
@@ -298,8 +271,16 @@ namespace NotesMarketPlace.Controllers
                     ModelState.Clear();
                     ViewBag.message = "Your note has been successfully added";
                 }
+                //}
+                var NoteCategoryList = context.NoteCategories.ToList();
+                ViewBag.NotesCategory = new SelectList(NoteCategoryList, "NoteCategoriesID", "Name");
+
+                //ViewBag.NotesCategory = context.NoteCategories.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.NoteCategoriesID.ToString(), Text = c.Name }).ToList();
+                ViewBag.NotesType = context.NoteTypes.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.NoteTypesID.ToString(), Text = c.Name }).ToList();
+                ViewBag.Country = context.Countries.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.CountriesID.ToString(), Text = c.Name }).ToList();
+
+                return View("AddNotes");
             }
-            return View("AddNotes");
         }
         #endregion  AddNote
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NotesMarketPlace.Models
 {
@@ -23,7 +24,7 @@ namespace NotesMarketPlace.Models
 
         public string DisplayPicture { get; set; }
 
-        [Required(ErrorMessage = "Please Select File")]
+        //[Required(ErrorMessage = "Please Select File")]
         [DataType(DataType.Upload)]
         [Display(Name = "Upload File")]
         public string UploadFile { get; set; }
@@ -42,7 +43,7 @@ namespace NotesMarketPlace.Models
         public string CourseCode { get; set; }
         public string Professor { get; set; }
 
-        [Required(ErrorMessage = "Please Select Any One")]
+        //[Required(ErrorMessage = "Please Select Any One")]
         public bool IsPaid { get; set; }
         public decimal? SellingPrice { get; set; }
         public string NotesPreview { get; set; }
@@ -55,11 +56,10 @@ namespace NotesMarketPlace.Models
 
         public SellerNotesAttachements SellerNotesAttachements { get; set; }
 
-        [Required(ErrorMessage = "Select Category")]
-        public virtual  NoteCategoriesModel NoteCategoriesList { get; set; }
+        public NoteCategoriesModel NoteCategoriesList { get; set; }
 
-        public virtual NoteTypesModel NoteTypeList { get; set; }
+        public NoteTypesModel NoteTypeList { get; set; }
 
-        public virtual CountriesModel CountryList { get; set; }
+        public CountriesModel CountryList { get; set; }
     }
 }

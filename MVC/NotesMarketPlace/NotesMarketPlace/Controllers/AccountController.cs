@@ -45,17 +45,17 @@ namespace NotesMarketPlace.Controllers
         {
             if (ModelState.IsValid)
             {
-                int id = repository.AddUser(model);
-
-                if (id > 0)
-                {
-                    ModelState.Clear();
-                    ViewBag.message = "Your account has been successfully created.Check your mail for activation.";
-                }
-
-                BuildEmailTemplate(id);
+                repository.EditUsers(model.UserID, model);
+                return RedirectToAction("GetAllUsers");
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            repository.DeleteUsers(id);
+            return RedirectToAction("GetAllUsers");
         }
 
         #region SignUp
@@ -90,11 +90,17 @@ namespace NotesMarketPlace.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginModel model)
+        public ActionResult Login(SignUpModel model)
         {
             using (var context = new NotesMarketPlaceEntities())
             {
                 bool isValid = context.Users.Any(x => x.EmailID == model.EmailID && x.Password == model.Password);
+
+                //Session["Result"] = context.Users.Where(x => x.EmailID == model.EmailID).Select(x => new SignUpModel()
+                //{
+                //    UserID = x.UserID,
+                //});
+
 
                 if (isValid)
                 {
@@ -116,7 +122,7 @@ namespace NotesMarketPlace.Controllers
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Credentials = new System.Net.NetworkCredential("email", "password");
+            client.Credentials = new System.Net.NetworkCredential("ynpatel2000@gmail.com", "Mahakal@18@52");
             try
             {
                 client.Send(mail);
@@ -165,6 +171,7 @@ namespace NotesMarketPlace.Controllers
             {
                 Users Data = context.Users.FirstOrDefault(x => x.UserID == userID);
                 Data.IsEmailVerified = true;
+                Data.IsActive = true;
                 context.SaveChanges();
                 var msg = "Your Email Is Verified!";
                 return Json(msg, JsonRequestBehavior.AllowGet);
@@ -188,7 +195,7 @@ namespace NotesMarketPlace.Controllers
         public static void BuildEmailTemplate(string subjectText, string bodyText, string sendTo)
         {
             string from, to, bcc, cc, subject, body;
-            from = "yashbhatasana1852@gmail.com";
+            from = "ynpatel2000@gmail.com";
             to = sendTo.Trim();
             bcc = "";
             cc = "";
@@ -252,7 +259,7 @@ namespace NotesMarketPlace.Controllers
         public static void BuildForgotPasswordTemplate(string subjectText, string bodyText, string sendTo)
         {
             string from, to, bcc, cc, subject, body;
-            from = "yashbhatasana1852@gmail.com";
+            from = "ynpatel2000@gmail.com";
             to = sendTo.Trim();
             bcc = "";
             cc = "";

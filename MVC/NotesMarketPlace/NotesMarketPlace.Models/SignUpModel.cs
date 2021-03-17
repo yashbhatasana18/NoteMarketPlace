@@ -52,6 +52,6 @@ namespace NotesMarketPlace.Models
 
         public bool IsActive { get; set; }
 
-        public UserRolesModel UserRoles { get; set; }    
+        public UserRolesModel UserRoles { get; set; }
     }
 }

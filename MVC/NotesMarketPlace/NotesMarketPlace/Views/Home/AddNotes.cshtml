@@ -34,6 +34,77 @@
     #btnSubmit {
         margin-left: 15px;
     }
+
+    .radio1 {
+        display: inline-flex;
+        position: relative;
+        padding: 0 30px 0 50px;
+        margin-bottom: 0 !important;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        .radio1 input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .radio1 .label-2 {
+            font-family: "Open Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 20px;
+            color: #333333;
+            position: relative;
+            top: 11px;
+        }
+
+    /* Create a custom radio button */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 42px;
+        width: 42px;
+        background-color: #fff;
+        border: 1px solid #d1d1d1;
+        border-radius: 50%;
+    }
+
+    /* When the radio button is checked, add a blue background */
+    .radio1 input:checked ~ .checkmark {
+        background-color: #fff;
+        border: 1px solid #6255a5;
+    }
+
+    /* Create the indicator (the dot/circle - hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the indicator (dot/circle) when checked */
+    .radio1 input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the indicator (dot/circle) */
+    .radio1 .checkmark:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #6255a5;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
 </style>
 
 <!-- Head -->
@@ -55,6 +126,7 @@
 
 <section class="container">
     <!-- Basic Note Details -->
+    @ViewBag.message
     <div class="row heading">
         <div class="col-md-12 p-0">
             <h1 class="title">Basic Note Details</h1>
@@ -72,7 +144,7 @@
                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                 </div>
 
-                <label for="file-image">Display Picture</label>
+                @*<label for="file-image">Display Picture</label>
                 <div id="file-upload-form" class="uploader form-group">
                     <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
                     <label for="file-upload" id="file-drag">
@@ -89,25 +161,22 @@
                             </progress>
                         </div>
                     </label>
-                </div>
+                </div>*@
 
                 <div class="form-group">
-                    <label id="type" for="dropdownType">Type</label>
-                    @*@Html.DropDownListFor(model => model.NoteType, new SelectList(ViewBag.NotesType, "NoteTypesID", "Name"), "Select Your Note Type", new { @class = "form-control", id = "dropdownType" })*@
-                    @Html.DropDownListFor(Model => Model.NoteType, new SelectList(ViewBag.NotesType, "Value", "Text"), "Select Your Note Type", new { @class = "form-control", @id = "dropdownType" })
-                    @*@Html.DropDownListFor(model => model.NoteType, (SelectList)ViewBag.DropDownList, "---Select a value---", new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.LabelFor(model => model.NoteTypeList, "Type", new { @for = "dropdownType", id = "type" })
+                    @Html.DropDownListFor(model => model.NoteTypeList, new SelectList(ViewBag.NotesType, "Value", "Text"), "Select Your Note Type", new { @class = "form-control", id = "dropdownType" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="dropdownCategory">Category <span>*</span></label>
-                    @*@Html.DropDownListFor(model => model.Category, new SelectList(ViewBag.NotesCategory, "NoteCategoriesID", "Name"), "Select Your Note Category", new { @class = "form-control", id = "dropdownCategory" })*@
-                    @Html.DropDownListFor(Model => Model.Category, new SelectList(ViewBag.NotesCategory, "text", "value"), "Select Your Note Category", new { @class = "form-control", @id = "dropdownCategory" })
-
+                    @Html.LabelFor(model => model.Category, "Category *", new { @for = "dropdownCategory" })
+                    @Html.DropDownListFor(model => model.Category, ViewBag.NotesCategory as SelectList, "--Select Your Note Category--", new { @class = "form-control", id = "dropdownCategory" })
+                    @*@Html.DropDownListFor(model => model.Category, new SelectList(Model.NoteCategoriesList, "NoteCategoriesID", "Name"), "Select Your Note Category", new { @class = "form-control", id = "dropdownCategory" })*@
                     @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
                 </div>
 
-                <label for="file-image">Upload Notes <span>*</span></label>
+                @*<label for="file-image">Upload Notes <span>*</span></label>
                 <div id="file-upload-form" class="uploader form-group">
                     <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
                     <label for="file-upload" id="file-drag">
@@ -124,7 +193,7 @@
                             </progress>
                         </div>
                     </label>
-                </div>
+                </div>*@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.NumberOfPages, "Number of Pages", new { @for = "inputNumberofPages", id = "noOfPages" })
@@ -136,9 +205,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group mb-0 p-0">
-                    <label for="description">Description <span>*</span></label>
-                    <textarea type="text" class="form-control" id="description"
-                              placeholder="Enter your description"></textarea>
+                    @Html.LabelFor(model => model.Description, "Description *", new { @for = "description" })
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "Enter your description", id = "description" })
                 </div>
             </div>
         </div>
@@ -152,17 +220,14 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="dropdownCountry">Country</label>
-                    @Html.DropDownListFor(Model => Model.Country, new SelectList(ViewBag.Country, "text", "value"), "Select Your Country", new { @class = "form-control", @id = "dropdownCountry" })
-                    
-                    @*@Html.DropDownListFor(model => model.CountryList, new SelectList(ViewBag.Country, "CountriesID", "Name"), "Select Your Country", new { @class = "form-control", id = "dropdownCountry" })*@
+                    @Html.LabelFor(model => model.CountryList, "Country", new { @for = "dropdownCountry" })
+                    @Html.DropDownListFor(Model => Model.CountryList, new SelectList(ViewBag.Country, "Value", "Text"), "Select Your Country", new { @class = "form-control", @id = "dropdownCountry" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="institutionname">Institution Name</label>
-                    <input type="text" class="form-control" id="institutionname"
-                           placeholder="Enter your institution name">
+                    @Html.LabelFor(model => model.UniversityName, "Institution Name", new { @for = "institutionname" })
+                    @Html.TextBoxFor(model => model.UniversityName, new { @class = "form-control", placeholder = "Enter your institution name", id = "institutionname" })
                 </div>
             </div>
         </div>
@@ -176,20 +241,18 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="coursename">Course Name</label>
-                    <input type="text" class="form-control" id="coursename" placeholder="Enter your course name">
+                    @Html.LabelFor(model => model.Course, "Course Name", new { @for = "coursename" })
+                    @Html.TextBoxFor(model => model.Course, new { @class = "form-control", placeholder = "Enter your course name", id = "coursename" })
                 </div>
                 <div class="form-group">
-                    <label for="proflecturer">Professor / Lecturer</label>
-                    <input type="email" class="form-control" id="proflecturer" aria-describedby="emailHelp"
-                           placeholder="Enter your professor name">
+                    @Html.LabelFor(model => model.Professor, "Professor / Lecturer", new { @for = "proflecturer" })
+                    @Html.TextBoxFor(model => model.Professor, new { @class = "form-control", placeholder = "Enter your professor name", id = "proflecturer" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="coursecode">Course Code</label>
-                    <input type="email" class="form-control" id="coursecode" aria-describedby="emailHelp"
-                           placeholder="Enter your course code">
+                    @Html.LabelFor(model => model.CourseCode, "Course Code", new { @for = "coursecode" })
+                    @Html.TextBoxFor(model => model.CourseCode, new { @class = "form-control", placeholder = "Enter your  course code", id = "coursecode" })
                 </div>
             </div>
         </div>
@@ -202,28 +265,31 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6">
-                <label>Sell For <span>*</span></label>
+            <!--<div class="col-md-6">
+                @Html.LabelFor(model => model.IsPaid, "Sell For *")
                 <div class="form-group">
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="customRadioInline1" name="customRadioInline1"
-                               class="custom-control-input">
-                        <label class="custom-control-label" for="customRadioInline1">Free</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="customRadioInline2" name="customRadioInline1"
-                               class="custom-control-input">
-                        <label class="custom-control-label" for="customRadioInline2">Paid</label>
+                    <div class="contact-inputs">
+                        <label class="radio1">-->
+                            <!--<input type="radio" checked="checked" name="radio" value="free">-->
+                            <!--@Html.RadioButtonFor(model => model.IsPaid, true, new { @checked = "checked" })
+                            <span class="checkmark"></span>
+                            <label class="label-2">Free</label>
+                        </label>
+                        <label class="radio1">-->
+                            <!--<input type="radio" name="radio" value="paid">-->
+                            <!--@Html.RadioButtonFor(model => model.IsPaid, false)
+                            <span class="checkmark"></span>
+                            <label class="label-2">Paid</label>
+                        </label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="sellPrice">Sell Price</label>
-                    <input type="email" class="form-control" id="sellPrice" aria-describedby="emailHelp"
-                           placeholder="Enter your price">
+                    @Html.LabelFor(model => model.SellingPrice, "Sell Price", new { @for = "sellPrice" })
+                    @Html.TextBoxFor(model => model.SellingPrice, new { @class = "form-control", placeholder = "Enter your price", id = "sellPrice" })
                 </div>
-            </div>
+            </div>-->
             <div class="col-md-6">
-                <label for="file-image">Note Preview</label>
+                @*<label for="file-image">Note Preview</label>
                 <div id="file-upload-form" class="uploader form-group">
                     <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
                     <label for="file-upload" id="file-drag" class="customInput">
@@ -240,7 +306,7 @@
                             </progress>
                         </div>
                     </label>
-                </div>
+                </div>*@
             </div>
         </div>
 

@@ -5,10 +5,15 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
+<br />
+<br />
+<br />
+<br />
+<br />
 <h2>GetAllUsers</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "SignUp")
 </p>
 <table class="table">
     <tr>
@@ -79,27 +84,27 @@
                 @Html.DisplayFor(modelItem => item.ConfirmPassword)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsEmailVerified)
+                @(item.IsEmailVerified? "Yes" : "No")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
+                @item.CreatedDate.Value.ToString("dd/MM/yyyy")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
+                @item.CreatedBy
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                @item.ModifiedDate.Value.ToString("dd/MM/yyyy")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ModifiedBy)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
+                @(item.IsActive? "Yes" : "No")
             </td>
             <td>
                 @Html.ActionLink("Edit", "EditUsers", new { id = item.UserID }) |
                 @Html.ActionLink("Details", "GetUsers", new { id = item.UserID }) |
-                @Html.ActionLink("Delete", "DeleteUsers", new { id = item.UserID })
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserID })
             </td>
         </tr>
     }
