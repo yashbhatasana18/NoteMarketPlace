@@ -12,4 +12,3 @@ E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Mo
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.csproj.CopyComplete
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.pdb
-E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.csprojAssemblyReference.cache

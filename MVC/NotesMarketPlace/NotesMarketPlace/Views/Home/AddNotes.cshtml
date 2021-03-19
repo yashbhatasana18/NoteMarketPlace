@@ -19,11 +19,6 @@
         margin-bottom: 30px !important;
     }
 
-    #noOfPages,
-    #type {
-        margin-top: 20px !important;
-    }
-
     textarea {
         border: 1px solid #d1d1d1;
         width: 1440px;
@@ -132,7 +127,7 @@
             <h1 class="title">Basic Note Details</h1>
         </div>
     </div>
-    @using (Html.BeginForm("AddNotes", "Home", FormMethod.Post))
+    @using (Html.BeginForm("AddNotes", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -144,9 +139,9 @@
                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                 </div>
 
-                @*<label for="file-image">Display Picture</label>
+                <label for="file-image">Display Picture</label>
                 <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
+                    <input id="file-upload" type="file" name="NoteDisplayPicturePath" accept="image/*" />
                     <label for="file-upload" id="file-drag">
                         <img id="file-image" src="#" alt="Preview" class="hidden">
                         <div id="start">
@@ -156,44 +151,39 @@
                         </div>
                         <div id="response" class="hidden">
                             <div id="messages"></div>
-                            <progress class="progress" id="file-progress" value="0">
-                                <span>0</span>%
-                            </progress>
                         </div>
                     </label>
-                </div>*@
+                </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.NoteTypeList, "Type", new { @for = "dropdownType", id = "type" })
-                    @Html.DropDownListFor(model => model.NoteTypeList, new SelectList(ViewBag.NotesType, "Value", "Text"), "Select Your Note Type", new { @class = "form-control", id = "dropdownType" })
+                    @Html.LabelFor(model => model.NoteType, "Type", new { @for = "dropdownType" })
+                    @Html.DropDownListFor(model => model.NoteType, ViewBag.NotesType as SelectList, "Select Your Note Type", new { @class = "form-control", id = "dropdownType" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Category, "Category *", new { @for = "dropdownCategory" })
-                    @Html.DropDownListFor(model => model.Category, ViewBag.NotesCategory as SelectList, "--Select Your Note Category--", new { @class = "form-control", id = "dropdownCategory" })
-                    @*@Html.DropDownListFor(model => model.Category, new SelectList(Model.NoteCategoriesList, "NoteCategoriesID", "Name"), "Select Your Note Category", new { @class = "form-control", id = "dropdownCategory" })*@
+                    @Html.DropDownListFor(model => model.Category, ViewBag.NotesCategory as SelectList, "Select Your Note Category", new { @class = "form-control", id = "dropdownCategory" })
                     @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
                 </div>
 
-                @*<label for="file-image">Upload Notes <span>*</span></label>
-                <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
-                    <label for="file-upload" id="file-drag">
-                        <img id="file-image" src="#" alt="Preview" class="hidden">
-                        <div id="start">
+                <label for="file-pdf">Upload Notes <span>*</span></label>
+                <div id="pdf-upload-form" class="uploader form-group">
+                    <input id="pdf-upload" type="file" name="NoteUploadFilePath" accept="pdf/*" />
+                    <label for="pdf-upload" id="pdf-drag">
+                        <img id="file-pdf" src="#" alt="Preview" class="hidden">
+                        <div id="start2">
                             <img src="~/Content/images/upload-note.png" height="46" width="50" />
                             <div>Upload your notes</div>
-                            <div id="notimage" class="hidden">Please select an image</div>
+                            <div id="notimage2" class="hidden">Please select an PDF</div>
                         </div>
-                        <div id="response" class="hidden">
-                            <div id="messages"></div>
-                            <progress class="progress" id="file-progress" value="0">
-                                <span>0</span>%
-                            </progress>
+                        <div id="response2" class="hidden">
+                            <div id="messages2"></div>
                         </div>
+                        @Html.ValidationMessageFor(model => model.FilePath, "", new { @class = "text-danger" })
                     </label>
-                </div>*@
+                </div>
+
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.NumberOfPages, "Number of Pages", new { @for = "inputNumberofPages", id = "noOfPages" })
@@ -221,7 +211,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.CountryList, "Country", new { @for = "dropdownCountry" })
-                    @Html.DropDownListFor(Model => Model.CountryList, new SelectList(ViewBag.Country, "Value", "Text"), "Select Your Country", new { @class = "form-control", @id = "dropdownCountry" })
+                    @Html.DropDownListFor(model => model.Country, ViewBag.NotesCountry as SelectList, "Select Your Country", new { @class = "form-control", id = "dropdownCountry" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -265,19 +255,19 @@
         </div>
 
         <div class="row">
-            <!--<div class="col-md-6">
+            <div class="col-md-6">
                 @Html.LabelFor(model => model.IsPaid, "Sell For *")
                 <div class="form-group">
                     <div class="contact-inputs">
-                        <label class="radio1">-->
-                            <!--<input type="radio" checked="checked" name="radio" value="free">-->
-                            <!--@Html.RadioButtonFor(model => model.IsPaid, true, new { @checked = "checked" })
+                        <label class="radio1">
+                            @*<input type="radio" checked="checked" name="radio" value="free">*@
+                            @Html.RadioButtonFor(model => model.IsPaid, false, new { @name = "IsPaid", @id = "Free" })
                             <span class="checkmark"></span>
                             <label class="label-2">Free</label>
                         </label>
-                        <label class="radio1">-->
-                            <!--<input type="radio" name="radio" value="paid">-->
-                            <!--@Html.RadioButtonFor(model => model.IsPaid, false)
+                        <label class="radio1">
+                            @*<input type="radio" name="radio" value="paid">*@
+                            @Html.RadioButtonFor(model => model.IsPaid, true, new { @name = "IsPaid", @id = "Paid" })
                             <span class="checkmark"></span>
                             <label class="label-2">Paid</label>
                         </label>
@@ -287,26 +277,24 @@
                     @Html.LabelFor(model => model.SellingPrice, "Sell Price", new { @for = "sellPrice" })
                     @Html.TextBoxFor(model => model.SellingPrice, new { @class = "form-control", placeholder = "Enter your price", id = "sellPrice" })
                 </div>
-            </div>-->
+            </div>
+
             <div class="col-md-6">
-                @*<label for="file-image">Note Preview</label>
-                <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
-                    <label for="file-upload" id="file-drag" class="customInput">
-                        <img id="file-image" src="#" alt="Preview" class="hidden">
-                        <div id="start">
+                <label for="file-preview">Note Preview</label>
+                <div id="preview-upload-form" class="uploader form-group">
+                    <input id="preview-upload" type="file" name="NotePreviewFilePath" accept="pdf/*" />
+                    <label for="preview-upload" id="preview-drag" class="customInput">
+                        <img id="file-preview" src="#" alt="Preview" class="hidden">
+                        <div id="start3">
                             <img src="~/Content/images/upload-file.png" height="46" width="50" />
                             <div>Upload a file</div>
-                            <div id="notimage" class="hidden">Please select an image</div>
+                            <div id="notimage3" class="hidden">Please select an image</div>
                         </div>
-                        <div id="response" class="hidden">
-                            <div id="messages"></div>
-                            <progress class="progress" id="file-progress" value="0">
-                                <span>0</span>%
-                            </progress>
+                        <div id="response3" class="hidden">
+                            <div id="messages3"></div>
                         </div>
                     </label>
-                </div>*@
+                </div>
             </div>
         </div>
 

@@ -329,6 +329,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\NotesImages\Images\" />
+    <Folder Include="Content\NotesImages\NotesPDF\" />
+    <Folder Include="Content\NotesImages\NotesPreview\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

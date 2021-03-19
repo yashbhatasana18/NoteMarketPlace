@@ -40,6 +40,7 @@
 
                 @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
                 {
+                    @Html.HiddenFor(model => model.EmailID)
                     @Html.AntiForgeryToken()
                     <div class="heading">
                         <h4 class="text-center">Login</h4>

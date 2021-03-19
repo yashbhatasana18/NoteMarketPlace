@@ -3,6 +3,7 @@ using NotesMarketPlace.DB.DBOperations;
 using NotesMarketPlace.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -244,9 +245,11 @@ namespace NotesMarketPlace.Controllers
                 var NoteCategoryList = context.NoteCategories.ToList();
                 ViewBag.NotesCategory = new SelectList(NoteCategoryList, "NoteCategoriesID", "Name");
 
-                //ViewBag.NotesCategory = context.NoteCategories.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.NoteCategoriesID.ToString(), Text = c.Name }).ToList();
-                ViewBag.NotesType = context.NoteTypes.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.NoteTypesID.ToString(), Text = c.Name }).ToList();
-                ViewBag.Country = context.Countries.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.CountriesID.ToString(), Text = c.Name }).ToList();
+                var NotesTypeList = context.NoteTypes.ToList();
+                ViewBag.NotesType = new SelectList(NotesTypeList, "NoteTypesID", "Name");
+
+                var CountryList = context.Countries.ToList();
+                ViewBag.NotesCountry = new SelectList(CountryList, "CountriesID", "Name");
 
                 return View();
             }
@@ -259,25 +262,50 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                //Users user = new Users();
-                //if (ModelState.IsValid)
-                //{
-                //var result = Session["Result"];
-                
-                int id = addNoteRepository.AddNotes(model);
-
-                if (id > 0)
+                if (ModelState.IsValid)
                 {
-                    ModelState.Clear();
-                    ViewBag.message = "Your note has been successfully added";
+                    //NoteDisplayPicturePath
+                    string displayPictureFileName = Path.GetFileNameWithoutExtension(model.NoteDisplayPicturePath.FileName);
+                    string displayPictureExtension = Path.GetExtension(model.NoteDisplayPicturePath.FileName);
+                    displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
+                    model.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
+                    displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
+                    model.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
+
+                    //NoteUploadFilePath
+                    string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(model.NoteUploadFilePath.FileName);
+                    model.FileName = Path.GetFileNameWithoutExtension(model.NoteUploadFilePath.FileName);
+                    string noteUploadFilePathExtension = Path.GetExtension(model.NoteUploadFilePath.FileName);
+                    noteUploadFilePathFileName = noteUploadFilePathFileName + DateTime.Now.ToString("yymmssff") + noteUploadFilePathExtension;
+                    model.FilePath = "~/Content/NotesImages/NotesPDF/" + noteUploadFilePathFileName;
+                    noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
+                    model.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
+
+                    //NotePreviewFilePath
+                    string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(model.NotePreviewFilePath.FileName);
+                    string notePreviewFilePathExtension = Path.GetExtension(model.NotePreviewFilePath.FileName);
+                    notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
+                    model.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
+                    notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
+                    model.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
+
+                    int id = addNoteRepository.AddNotes(model);
+
+                    if (id > 0)
+                    {
+                        ModelState.Clear();
+                        ViewBag.message = "Your note has been successfully added";
+                    }
                 }
-                //}
+
                 var NoteCategoryList = context.NoteCategories.ToList();
                 ViewBag.NotesCategory = new SelectList(NoteCategoryList, "NoteCategoriesID", "Name");
 
-                //ViewBag.NotesCategory = context.NoteCategories.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.NoteCategoriesID.ToString(), Text = c.Name }).ToList();
-                ViewBag.NotesType = context.NoteTypes.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.NoteTypesID.ToString(), Text = c.Name }).ToList();
-                ViewBag.Country = context.Countries.Where(m => m.IsActive == true).Select(c => new SelectListItem { Value = c.CountriesID.ToString(), Text = c.Name }).ToList();
+                var NotesTypeList = context.NoteTypes.ToList();
+                ViewBag.NotesType = new SelectList(NotesTypeList, "NoteTypesID", "Name");
+
+                var CountryList = context.Countries.ToList();
+                ViewBag.NotesCountry = new SelectList(CountryList, "CountriesID", "Name");
 
                 return View("AddNotes");
             }

@@ -14,8 +14,9 @@ namespace NotesMarketPlace.DB.DBOperations
                     SellerID = 1,
                     Title = model.Title,
                     Category = model.Category,
-                    //DisplayPicture = model.DisplayPicture,
-                    //NotesPreview = model.NotesPreview,
+                    ActionedBy = 1,
+                    DisplayPicture = model.DisplayPicture,
+                    NotesPreview = model.NotesPreview,
                     NoteType = model.NoteType,
                     Status = 5,
                     NumberOfPages = model.NumberOfPages,
@@ -27,6 +28,7 @@ namespace NotesMarketPlace.DB.DBOperations
                     Professor = model.Professor,
                     SellingPrice = model.SellingPrice,
                     IsPaid = model.IsPaid,
+                    PublishedDate = DateTime.Now,
                     CreatedDate = DateTime.Now,
                     CreatedBy = 1,
                     ModifiedDate = DateTime.Now,
@@ -34,37 +36,23 @@ namespace NotesMarketPlace.DB.DBOperations
                     IsActive = true,
                 };
 
+                context.SellerNotes.Add(addNotes);
+                context.SaveChanges();
+
                 SellerNotesAttachements sellerNotesAttachements = new SellerNotesAttachements()
                 {
-                    NoteID = model.SellerNotesID,
-                    //FilePath = model.UploadFile,
-                    //FileName = model.FileName,
+                    NoteID = addNotes.SellerNotesID,
+                    FilePath = model.FilePath,
+                    FileName = model.FileName,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = 1,
+                    ModifiedDate = DateTime.Now,
+                    ModifiedBy = 1,
                     IsActive = true
                 };
 
-                try
-                {
-                    context.SellerNotes.Add(addNotes);
-                    //context.SellerNotesAttachements.Add(sellerNotesAttachements);
-                    context.SaveChanges();
-                }
-                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-                {
-                    Exception raise = dbEx;
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            string message = string.Format("{0}:{1}",
-                                validationErrors.Entry.Entity.ToString(),
-                                validationError.ErrorMessage);
-                            // raise a new exception nesting  
-                            // the current instance as InnerException  
-                            raise = new InvalidOperationException(message, raise);
-                        }
-                    }
-                    throw raise;
-                }
+                context.SellerNotesAttachements.Add(sellerNotesAttachements);
+                context.SaveChanges();
 
                 return addNotes.SellerID;
             }

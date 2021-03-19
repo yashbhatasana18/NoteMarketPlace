@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web;
 
 namespace NotesMarketPlace.Models
 {
@@ -25,9 +26,9 @@ namespace NotesMarketPlace.Models
         public string DisplayPicture { get; set; }
 
         //[Required(ErrorMessage = "Please Select File")]
-        [DataType(DataType.Upload)]
-        [Display(Name = "Upload File")]
-        public string UploadFile { get; set; }
+        //[DataType(DataType.Upload)]
+        //[Display(Name = "Upload File")]
+        public string FilePath { get; set; }
 
         public string FileName { get; set; }
         public int? NoteType { get; set; }
@@ -43,7 +44,7 @@ namespace NotesMarketPlace.Models
         public string CourseCode { get; set; }
         public string Professor { get; set; }
 
-        //[Required(ErrorMessage = "Please Select Any One")]
+        [Required(ErrorMessage = "Please Select Any One")]
         public bool IsPaid { get; set; }
         public decimal? SellingPrice { get; set; }
         public string NotesPreview { get; set; }
@@ -61,5 +62,12 @@ namespace NotesMarketPlace.Models
         public NoteTypesModel NoteTypeList { get; set; }
 
         public CountriesModel CountryList { get; set; }
+
+        public HttpPostedFileBase NoteDisplayPicturePath { get; set; }
+
+        [Required(ErrorMessage = "Please select file.")]
+        public HttpPostedFileBase NoteUploadFilePath { get; set; }
+
+        public HttpPostedFileBase NotePreviewFilePath { get; set; }
     }
 }
