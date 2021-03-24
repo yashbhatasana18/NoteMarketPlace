@@ -1087,3 +1087,20 @@ section {
     #success-inform p {
         color: rgb(14, 185, 14);
     }
+
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+    margin-right: 10px;
+    width:180px;
+}
+
+.has-search .form-control-feedback {
+    display: block;
+    width: 1.375rem;
+    height: 1.375rem;
+    line-height: 1.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}

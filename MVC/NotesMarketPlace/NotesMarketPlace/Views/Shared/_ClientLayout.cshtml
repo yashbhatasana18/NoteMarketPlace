@@ -13,6 +13,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/icons-1.4.0/font/bootstrap-icons.css" rel="stylesheet" />
 
     <!-- Custom CSS -->
     <link href="~/Content/FrontPanel/css/upload.css" rel="stylesheet" type="text/css" />
@@ -20,7 +21,6 @@
 
     <!-- Responsive CSS -->
     <link href="~/Content/FrontPanel/css/responsive.css" rel="stylesheet" type="text/css" />
-
 </head>
 <body>
 
@@ -40,11 +40,11 @@
                     <!-- Link -->
                     <div class="text-right col-md-9 collapse navbar-collapse p-0" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto">
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("SearchNotes", "Home")">Search Notes</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("SellYourNotes", "Home")">Sell Your Notes</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("BuyerRequest", "Home")">Buyer Requests</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Faq", "Home")">FAQ</a></li>
-                            <li class="nav-item"><a class="nav-link" href="@Url.Action("ContactUs", "Home")">Contact Us</a></li>
+                            <li class="nav-item"><a class="nav-link @(ViewBag.Title == "SearchNotes"? "active" : "" )" href="@Url.Action("SearchNotes", "Home")">Search Notes</a></li>
+                            <li class="nav-item"><a class="nav-link @(ViewBag.Title == "SellYourNotes"? "active" : "" )" href="@Url.Action("SellYourNotes", "Home")">Sell Your Notes</a></li>
+                            <li class="nav-item"><a class="nav-link @(ViewBag.Title == "BuyerRequest"? "active" : "" )" href="@Url.Action("BuyerRequest", "Home")">Buyer Requests</a></li>
+                            <li class="nav-item"><a class="nav-link @(ViewBag.Title == "Faq"? "active" : "" )" href="@Url.Action("Faq", "Home")">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link @(ViewBag.Title == "ContactUs"? "active" : "" )" href="@Url.Action("ContactUs", "Home")">Contact Us</a></li>
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">
@@ -56,11 +56,11 @@
                                         </a>
 
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="@Url.Action("Index", "MyProfile")">My Profile</a>
-                                            <a class="dropdown-item" href="@Url.Action("Index", "MyDownload")">My Download</a>
-                                            <a class="dropdown-item" href="@Url.Action("Index", "MySoldNotes")">My Sold Notes</a>
-                                            <a class="dropdown-item" href="@Url.Action("Index", "MyRejectedNotes")">My Rejected Notes</a>
-                                            <a class="dropdown-item" href="@Url.Action("Index", "ChangePassword")">Change Password</a>
+                                            <a class="dropdown-item @(ViewBag.Title == "UserProfile"? "active" : "" )" href="@Url.Action("UserProfile", "Account")">My Profile</a>
+                                            <a class="dropdown-item @(ViewBag.Title == "MyDownload"? "active" : "" )" href="@Url.Action("MyDownload", "MyDownload")">My Download</a>
+                                            <a class="dropdown-item @(ViewBag.Title == "MySoldNotes"? "active" : "" )" href="@Url.Action("MySoldNotes", "MySoldNotes")">My Sold Notes</a>
+                                            <a class="dropdown-item @(ViewBag.Title == "MyRejectedNotes"? "active" : "" )" href="@Url.Action("MyRejectedNotes", "MyRejectedNotes")">My Rejected Notes</a>
+                                            <a class="dropdown-item @(ViewBag.Title == "ChangePassword"? "active" : "" )" href="@Url.Action("ChangePassword", "Account")">Change Password</a>
                                             <a class="dropdown-item btn-logout" href="@Url.Action("Login", "Account")">LogOut</a>
                                         </div>
                                     </div>
@@ -85,11 +85,11 @@
                         </span>
                         <div id="mobile-nav-content">
                             <ul class="nav navig">
-                                <li class="nav-item"><a class="nav-link" href="@Url.Action("SearchNotes", "Home")">Search Notes</a></li>
-                                <li class="nav-item"><a class="nav-link" href="@Url.Action("SellYourNotes", "Home")">Sell Your Notes</a></li>
-                                <li class="nav-item"><a class="nav-link" href="@Url.Action("BuyerRequest", "Home")">Buyer Requests</a></li>
-                                <li class="nav-item"><a class="nav-link" href="@Url.Action("Faq", "Home")">FAQ</a></li>
-                                <li class="nav-item"><a class="nav-link" href="@Url.Action("ContactUs", "Home")">Contact Us</a></li>
+                                <li class="nav-item"><a class="nav-link @(ViewBag.Title == "SearchNotes"? "active" : "" )" href="@Url.Action("SearchNotes", "Home")">Search Notes</a></li>
+                                <li class="nav-item"><a class="nav-link @(ViewBag.Title == "SellYourNotes"? "active" : "" )" href="@Url.Action("SellYourNotes", "Home")">Sell Your Notes</a></li>
+                                <li class="nav-item"><a class="nav-link @(ViewBag.Title == "BuyerRequest"? "active" : "" )" href="@Url.Action("BuyerRequest", "Home")">Buyer Requests</a></li>
+                                <li class="nav-item"><a class="nav-link @(ViewBag.Title == "Faq"? "active" : "" )" href="@Url.Action("Faq", "Home")">FAQ</a></li>
+                                <li class="nav-item"><a class="nav-link @(ViewBag.Title == "ContactUs"? "active" : "" )" href="@Url.Action("ContactUs", "Home")">Contact Us</a></li>
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <li class="nav-item">
@@ -102,11 +102,11 @@
                                             </a>
 
                                             <div id="collapseExample3" class="collapse">
-                                                <a class="dropdown-item" href="@Url.Action("Index", "MyProfile")">My Profile</a>
-                                                <a class="dropdown-item" href="@Url.Action("Index", "MyDownload")">My Download</a>
-                                                <a class="dropdown-item" href="@Url.Action("Index", "MySoldNotes")">My Sold Notes</a>
-                                                <a class="dropdown-item" href="@Url.Action("Index", "MyRejectedNotes")">My Rejected Notes</a>
-                                                <a class="dropdown-item" href="@Url.Action("Index", "ChangePassword")">Change Password</a>
+                                                <a class="dropdown-item @(ViewBag.Title == "UserProfile"? "active" : "" )" href="@Url.Action("UserProfile", "Account")">My Profile</a>
+                                                <a class="dropdown-item @(ViewBag.Title == "MyDownload"? "active" : "" )" href="@Url.Action("MyDownload", "MyDownload")">My Download</a>
+                                                <a class="dropdown-item @(ViewBag.Title == "MySoldNotes"? "active" : "" )" href="@Url.Action("MySoldNotes", "MySoldNotes")">My Sold Notes</a>
+                                                <a class="dropdown-item @(ViewBag.Title == "MyRejectedNotes"? "active" : "" )" href="@Url.Action("MyRejectedNotes", "MyRejectedNotes")">My Rejected Notes</a>
+                                                <a class="dropdown-item @(ViewBag.Title == "ChangePassword"? "active" : "" )" href="@Url.Action("ChangePassword", "Account")">Change Password</a>
                                                 <a class="dropdown-item btn-logout" href="@Url.Action("Login", "Account")">LogOut</a>
                                             </div>
                                         </div>

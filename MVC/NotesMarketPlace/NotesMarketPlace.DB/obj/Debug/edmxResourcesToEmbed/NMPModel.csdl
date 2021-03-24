@@ -644,15 +644,8 @@
     <FunctionImport Name="SP_Users_DeleteByPK">
       <Parameter Name="UserID" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="SearchNotes" EntitySet="SellerNotes" ReturnType="Collection(NotesMarketPlaceModel.SellerNotes)">
-      <Parameter Name="NotesTitle" Mode="In" Type="String" />
-      <Parameter Name="Category" Mode="In" Type="Int32" />
-      <Parameter Name="NoteType" Mode="In" Type="Int32" />
-      <Parameter Name="University" Mode="In" Type="Int32" />
-      <Parameter Name="Course" Mode="In" Type="Int32" />
-      <Parameter Name="Country" Mode="In" Type="Int32" />
-      <Parameter Name="Rating" Mode="In" Type="Int32" />
-    </FunctionImport>
+    <FunctionImport Name="SP_SellerNotes_SelectAll" ReturnType="Collection(NotesMarketPlaceModel.SP_SellerNotes_SelectAll_Result)" />
+    <FunctionImport Name="FN_SellerNotes_SelectAll" EntitySet="SellerNotes" ReturnType="Collection(NotesMarketPlaceModel.SellerNotes)" />
   </EntityContainer>
   <ComplexType Name="sp_helpdiagramdefinition_Result">
     <Property Type="Int32" Name="version" Nullable="true" />
@@ -682,5 +675,17 @@
   <ComplexType Name="SP_Notes_Search_Result">
     <Property Type="Int64" Name="SrNo" Nullable="true" />
     <Property Type="String" Name="Title" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="SP_SellerNotes_SelectAll_Result">
+    <Property Type="Int32" Name="SellerID" Nullable="false" />
+    <Property Type="String" Name="Title" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+    <Property Type="Boolean" Name="IsPaid" Nullable="false" />
+    <Property Type="Decimal" Name="SellingPrice" Nullable="true" Precision="8" Scale="2" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+    <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="ModifiedBy" Nullable="true" />
+    <Property Type="Boolean" Name="IsActive" Nullable="false" />
   </ComplexType>
 </Schema>

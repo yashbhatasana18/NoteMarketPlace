@@ -310,18 +310,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_SellerNotes_SellerNotes">
-    <End Role="SellerNotes" Type="Self.SellerNotes" Multiplicity="1" />
-    <End Role="SellerNotes1" Type="Self.SellerNotes" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="SellerNotes">
-        <PropertyRef Name="SellerNotesID" />
-      </Principal>
-      <Dependent Role="SellerNotes1">
-        <PropertyRef Name="SellerNotesID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_SellerNotes_Users_ActionedBy">
     <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
     <End Role="SellerNotes" Type="Self.SellerNotes" Multiplicity="*" />
@@ -493,6 +481,7 @@
     <Parameter Name="owner_id" Type="int" Mode="In" />
     <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="SP_SellerNotes_SelectAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="SP_Users_DeleteByPK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="UserID" Type="int" Mode="In" />
@@ -540,10 +529,6 @@
     <AssociationSet Name="FK_SellerNotes_ReferenceData" Association="Self.FK_SellerNotes_ReferenceData">
       <End Role="ReferenceData" EntitySet="ReferenceData" />
       <End Role="SellerNotes" EntitySet="SellerNotes" />
-    </AssociationSet>
-    <AssociationSet Name="FK_SellerNotes_SellerNotes" Association="Self.FK_SellerNotes_SellerNotes">
-      <End Role="SellerNotes" EntitySet="SellerNotes" />
-      <End Role="SellerNotes1" EntitySet="SellerNotes" />
     </AssociationSet>
     <AssociationSet Name="FK_SellerNotes_Users_ActionedBy" Association="Self.FK_SellerNotes_Users_ActionedBy">
       <End Role="Users" EntitySet="Users" />

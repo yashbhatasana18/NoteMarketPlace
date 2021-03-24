@@ -1,0 +1,212 @@
+﻿@model NotesMarketPlace.Models.UserProfileModel
+
+@{
+    ViewBag.Title = "UserProfile";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<style>
+    label {
+        margin-bottom: 10px !important;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #333333;
+    }
+
+    .form-group {
+        margin-bottom: 30px !important;
+    }
+
+    textarea {
+        border: 1px solid #d1d1d1;
+        width: 1440px;
+        height: 153px !important;
+        border-radius: 3px;
+    }
+
+    #btnSubmit {
+        margin-left: 15px;
+    }
+
+    .input-group-prepend {
+        margin-right: 10px;
+    }
+</style>
+
+<!-- Head -->
+<section class="head">
+    <div class="head-content">
+        <div class="container">
+            <div class="row">
+                <div class="head-content-inner">
+                    <div class="head-heading">
+                        User Profile
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Head -->
+<!-- User Profile  -->
+<section class="container">
+    <!-- Basic Profile Details -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="title">Basic Profile Details</h1>
+        </div>
+    </div>
+    @ViewBag.message
+    @using (Html.BeginForm("UserProfile", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        //@Html.HiddenFor(model => model.UserID)
+        <div class="row">
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FirstName, "First Name *", new { @for = "exampleInputFirstName" })
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = "Enter your first name", id = "exampleInputFirstName" })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmailID, "Email address *", new { @for = "exampleInputEmail1" })
+                    @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", id = "exampleInputEmail1", placeholder = "Enter your email address" })
+                    @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Gender, "Gender *", new { @for = "dropdownGender" })
+                    @Html.DropDownListFor(model => model.Gender, ViewBag.GenderList as SelectList, "Select Your Gender", new { @class = "form-control", id = "dropdownGender" })
+
+                    @*@Html.DropDownListFor(model => model.Gender, new SelectList(Model.genderModel, "ReferenceDataID", "Value"), "Select Your Gender", new { @class = "form-control" })*@
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LastName, "Last Name *", new { @for = "exampleInputLastName" })
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", placeholder = "Enter your last name", id = "exampleInputLastName" })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DOB, "Date Of Birth", new { @for = "example-date" })
+                    @Html.TextBoxFor(model => model.DOB, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Enter your date of birth",
+                        name = "date",
+                        id = "example-date",
+                        onfocus = "(this.type='date')",
+                        onblur = "(this.type='text')"
+                    })
+                </div>
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.PhoneNumber, "Phone Number", new { @for = "phoneNo" })
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            @Html.DropDownListFor(model => model.PhoneNumberCountryCode, ViewBag.CountryCodeList as SelectList, "Select Your Country Code", new { @class = "form-control" })
+
+                            @*@Html.DropDownListFor(model => model.CountryCodeModel, new SelectList(Model.CountryCodeModel, "CountriesID", "CountryCode"), new { @class = "form-control" })*@
+                        </div>
+                        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Enter your phone number", id = "phoneNo" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="file-image">Profile Picture</label>
+                <div id="file-upload-form" class="uploader form-group">
+                    <input id="file-upload" type="file" name="UserProfilePicturePath" accept="image/*" />
+                    <label for="file-upload" id="file-drag">
+                        <img id="file-image" src="#" alt="Preview" class="hidden">
+                        <div id="start">
+                            <img src="~/Content/images/upload-file.png" height="46" width="50" />
+                            <div>Upload a picture</div>
+                            <div id="notimage" class="hidden">Please select an image</div>
+                        </div>
+                        <div id="response" class="hidden">
+                            <div id="messages"></div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Details -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="title">Address Details</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AddressLine1, "Address Line 1 *", new { @for = "addressline1" })
+                    @Html.TextBoxFor(model => model.AddressLine1, new { @class = "form-control", placeholder = "Enter your address", id = "addressline1" })
+                    @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.City, "City *", new { @for = "city" })
+                    @Html.TextBoxFor(model => model.City, new { @class = "form-control", placeholder = "Enter your city", id = "city" })
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ZipCode, "ZipCode *", new { @for = "zipcode" })
+                    @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control", placeholder = "Enter your zipcode", id = "zipcode" })
+                    @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AddressLine2, "Address Line 2", new { @for = "addressline2" })
+                    @Html.TextBoxFor(model => model.AddressLine2, new { @class = "form-control", placeholder = "Enter your address", id = "addressline2" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.State, "State *", new { @for = "state" })
+                    @Html.TextBoxFor(model => model.State, new { @class = "form-control", placeholder = "Enter your state", id = "state" })
+                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Country, "Country *", new { @for = "dropdownCountry" })
+                    @Html.DropDownListFor(model => model.Country, ViewBag.CountryList as SelectList, "Select Your Country", new { @class = "form-control", id = "dropdownCountry" })
+
+                    @*@Html.DropDownListFor(model => model.Country, new SelectList(Model.countryModel, "CountriesID", "Name"), "Select Your Country", new { @class = "form-control" })*@
+                </div>
+            </div>
+        </div>
+
+        <!-- University and College Information -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="title" style="margin-top: 40px;">University and College Information</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.University, "University", new { @for = "university" })
+                    @Html.TextBoxFor(model => model.University, new { @class = "form-control", placeholder = "Enter your university", id = "university" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.College, "College", new { @for = "college" })
+                    @Html.TextBoxFor(model => model.College, new { @class = "form-control", placeholder = "Enter your college", id = "college" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" id="btnSubmit" class="btn">SUBMIT</button>
+        </div>
+    }
+</section>
+<!-- End User Profile   -->

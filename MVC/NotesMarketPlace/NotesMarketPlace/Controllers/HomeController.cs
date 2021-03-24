@@ -14,10 +14,12 @@ namespace NotesMarketPlace.Controllers
     public class HomeController : Controller
     {
         AddNotesRepository addNoteRepository = null;
+        SellYourNotesRepository sellYourNotesRepository = null;
 
         public HomeController()
         {
             addNoteRepository = new AddNotesRepository();
+            sellYourNotesRepository = new SellYourNotesRepository();
         }
 
         public ActionResult Index()
@@ -26,10 +28,44 @@ namespace NotesMarketPlace.Controllers
         }
 
         [Authorize(Roles = "Member")]
-        public ActionResult SellYourNotes()
+        public ActionResult SellYourNotes(string txtSearch1)
         {
-            return View();
+            var result = sellYourNotesRepository.GetAllPublishedNotes();
+            return View(result);
         }
+
+        //[Authorize(Roles = "Member")]
+        //[HttpPost]
+        //public ActionResult SellYourNotes(string txtSearch1,string txtSearch2)
+        //{
+        //    using (var context = new NotesMarketPlaceEntities())
+        //    {
+        //        DashboardModel dashboardModel = new DashboardModel();
+        //        var user = context.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
+
+        //        var Pro_Note = context.SellerNotes.Where(x => x.SellerID == user.UserID && (x.Status == 6 || x.Status == 7 || x.Status == 8));
+        //        var Pub_Note = context.SellerNotes.Where(x => x.SellerID == user.UserID && x.Status == 9);
+
+        //        if (txtSearch1 != null)
+        //        {
+        //            Pro_Note = Pro_Note.Where(x => x.Title.Contains(txtSearch1));
+        //        }
+        //        if (txtSearch2 != null)
+        //        {
+        //            Pub_Note = Pub_Note.Where(x => x.Title.Contains(txtSearch2));
+        //        }
+
+        //        return View(dashboardModel);
+
+        //        //var sellyournotes1 = (from c in context.SellerNotes
+        //        //                      select c);
+        //        //if (!string.IsNullOrEmpty(txtSearch1))
+        //        //{
+        //        //    sellyournotes1 = sellyournotes1.Where(c => c.Title.Contains(txtSearch1));
+        //        //}
+        //        //return View(sellyournotes1);
+        //    }
+        //}
 
         //public ActionResult SearchNotes()
         //{
@@ -262,6 +298,8 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
+                var user = context.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
+                model.SellerID = user.UserID;
                 if (ModelState.IsValid)
                 {
                     //NoteDisplayPicturePath

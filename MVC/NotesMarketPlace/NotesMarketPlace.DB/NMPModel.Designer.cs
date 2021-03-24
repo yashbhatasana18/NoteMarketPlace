@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace.DB\NMPModel.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.DB\NMPModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

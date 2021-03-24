@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<NotesMarketPlace.Models.SellerNotesModel>
+
 @{
     ViewBag.Title = "SellYourNotes";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
@@ -72,19 +73,21 @@
                 </div>
             </div>
         </div>
+        @using (Html.BeginForm("SellYourNotes", "Home", FormMethod.Post))
+        {
+            <div class="row heading">
+                <div class="col-md-6 col-sm-6 p-0">
+                    <h3 class="heading-1">In Progress Notes</h3>
+                </div>
 
-        <div class="row heading">
-            <div class="col-md-6 col-sm-6 p-0">
-                <h3 class="heading-1">In Progress Notes</h3>
+                <div class="col-md-6 col-sm-6 text-right search-1 p-0 form-group has-search">
+                    <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
+                    @Html.TextBox("txtSearch1", null, new { @class = "form-control input-search", @placeholder = "Search" })
+                    <button class="btn btn-general" type="submit">Search</button>
+                </div>
+
             </div>
-
-            <div class="col-md-6 col-sm-6 text-right search-1 p-0">
-                <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
-                <input class="input-search" type="search" placeholder="Search">
-                <a class="btn btn-general">Search</a>
-            </div>
-        </div>
-
+        }
         <div class="row">
             <div class="table-top table-responsive">
                 <table class="table ">
@@ -98,53 +101,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td scope="row">09-10-2020</td>
-                            <td class="td-blue">Data Science</td>
-                            <td>Science</td>
-                            <td>Draft</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/edit.png" alt="edit-image">
-                                <img src="~/Content/images/delete.png" alt="delete-image">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">10-10-2020</td>
-                            <td class="td-blue">Accounts</td>
-                            <td>Commerce</td>
-                            <td>In Review</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">11-10-2020</td>
-                            <td class="td-blue">Social Studies</td>
-                            <td>Social</td>
-                            <td>Submitted</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">12-10-2020</td>
-                            <td class="td-blue">AI</td>
-                            <td>IT</td>
-                            <td>Submitted</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">13-10-2020</td>
-                            <td class="td-blue">Lorem ipsum</td>
-                            <td>Lorem</td>
-                            <td>Draft</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/edit.png" alt="edit-image">
-                                <img src="~/Content/images/delete.png" alt="delete-image">
-                            </td>
-                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row">@item.CreatedDate.Value.ToString("dd/MM/yyyy")</td>
+                                <td class="td-blue">@item.Title</td>
+                                <td>@item.CategoryName</td>
+                                <td>@item.StatusValue</td>
+                                <td class="text-center">
+                                    <img src="~/Content/images/edit.png" alt="edit-image">
+                                    <img src="~/Content/images/delete.png" alt="delete-image">
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -177,10 +146,10 @@
                 <h3 class="heading-1">Published Notes</h3>
             </div>
 
-            <div class="col-md-6 col-sm-6 text-right search-1 p-0">
+            <div class="col-md-6 col-sm-6 text-right search-1 p-0 form-group has-search">
                 <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
-                <input class="input-search" type="search" placeholder="Search">
-                <a class="btn btn-general">Search</a>
+                @Html.TextBox("txtSearch2", null, new { @class = "form-control input-search", @placeholder = "Search" })
+                <button class="btn btn-general" type="submit">Search</button>
             </div>
         </div>
 
@@ -198,56 +167,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td scope="row">09-10-2020</td>
-                            <td class="td-blue">Data Science</td>
-                            <td>Science</td>
-                            <td>Paid</td>
-                            <td>$575</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">10-10-2020</td>
-                            <td class="td-blue">Accounts</td>
-                            <td>Commerce</td>
-                            <td>Free</td>
-                            <td>$0</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">11-10-2020</td>
-                            <td class="td-blue">Social Studies</td>
-                            <td>Social</td>
-                            <td>Free</td>
-                            <td>$0</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">12-10-2020</td>
-                            <td class="td-blue">AI</td>
-                            <td>IT</td>
-                            <td>Paid</td>
-                            <td>$3542</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">13-10-2020</td>
-                            <td class="td-blue">Lorem ipsum</td>
-                            <td>Lorem</td>
-                            <td>Free</td>
-                            <td>$0</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row">@item.CreatedDate.Value.ToString("dd/MM/yyyy")</td>
+                                <td class="td-blue">@item.Title</td>
+                                <td>@item.CategoryName</td>
+                                <td>@(item.IsPaid? "Paid" : "Free")</td>
+                                <td>$@item.SellingPrice</td>
+                                <td class="text-center">
+                                    <img src="~/Content/images/eye.png" alt="eye-image">
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

@@ -292,6 +292,22 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="SP_Users_DeleteByPK" FunctionName="NotesMarketPlaceModel.Store.SP_Users_DeleteByPK" />
-    <FunctionImportMapping FunctionImportName="SearchNotes" FunctionName="NotesMarketPlaceModel.Store.SP_Notes_Search" />
+    <FunctionImportMapping FunctionImportName="SP_SellerNotes_SelectAll" FunctionName="NotesMarketPlaceModel.Store.SP_SellerNotes_SelectAll">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="NotesMarketPlaceModel.SP_SellerNotes_SelectAll_Result">
+          <ScalarProperty Name="SellerID" ColumnName="SellerID" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
+          <ScalarProperty Name="SellingPrice" ColumnName="SellingPrice" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="FN_SellerNotes_SelectAll" FunctionName="NotesMarketPlaceModel.Store.SP_SellerNotes_SelectAll" />
   </EntityContainerMapping>
 </Mapping>

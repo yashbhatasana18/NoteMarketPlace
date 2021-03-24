@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="DBOperations\AddNotesRepository.cs" />
     <Compile Include="DBOperations\SearchRepository.cs" />
+    <Compile Include="DBOperations\SellYourNotesRepository.cs" />
     <Compile Include="DBOperations\SignUpRepository.cs" />
     <Compile Include="Downloads.cs">
       <DependentUpon>NMPModel.tt</DependentUpon>
@@ -109,6 +110,9 @@
       <DependentUpon>NMPModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Notes_Search_Result.cs">
+      <DependentUpon>NMPModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_SellerNotes_SelectAll_Result.cs">
       <DependentUpon>NMPModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SP_Users_SelectAll_Result.cs">

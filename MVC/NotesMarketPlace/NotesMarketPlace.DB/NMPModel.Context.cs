@@ -192,70 +192,19 @@ namespace NotesMarketPlace.DB
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Users_DeleteByPK", userIDParameter);
         }
     
-        public virtual ObjectResult<SellerNotes> SearchNotes(string notesTitle, Nullable<int> category, Nullable<int> noteType, Nullable<int> university, Nullable<int> course, Nullable<int> country, Nullable<int> rating)
+        public virtual ObjectResult<SP_SellerNotes_SelectAll_Result> SP_SellerNotes_SelectAll()
         {
-            var notesTitleParameter = notesTitle != null ?
-                new ObjectParameter("NotesTitle", notesTitle) :
-                new ObjectParameter("NotesTitle", typeof(string));
-    
-            var categoryParameter = category.HasValue ?
-                new ObjectParameter("Category", category) :
-                new ObjectParameter("Category", typeof(int));
-    
-            var noteTypeParameter = noteType.HasValue ?
-                new ObjectParameter("NoteType", noteType) :
-                new ObjectParameter("NoteType", typeof(int));
-    
-            var universityParameter = university.HasValue ?
-                new ObjectParameter("University", university) :
-                new ObjectParameter("University", typeof(int));
-    
-            var courseParameter = course.HasValue ?
-                new ObjectParameter("Course", course) :
-                new ObjectParameter("Course", typeof(int));
-    
-            var countryParameter = country.HasValue ?
-                new ObjectParameter("Country", country) :
-                new ObjectParameter("Country", typeof(int));
-    
-            var ratingParameter = rating.HasValue ?
-                new ObjectParameter("Rating", rating) :
-                new ObjectParameter("Rating", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SellerNotes>("SearchNotes", notesTitleParameter, categoryParameter, noteTypeParameter, universityParameter, courseParameter, countryParameter, ratingParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_SellerNotes_SelectAll_Result>("SP_SellerNotes_SelectAll");
         }
     
-        public virtual ObjectResult<SellerNotes> SearchNotes(string notesTitle, Nullable<int> category, Nullable<int> noteType, Nullable<int> university, Nullable<int> course, Nullable<int> country, Nullable<int> rating, MergeOption mergeOption)
+        public virtual ObjectResult<SellerNotes> FN_SellerNotes_SelectAll()
         {
-            var notesTitleParameter = notesTitle != null ?
-                new ObjectParameter("NotesTitle", notesTitle) :
-                new ObjectParameter("NotesTitle", typeof(string));
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SellerNotes>("FN_SellerNotes_SelectAll");
+        }
     
-            var categoryParameter = category.HasValue ?
-                new ObjectParameter("Category", category) :
-                new ObjectParameter("Category", typeof(int));
-    
-            var noteTypeParameter = noteType.HasValue ?
-                new ObjectParameter("NoteType", noteType) :
-                new ObjectParameter("NoteType", typeof(int));
-    
-            var universityParameter = university.HasValue ?
-                new ObjectParameter("University", university) :
-                new ObjectParameter("University", typeof(int));
-    
-            var courseParameter = course.HasValue ?
-                new ObjectParameter("Course", course) :
-                new ObjectParameter("Course", typeof(int));
-    
-            var countryParameter = country.HasValue ?
-                new ObjectParameter("Country", country) :
-                new ObjectParameter("Country", typeof(int));
-    
-            var ratingParameter = rating.HasValue ?
-                new ObjectParameter("Rating", rating) :
-                new ObjectParameter("Rating", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SellerNotes>("SearchNotes", mergeOption, notesTitleParameter, categoryParameter, noteTypeParameter, universityParameter, courseParameter, countryParameter, ratingParameter);
+        public virtual ObjectResult<SellerNotes> FN_SellerNotes_SelectAll(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SellerNotes>("FN_SellerNotes_SelectAll", mergeOption);
         }
     }
 }

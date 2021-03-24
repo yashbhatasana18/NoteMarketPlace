@@ -11,10 +11,10 @@ namespace NotesMarketPlace.DB.DBOperations
             {
                 SellerNotes addNotes = new SellerNotes()
                 {
-                    SellerID = 1,
+                    SellerID = model.SellerID,
                     Title = model.Title,
                     Category = model.Category,
-                    ActionedBy = 1,
+                    ActionedBy = model.SellerID,
                     DisplayPicture = model.DisplayPicture,
                     NotesPreview = model.NotesPreview,
                     NoteType = model.NoteType,
@@ -30,9 +30,9 @@ namespace NotesMarketPlace.DB.DBOperations
                     IsPaid = model.IsPaid,
                     PublishedDate = DateTime.Now,
                     CreatedDate = DateTime.Now,
-                    CreatedBy = 1,
+                    CreatedBy = model.SellerID,
                     ModifiedDate = DateTime.Now,
-                    ModifiedBy = 1,
+                    ModifiedBy = model.SellerID,
                     IsActive = true,
                 };
 
@@ -45,9 +45,9 @@ namespace NotesMarketPlace.DB.DBOperations
                     FilePath = model.FilePath,
                     FileName = model.FileName,
                     CreatedDate = DateTime.Now,
-                    CreatedBy = 1,
+                    CreatedBy = model.SellerID,
                     ModifiedDate = DateTime.Now,
-                    ModifiedBy = 1,
+                    ModifiedBy = model.SellerID,
                     IsActive = true
                 };
 

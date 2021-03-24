@@ -15,28 +15,28 @@ namespace NotesMarketPlace.Controllers
 {
     public class AccountController : Controller
     {
-        SignUpRepository repository = null;
+        SignUpRepository signUpRepository = null;
 
         public AccountController()
         {
-            repository = new SignUpRepository();
+            signUpRepository = new SignUpRepository();
         }
 
         public ActionResult GetAllUsers()
         {
-            var result = repository.GetAllUser();
+            var result = signUpRepository.GetAllUser();
             return View(result);
         }
 
         public ActionResult GetUsers(int id)
         {
-            var result = repository.GetUser(id);
+            var result = signUpRepository.GetUser(id);
             return View(result);
         }
 
         public ActionResult EditUsers(int id)
         {
-            var result = repository.GetUser(id);
+            var result = signUpRepository.GetUser(id);
             return View(result);
         }
 
@@ -45,7 +45,7 @@ namespace NotesMarketPlace.Controllers
         {
             if (ModelState.IsValid)
             {
-                repository.EditUsers(model.UserID, model);
+                signUpRepository.EditUsers(model.UserID, model);
                 return RedirectToAction("GetAllUsers");
             }
             return View(model);
@@ -54,7 +54,7 @@ namespace NotesMarketPlace.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            repository.DeleteUsers(id);
+            signUpRepository.DeleteUsers(id);
             return RedirectToAction("GetAllUsers");
         }
 
@@ -69,7 +69,7 @@ namespace NotesMarketPlace.Controllers
         {
             if (ModelState.IsValid)
             {
-                int id = repository.AddUser(model);
+                int id = signUpRepository.AddUser(model);
 
                 if (id > 0)
                 {
@@ -90,17 +90,11 @@ namespace NotesMarketPlace.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(SignUpModel model)
+        public ActionResult Login(LoginModel model)
         {
             using (var context = new NotesMarketPlaceEntities())
             {
                 bool isValid = context.Users.Any(x => x.EmailID == model.EmailID && x.Password == model.Password);
-
-                //Session["Result"] = context.Users.Where(x => x.EmailID == model.EmailID).Select(x => new SignUpModel()
-                //{
-                //    UserID = x.UserID,
-                //});
-
 
                 if (isValid)
                 {
@@ -112,6 +106,231 @@ namespace NotesMarketPlace.Controllers
             }
         }
         #endregion Login
+
+        #region User Profile
+
+        // get my Profile
+        [Authorize(Roles = "Member")]
+        public ActionResult UserProfile()
+        {
+            using (var _Context = new NotesMarketPlaceEntities())
+            {
+                // get gender for dropdown
+                var gender = _Context.ReferenceData.Where(m => m.RefCategory == "Gender").ToList();
+                // get country
+                var country = _Context.Countries.ToList();
+
+                // get current userId
+                var currentuser = _Context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
+
+                // get user details
+                var isDetailsAvailable = _Context.UserProfile.FirstOrDefault(m => m.UserID == currentuser.UserID);
+
+
+                var UserProfile = new UserProfileModel();
+
+                // check user details available or not
+                if (isDetailsAvailable != null)
+                {
+                    UserProfile = (from Detail in _Context.UserProfile
+                                   join User in _Context.Users on Detail.UserID equals User.UserID
+                                   join Country in _Context.UserProfile on Detail.Country equals Country.Country
+                                   where Detail.UserID == currentuser.UserID
+                                   select new UserProfileModel
+                                   {
+                                       FirstName = User.FirstName,
+                                       LastName = User.LastName,
+                                       EmailID = User.EmailID,
+                                       Gender = Detail.Gender,
+                                       DOB = Detail.DOB,
+                                       PhoneNumberCountryCode = Detail.PhoneNumberCountryCode,
+                                       PhoneNumber = Detail.PhoneNumber,
+                                       ProfilePicture = Detail.ProfilePicture,
+                                       AddressLine1 = Detail.AddressLine1,
+                                       AddressLine2 = Detail.AddressLine2,
+                                       City = Detail.City,
+                                       State = Detail.State,
+                                       ZipCode = Detail.ZipCode,
+                                       Country = Detail.Country,
+                                       University = Detail.University,
+                                       College = Detail.College
+                                   }).FirstOrDefault<UserProfileModel>();
+
+                    var GenderList = gender;
+                    ViewBag.GenderList = new SelectList(GenderList, "ReferenceDataID", "Value");
+
+                    var CountryList = country;
+                    ViewBag.CountryList = new SelectList(CountryList, "CountriesID", "Name");
+
+                    var CountryCodeList = country;
+                    ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
+
+                    //UserProfile.genderModel = gender.Select(x => new ReferenceDataModel { ReferenceDataID = x.ReferenceDataID, Value = x.Value }).ToList();
+                    //UserProfile.countryModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, Name = x.Name }).ToList();
+                    //UserProfile.CountryCodeModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, CountryCode = x.CountryCode }).ToList();
+
+                    return View(UserProfile);
+                }
+                // if user is first time login
+                else
+                {
+                    UserProfile.FirstName = currentuser.FirstName;
+                    UserProfile.LastName = currentuser.LastName;
+                    UserProfile.EmailID = currentuser.EmailID;
+
+                    var GenderList = gender;
+                    ViewBag.GenderList = new SelectList(GenderList, "ReferenceDataID", "Value");
+
+                    var CountryList = country;
+                    ViewBag.CountryList = new SelectList(CountryList, "CountriesID", "Name");
+
+                    var CountryCodeList = country;
+                    ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
+
+                    //UserProfile.genderModel = gender.Select(x => new ReferenceDataModel { ReferenceDataID = x.ReferenceDataID, Value = x.Value }).ToList();
+                    //UserProfile.countryModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, Name = x.Name }).ToList();
+                    //UserProfile.CountryCodeModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, CountryCode = x.CountryCode }).ToList();
+
+                    return View(UserProfile);
+                }
+            }
+        }
+
+        // Update my Profile
+        [HttpPost]
+        [Authorize(Roles = "Member")]
+        public ActionResult UserProfile(UserProfileModel user)
+        {
+            using (var _Context = new NotesMarketPlaceEntities())
+            {
+                // get gender for dropdown
+                var gender = _Context.ReferenceData.Where(m => m.RefCategory == "Gender").ToList();
+                // get country
+                var country = _Context.Countries.ToList();
+
+                if (ModelState.IsValid)
+                {
+                    // get current userId
+                    int currentuser = _Context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name).UserID;
+
+                    // get user details
+                    var isDetailsAvailable = _Context.UserProfile.FirstOrDefault(m => m.UserID == currentuser);
+
+                    // check user details available or not
+                    if (isDetailsAvailable != null && user != null)
+                    {
+                        // update details
+                        var userUpdate = _Context.Users.FirstOrDefault(m => m.UserID == currentuser);
+                        var detailsUpdate = _Context.UserProfile.FirstOrDefault(m => m.UserID == currentuser);
+
+                        userUpdate.FirstName = user.FirstName;
+                        userUpdate.LastName = user.LastName;
+                        userUpdate.EmailID = user.EmailID;
+                        userUpdate.ModifiedDate = DateTime.Now;
+
+                        _Context.Entry(userUpdate).State = System.Data.Entity.EntityState.Modified;
+                        _Context.SaveChanges();
+
+                        CreateDirectory(currentuser);
+
+                        //UserProfilePicturePath
+                        string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(user.UserProfilePicturePath.FileName);
+                        string userProfilePicturePathExtension = Path.GetExtension(user.UserProfilePicturePath.FileName);
+                        userProfilePicturePathFileName = userProfilePicturePathFileName + DateTime.Now.ToString("yymmssff") + userProfilePicturePathExtension;
+                        user.ProfilePicture = "~/Members/" + currentuser + "/" + userProfilePicturePathFileName;
+                        userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Members/" + currentuser + "/"), userProfilePicturePathFileName);
+                        user.UserProfilePicturePath.SaveAs(userProfilePicturePathFileName);
+
+                        detailsUpdate.DOB = user.DOB;
+                        detailsUpdate.Gender = user.Gender;
+                        detailsUpdate.PhoneNumberCountryCode = user.PhoneNumberCountryCode;
+                        detailsUpdate.PhoneNumber = user.PhoneNumber;
+                        detailsUpdate.ProfilePicture = user.ProfilePicture;
+                        detailsUpdate.AddressLine1 = user.AddressLine1;
+                        detailsUpdate.AddressLine2 = user.AddressLine2;
+                        detailsUpdate.City = user.City;
+                        detailsUpdate.State = user.State;
+                        detailsUpdate.ZipCode = user.ZipCode;
+                        detailsUpdate.Country = user.Country;
+                        detailsUpdate.College = user.College;
+                        detailsUpdate.University = user.University;
+                        detailsUpdate.ModifiedBy = currentuser;
+                        detailsUpdate.ModifiedDate = DateTime.Now;
+
+                        _Context.Entry(detailsUpdate).State = System.Data.Entity.EntityState.Modified;
+                        _Context.SaveChanges();
+                        var id = detailsUpdate.UserProfileID;
+                        if (id > 0)
+                        {
+                            ModelState.Clear();
+                            ViewBag.message = "Your Profile Updated Successfully.";
+                        }
+                        //return RedirectToAction("UserProfile");
+                    }
+                    else
+                    {
+                        //UserProfilePicturePath
+                        string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(user.UserProfilePicturePath.FileName);
+                        string userProfilePicturePathExtension = Path.GetExtension(user.UserProfilePicturePath.FileName);
+                        userProfilePicturePathFileName = userProfilePicturePathFileName + DateTime.Now.ToString("yymmssff") + userProfilePicturePathExtension;
+                        user.ProfilePicture = "~/Members/" + currentuser + "/" + userProfilePicturePathFileName;
+                        userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Members/" + currentuser + "/"), userProfilePicturePathFileName);
+                        user.UserProfilePicturePath.SaveAs(userProfilePicturePathFileName);
+
+                        // create new details
+                        UserProfile userProfile = new UserProfile()
+                        {
+                            UserID = currentuser,
+                            DOB = user.DOB,
+                            Gender = user.Gender,
+                            PhoneNumberCountryCode = user.PhoneNumberCountryCode,
+                            PhoneNumber = user.PhoneNumber,
+                            ProfilePicture = user.ProfilePicture,
+                            AddressLine1 = user.AddressLine1,
+                            AddressLine2 = user.AddressLine2,
+                            City = user.City,
+                            State = user.State,
+                            ZipCode = user.ZipCode,
+                            Country = user.Country,
+                            University = user.University,
+                            College = user.College,
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = currentuser,
+                            ModifiedDate = DateTime.Now,
+                            ModifiedBy = currentuser
+                        };
+
+                        _Context.UserProfile.Add(userProfile);
+
+                        CreateDirectory(currentuser);
+
+                        _Context.SaveChanges();
+                        var id = userProfile.UserProfileID;
+                        //return RedirectToAction("UserProfile");
+                        if (id > 0)
+                        {
+                            ModelState.Clear();
+                            ViewBag.message = "Your Profile Updated Successfully.";
+                        }
+                    }
+                }
+
+
+
+                var GenderList = gender;
+                ViewBag.GenderList = new SelectList(GenderList, "ReferenceDataID", "Value");
+
+                var CountryList = country;
+                ViewBag.CountryList = new SelectList(CountryList, "CountriesID", "Name");
+
+                var CountryCodeList = country;
+                ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
+            }
+
+            return View();
+        }
+
+        #endregion User Profile
 
         #region Mail Send
         public static void SendEmail(MailMessage mail)
@@ -285,6 +504,72 @@ namespace NotesMarketPlace.Controllers
         }
 
         #endregion ForgotPassword
+
+        #region Change Password
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                if (ModelState.IsValid)
+                {
+                    // get current user
+                    var currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
+
+                    // old password not match
+                    if (!currentUser.Password.Equals(model.OldPassword))
+                    {
+                        TempData["Oldpwd"] = "1";
+                        return View();
+                    }
+
+                    // new pwd & conf-pwd not match
+                    if (!model.NewPassword.Equals(model.ConfirmPassword))
+                    {
+                        return View();
+                    }
+
+                    // old pwd & new pwd same
+                    if (currentUser.Password == model.ConfirmPassword)
+                    {
+                        TempData["OldpwdSame"] = "1";
+                        return View();
+                    }
+
+                    // update password
+                    currentUser.Password = model.ConfirmPassword;
+                    currentUser.ModifiedDate = DateTime.Now;
+                    context.SaveChanges();
+
+                    FormsAuthentication.SignOut();
+
+                    return RedirectToAction("Login", "Account");
+                }
+            }
+            return View();
+        }
+        #endregion Change Password
+
+        public string CreateDirectory(int userid)
+        {
+            string path = @"E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\Members\" + userid;
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                return path;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         public ActionResult LogOut()
         {

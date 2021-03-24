@@ -33,6 +33,39 @@ namespace NotesMarketPlace.DB.DBOperations
             }
         }
 
+        //public int UserProfile(UserProfileModel model)
+        //{
+        //    using (var context = new NotesMarketPlaceEntities())
+        //    {
+        //        UserProfile user = new UserProfile()
+        //        {
+        //            UserID = model.UserID,
+        //            DOB = model.DOB,
+        //            Gender = model.Gender,
+        //            SecondaryEmailAddress = model.SecondaryEmailAddress,
+        //            PhoneNumberCountryCode = model.PhoneNumberCountryCode,
+        //            PhoneNumber = model.PhoneNumber,
+        //            ProfilePicture = model.ProfilePicture,
+        //            AddressLine1 = model.AddressLine1,
+        //            AddressLine2 = model.AddressLine2,
+        //            City = model.City,
+        //            State = model.State,
+        //            ZipCode = model.ZipCode,
+        //            Country = model.Country,
+        //            University = model.University,
+        //            College = model.College,
+        //            CreatedDate = DateTime.Now,
+        //            CreatedBy = model.UserID,
+        //            ModifiedDate = DateTime.Now,
+        //            ModifiedBy = model.UserID
+        //        };
+
+        //        context.UserProfile.Add(user);
+        //        context.SaveChanges();
+        //        return user.UserProfileID;
+        //    }
+        //}
+
         public List<SignUpModel> GetAllUser()
         {
             using (var context = new NotesMarketPlaceEntities())

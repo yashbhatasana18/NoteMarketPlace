@@ -40,14 +40,14 @@
 
                 @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
                 {
-                    @Html.HiddenFor(model => model.EmailID)
+                    //Html.HiddenFor(model => model.EmailID)
                     @Html.AntiForgeryToken()
                     <div class="heading">
                         <h4 class="text-center">Login</h4>
-                        <p class="text-center">Enter your email address and passwod to login</p>
+                        <p class="text-center">Enter your email address and password to login</p>
                     </div>
 
-                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    //@Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
                     <div class="form-group m-b-30">
                         @Html.LabelFor(model => model.EmailID, "Email")

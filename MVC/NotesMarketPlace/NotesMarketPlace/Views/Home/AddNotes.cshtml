@@ -180,7 +180,7 @@
                         <div id="response2" class="hidden">
                             <div id="messages2"></div>
                         </div>
-                        @Html.ValidationMessageFor(model => model.FilePath, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.NoteUploadFilePath, "", new { @class = "text-danger" })
                     </label>
                 </div>
 
@@ -197,6 +197,7 @@
                 <div class="form-group mb-0 p-0">
                     @Html.LabelFor(model => model.Description, "Description *", new { @for = "description" })
                     @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "Enter your description", id = "description" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>

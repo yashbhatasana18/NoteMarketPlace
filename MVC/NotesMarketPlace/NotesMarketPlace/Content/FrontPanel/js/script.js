@@ -38,3 +38,16 @@ $(function () {
         $("#mobile-nav-open-btn").css("display", "");
     });
 });
+
+/* =======================================================================
+                Change Password
+======================================================================= */
+$(".toggle-password").click(function () {
+
+    var input = $($(this).attr("toggle"));
+    if (input.attr("type") == "password") {
+        input.attr("type", "text");
+    } else {
+        input.attr("type", "password");
+    }
+});

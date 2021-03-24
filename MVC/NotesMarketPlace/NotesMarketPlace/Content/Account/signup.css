@@ -7,7 +7,7 @@
 body,
 html {
     height: 100%;
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .m-b-20 {
@@ -101,7 +101,7 @@ html {
 
 
 .form-group input {
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
@@ -111,7 +111,7 @@ html {
 }
 
 .form-wrap .form-group input {
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
@@ -121,21 +121,21 @@ html {
 }
 
     .form-wrap .form-group input[type="date"] {
-        font-family: Open Sans !important;
+        font-family: 'Open Sans', sans-serif !important;
         font-weight: 400 !important;
         color: #8a8a8a;
     }
 
 .form-group .input-group .custom-select option {
     font-weight: 400 !important;
-    font-family: Open Sans !important;
+    font-family: 'Open Sans', sans-serif !important;
     font-size: 16px !important;
     line-height: 20px !important;
     color: #8a8a8a !important;
 }
 
 .form-group .input-group select {
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
@@ -145,7 +145,7 @@ html {
 }
 
 .form-group label span {
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
@@ -170,7 +170,7 @@ html {
 
 .login-checkbox label {
     padding-left: 20px;
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
@@ -180,7 +180,7 @@ html {
 }
 
 #not-account {
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
@@ -229,7 +229,7 @@ p {
 }
 
 .signup-heading p {
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     margin-bottom: 25px;
     font-size: 15px;
     font-weight: 400;
@@ -238,7 +238,7 @@ p {
 }
 
 #signup-successfully p {
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     font-weight: 300;
     line-height: 20px;
@@ -250,13 +250,13 @@ p {
     background: #6255a5;
     border-radius: 3px;
     text-decoration-color: #fff;
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 18px;
     line-height: 22px;
 }
 
 input {
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
@@ -270,7 +270,7 @@ label {
 
 #error-password span {
     margin-bottom: 20px;
-    font-family: Open Sans;
+    font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     font-weight: 300;
     line-height: 20px;
