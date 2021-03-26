@@ -51,6 +51,7 @@
     <Compile Include="ContactUsModel.cs" />
     <Compile Include="CountriesModel.cs" />
     <Compile Include="DashboardModel.cs" />
+    <Compile Include="DownloadsModel.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
     <Compile Include="LoginModel.cs" />
     <Compile Include="NoteCategoriesModel.cs" />
@@ -60,6 +61,8 @@
     <Compile Include="SearchNotesModel.cs" />
     <Compile Include="SellerNotesAttachements.cs" />
     <Compile Include="SellerNotesModel.cs" />
+    <Compile Include="SellerNotesReportedIssuesModel.cs" />
+    <Compile Include="SellerNotesReviewsModel.cs" />
     <Compile Include="SignUpModel.cs" />
     <Compile Include="SystemConfigurationsModel.cs" />
     <Compile Include="UserProfileModel.cs" />

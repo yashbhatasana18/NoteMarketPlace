@@ -1,11 +1,73 @@
 ﻿
 @model IEnumerable<NotesMarketPlace.Models.SearchNotesModel>
-@using NotesMarketPlace.Models
 
 @{
     ViewBag.Title = "SearchNotes";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
+
+<style>
+    .filter-search .form-control {
+        padding-left: 2.375rem;
+        margin-right: 10px;
+    }
+
+    .filter-search .form-control-feedback {
+        display: block;
+        width: 1.375rem;
+        height: 1.375rem;
+        line-height: 1.375rem;
+        text-align: center;
+        pointer-events: none;
+        color: #aaa;
+    }
+
+    .filter-search img {
+        position: absolute;
+        top: 7px;
+        left: 9px;
+    }
+
+    /*    ratings     */
+
+    .rate {
+        float: left;
+        padding: 0 1px;
+    }
+
+        .rate:not(:checked) > input {
+            position: absolute;
+            top: -9999px;
+        }
+
+        .rate:not(:checked) > label {
+            float: right;
+            width: 1em;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 25px;
+            color: #ccc;
+        }
+
+            .rate:not(:checked) > label:before {
+                content: '★ ';
+            }
+
+        .rate > input:checked ~ label {
+            color: #ffc700;
+        }
+
+    .ratings p {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #333333;
+        position: relative;
+        top: 8px;
+        left: 5px;
+    }
+</style>
 
 <!-- Head -->
 <section class="head">
@@ -37,32 +99,32 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="filter-search">
-                            <img src="~/Content/images/search-icon.png" alt="search">
-                            <input type="search" id="Search" class="form-control filters" placeholder="Search notes here...">
+                            <img src="~/Content/images/search-icon.png" alt="search" class="form-control-feedback">
+                            <input id="search" class="form-control input-search" placeholder="Search notes here..." onkeyup=" SearchNotes()">
                         </div>
                     </div>
                 </div>
             }
             <div class="row">
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("Type", new SelectList(ViewBag.TypeList, "NoteTypesID", "Name"), "Select Type", new { @class = "form-control" })
+                    @Html.DropDownList("Type", new SelectList(ViewBag.TypeList, "NoteTypesID", "Name"), "Select Type", new { @class = "form-control", onchange = "myFunc(this)" })
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("Category", new SelectList(ViewBag.CategoryList, "NoteCategoriesID", "Name"), "Select Category", new { @class = "form-control" })
+                    @Html.DropDownList("Category", new SelectList(ViewBag.CategoryList, "NoteCategoriesID", "Name"), "Select Category", new { @class = "form-control", onchange = "myFunc(this)" })
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("University", new SelectList(ViewBag.University), "Select University", new { @class = "form-control" })
+                    @Html.DropDownList("University", new SelectList(ViewBag.University), "Select University", new { @class = "form-control", onchange = "myFunc(this)" })
 
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("Course", new SelectList(ViewBag.Course), "Select Course", new { @class = "form-control" })
+                    @Html.DropDownList("Course", new SelectList(ViewBag.Course), "Select Course", new { @class = "form-control", onchange = "myFunc(this)" })
 
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("Country", new SelectList(ViewBag.Country, "CountriesID", "Name"), "Select Country", new { @class = "form-control" })
+                    @Html.DropDownList("Country", new SelectList(ViewBag.Country, "CountriesID", "Name"), "Select Country", new { @class = "form-control", onchange = "myFunc(this)" })
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    <select class="form-control" id="Rating">
+                    <select class="form-control" id="Rating" onchange="myFunc(this)">
                         <option value="">Select rating</option>
                         <option value="1">1 +</option>
                         <option value="2">2 +</option>
@@ -75,17 +137,17 @@
         </div>
     </div><div class="row">
         <div class="col-md-12">
-            <h1 class="title">Total 18 notes</h1>
+            <h1 class="title">Total @Model.Count() notes</h1>
         </div>
     </div><div class="row row-cols-1 row-cols-md-3">
         @foreach (var item in Model)
         {
-            <div class="col mb-4">
+            <div class="col mb-4 note-title">
                 <div class="card">
-                    <img src="~/Content/images/search2.png" class="card-img-top" alt="note-image">
+                    <img src="@Url.Content(item.DisplayPicture)" class="card-img-top" alt="note-image">
                     <div class="card-body">
-                        <div class="card-title">
-                            <a href="NoteDetails.html" style="color: #6655a5">
+                        <div class="card-title ">
+                            <a href="NoteDetails.html" style="color: #6655a5" data-toggle="tooltip" data-placement="bottom" data-original-title="Title">
                                 @Html.DisplayFor(modelItem => item.Title)
                             </a>
                         </div>
@@ -94,7 +156,7 @@
                                 <span class="icon-images">
                                     <img src="~/Content/images/university.png" alt="images">
                                 </span>
-                                <span class="span-content">
+                                <span class="span-content" data-toggle="tooltip" data-placement="bottom" data-original-title="University">
                                     @Html.DisplayFor(modelItem => item.UniversityName)
                                 </span>
                             </div>
@@ -102,7 +164,7 @@
                                 <span class="icon-images">
                                     <img src="~/Content/images/pages.png" alt="images">
                                 </span>
-                                <span class="span-content">
+                                <span class="span-content" data-toggle="tooltip" data-placement="bottom" data-original-title="Pages">
                                     @Html.DisplayFor(modelItem => item.NumberOfPages)
                                 </span>
                             </div>
@@ -110,8 +172,8 @@
                                 <span class="icon-images">
                                     <img src="~/Content/images/date.png" alt="images">
                                 </span>
-                                <span class="span-content">
-                                    @Html.DisplayFor(modelItem => item.PublishedDate)
+                                <span class="span-content" data-toggle="tooltip" data-placement="bottom" data-original-title="Published Date">
+                                    @item.PublishedDate.Value.ToString("dd/MM/yyyy")
                                 </span>
                             </div>
                             <div class="card-content">
@@ -119,536 +181,45 @@
                                     <img src="~/Content/images/flag.png" alt="images">
                                 </span>
                                 <span class="span-content text-danger">
-                                    5 Users marked this note as inappropriate
+                                    @(item.TotalSpams) Users marked this note as inappropriate
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-transparent">
+                    <div class="card-footer bg-transparent ratings">
                         <div class="rate">
-                            @*@{ for (int j = 5; j > 0; j--)
-                                    {
-                                        if (j == item.Rating)
-                                        {
-                                            <input type="radio" name="bookrate @Note.Id" value="@j" checked /><label></label> }
-                                        else
-                                        {
-                                            <input type="radio" name="bookrate @Note.Id" value="@j" /><label></label> }
 
+                            @{
+                                for (int j = 5; j > 0; j--)
+                                {
+                                    if (j == item.Reviews)
+                                    {
+                                        <input type="radio" name="bookrate @item.SellerNotesID" value="@j" checked /><label></label>
                                     }
-                                }*@
-                            <input type="radio" id="star5.1" name="rate" value="5" />
-                            <label for="star5.1" title="text">5 stars</label>
-                            <input type="radio" id="star4.1" name="rate" value="4" />
-                            <label for="star4.1" title="text">4 stars</label>
-                            <input type="radio" id="star3.1" name="rate" value="3" />
-                            <label for="star3.1" title="text">3 stars</label>
-                            <input type="radio" id="star2.1" name="rate" value="2" />
-                            <label for="star2.1" title="text">2 stars</label>
-                            <input type="radio" id="star1.1" name="rate" value="1" />
-                            <label for="star1.1" title="text">1 star</label>
+                                    else
+                                    {
+                                        <input type="radio" name="bookrate @item.SellerNotesID" value="@j" /><label></label>
+                                    }
+
+                                }
+                            }
+
+                            @*<input type="radio" id="star5.1" name="" value="5" />
+                                <label for="star5.1" title="text">5 stars</label>
+                                <input type="radio" id="star4.1" name="rate" value="4" />
+                                <label for="star4.1" title="text">4 stars</label>
+                                <input type="radio" id="star3.1" name="rate" value="3" />
+                                <label for="star3.1" title="text">3 stars</label>
+                                <input type="radio" id="star2.1" name="rate" value="2" />
+                                <label for="star2.1" title="text">2 stars</label>
+                                <input type="radio" id="star1.1" name="rate" value="1" />
+                                <label for="star1.1" title="text">1 star</label>*@
                         </div>
-                        100 reviews
+                        @(item.TotalReviews) reviews
                     </div>
                 </div>
             </div>
         }
-        @*<div class="col mb-4">
-                <div class="card">
-                    <img src="~/Content/images/search2.png" class="card-img-top" alt="note-image">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <a href="NoteDetails.html" style="color: #6655a5">
-                                Computer Operating System - Final Exam Book
-                                With Paper Solution
-                            </a>
-                        </div>
-                        <div class="card-text">
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/university.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    University of California, US
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/pages.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    204 Pages
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/date.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    Thu, Nov 26 2020
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/flag.png" alt="images">
-                                </span>
-                                <span class="span-content text-danger">
-                                    5 Users marked this note as inappropriate
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="rate">
-                            <input type="radio" id="star5.1" name="rate" value="5" />
-                            <label for="star5.1" title="text">5 stars</label>
-                            <input type="radio" id="star4.1" name="rate" value="4" />
-                            <label for="star4.1" title="text">4 stars</label>
-                            <input type="radio" id="star3.1" name="rate" value="3" />
-                            <label for="star3.1" title="text">3 stars</label>
-                            <input type="radio" id="star2.1" name="rate" value="2" />
-                            <label for="star2.1" title="text">2 stars</label>
-                            <input type="radio" id="star1.1" name="rate" value="1" />
-                            <label for="star1.1" title="text">1 star</label>
-                        </div>
-                        100 reviews
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-4">
-                <div class="card">
-                    <img src="~/Content/images/search3.png" class="card-img-top" alt="note-image">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <a href="NoteDetails.html" style="color: #6655a5">
-                                Computer Operating System - Final Exam Book
-                                With Paper Solution
-                            </a>
-                        </div>
-                        <div class="card-text">
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/university.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    University of California, US
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/pages.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    204 Pages
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/date.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    Thu, Nov 26 2020
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/flag.png" alt="images">
-                                </span>
-                                <span class="span-content text-danger">
-                                    5 Users marked this note as inappropriate
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="rate">
-                            <input type="radio" id="star5.2" name="rate" value="5" />
-                            <label for="star5.2" title="text">5 stars</label>
-                            <input type="radio" id="star4.2" name="rate" value="4" />
-                            <label for="star4.2" title="text">4 stars</label>
-                            <input type="radio" id="star3.2" name="rate" value="3" />
-                            <label for="star3.2" title="text">3 stars</label>
-                            <input type="radio" id="star2.2" name="rate" value="2" />
-                            <label for="star2.2" title="text">2 stars</label>
-                            <input type="radio" id="star1.2" name="rate" value="1" />
-                            <label for="star1.2" title="text">1 star</label>
-                        </div>
-                        100 reviews
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-4">
-                <div class="card">
-                    <img src="~/Content/images/search4.png" class="card-img-top" alt="note-image">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <a href="NoteDetails.html" style="color: #6655a5">
-                                Computer Operating System - Final Exam Book
-                                With Paper Solution
-                            </a>
-                        </div>
-                        <div class="card-text">
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/university.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    University of California, US
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/pages.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    204 Pages
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/date.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    Thu, Nov 26 2020
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/flag.png" alt="images">
-                                </span>
-                                <span class="span-content text-danger">
-                                    5 Users marked this note as inappropriate
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="rate">
-                            <input type="radio" id="star5.3" name="rate" value="5" />
-                            <label for="star5.3" title="text">5 stars</label>
-                            <input type="radio" id="star4.3" name="rate" value="4" />
-                            <label for="star4.3" title="text">4 stars</label>
-                            <input type="radio" id="star3.3" name="rate" value="3" />
-                            <label for="star3.3" title="text">3 stars</label>
-                            <input type="radio" id="star2.3" name="rate" value="2" />
-                            <label for="star2.3" title="text">2 stars</label>
-                            <input type="radio" id="star1.3" name="rate" value="1" />
-                            <label for="star1.3" title="text">1 star</label>
-                        </div>
-                        100 reviews
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-4">
-                <div class="card">
-                    <img src="~/Content/images/search5.png" class="card-img-top" alt="note-image">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <a href="NoteDetails.html" style="color: #6655a5">
-                                Computer Operating System - Final Exam Book
-                                With Paper Solution
-                            </a>
-                        </div>
-                        <div class="card-text">
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/university.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    University of California, US
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/pages.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    204 Pages
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/date.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    Thu, Nov 26 2020
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/flag.png" alt="images">
-                                </span>
-                                <span class="span-content text-danger">
-                                    5 Users marked this note as inappropriate
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="rate">
-                            <input type="radio" id="star5.4" name="rate" value="5" />
-                            <label for="star5.4" title="text">5 stars</label>
-                            <input type="radio" id="star4.4" name="rate" value="4" />
-                            <label for="star4.4" title="text">4 stars</label>
-                            <input type="radio" id="star3.4" name="rate" value="3" />
-                            <label for="star3.4" title="text">3 stars</label>
-                            <input type="radio" id="star2.4" name="rate" value="2" />
-                            <label for="star2.4" title="text">2 stars</label>
-                            <input type="radio" id="star1.4" name="rate" value="1" />
-                            <label for="star1.4" title="text">1 star</label>
-                        </div>
-                        100 reviews
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-4">
-                <div class="card">
-                    <img src="~/Content/images/search6.png" class="card-img-top" alt="note-image">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <a href="NoteDetails.html" style="color: #6655a5">
-                                Computer Operating System - Final Exam Book
-                                With Paper Solution
-                            </a>
-                        </div>
-                        <div class="card-text">
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/university.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    University of California, US
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/pages.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    204 Pages
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/date.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    Thu, Nov 26 2020
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/flag.png" alt="images">
-                                </span>
-                                <span class="span-content text-danger">
-                                    5 Users marked this note as inappropriate
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="rate">
-                            <input type="radio" id="star5.5" name="rate" value="5" />
-                            <label for="star5.5" title="text">5 stars</label>
-                            <input type="radio" id="star4.5" name="rate" value="4" />
-                            <label for="star4.5" title="text">4 stars</label>
-                            <input type="radio" id="star3.5" name="rate" value="3" />
-                            <label for="star3.5" title="text">3 stars</label>
-                            <input type="radio" id="star2.5" name="rate" value="2" />
-                            <label for="star2.5" title="text">2 stars</label>
-                            <input type="radio" id="star1.5" name="rate" value="1" />
-                            <label for="star1.5" title="text">1 star</label>
-                        </div>
-                        100 reviews
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-4">
-                <div class="card">
-                    <img src="~/Content/images/search1.png" class="card-img-top" alt="note-image">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <a href="NoteDetails.html" style="color: #6655a5">
-                                Computer Operating System - Final Exam Book
-                                With Paper Solution
-                            </a>
-                        </div>
-                        <div class="card-text">
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/university.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    University of California, US
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/pages.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    204 Pages
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/date.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    Thu, Nov 26 2020
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/flag.png" alt="images">
-                                </span>
-                                <span class="span-content text-danger">
-                                    5 Users marked this note as inappropriate
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="rate">
-                            <input type="radio" id="star5.6" name="rate" value="5" />
-                            <label for="star5.6" title="text">5 stars</label>
-                            <input type="radio" id="star4.6" name="rate" value="4" />
-                            <label for="star4.6" title="text">4 stars</label>
-                            <input type="radio" id="star3.6" name="rate" value="3" />
-                            <label for="star3.6" title="text">3 stars</label>
-                            <input type="radio" id="star2.6" name="rate" value="2" />
-                            <label for="star2.6" title="text">2 stars</label>
-                            <input type="radio" id="star1.6" name="rate" value="1" />
-                            <label for="star1.6" title="text">1 star</label>
-                        </div>
-                        100 reviews
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-4">
-                <div class="card">
-                    <img src="~/Content/images/search2.png" class="card-img-top" alt="note-image">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <a href="NoteDetails.html" style="color: #6655a5">
-                                Computer Operating System - Final Exam Book
-                                With Paper Solution
-                            </a>
-                        </div>
-                        <div class="card-text">
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/university.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    University of California, US
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/pages.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    204 Pages
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/date.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    Thu, Nov 26 2020
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/flag.png" alt="images">
-                                </span>
-                                <span class="span-content text-danger">
-                                    5 Users marked this note as inappropriate
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="rate">
-                            <input type="radio" id="star5.7" name="rate" value="5" />
-                            <label for="star5.7" title="text">5 stars</label>
-                            <input type="radio" id="star4.7" name="rate" value="4" />
-                            <label for="star4.7" title="text">4 stars</label>
-                            <input type="radio" id="star3.7" name="rate" value="3" />
-                            <label for="star3.7" title="text">3 stars</label>
-                            <input type="radio" id="star2.7" name="rate" value="2" />
-                            <label for="star2.7" title="text">2 stars</label>
-                            <input type="radio" id="star1.7" name="rate" value="1" />
-                            <label for="star1.7" title="text">1 star</label>
-                        </div>
-                        100 reviews
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-4">
-                <div class="card">
-                    <img src="~/Content/images/search3.png" class="card-img-top" alt="note-image">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <a href="NoteDetails.html" style="color: #6655a5">
-                                Computer Operating System - Final Exam Book
-                                With Paper Solution
-                            </a>
-                        </div>
-                        <div class="card-text">
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/university.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    University of California, US
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/pages.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    204 Pages
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/date.png" alt="images">
-                                </span>
-                                <span class="span-content">
-                                    Thu, Nov 26 2020
-                                </span>
-                            </div>
-                            <div class="card-content">
-                                <span class="icon-images">
-                                    <img src="~/Content/images/flag.png" alt="images">
-                                </span>
-                                <span class="span-content text-danger">
-                                    5 Users marked this note as inappropriate
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                        <div class="rate">
-                            <input type="radio" id="star5.8" name="rate" value="5" />
-                            <label for="star5.8" title="text">5 stars</label>
-                            <input type="radio" id="star4.8" name="rate" value="4" />
-                            <label for="star4.8" title="text">4 stars</label>
-                            <input type="radio" id="star3.8" name="rate" value="3" />
-                            <label for="star3.8" title="text">3 stars</label>
-                            <input type="radio" id="star2.8" name="rate" value="2" />
-                            <label for="star2.8" title="text">2 stars</label>
-                            <input type="radio" id="star1.8" name="rate" value="1" />
-                            <label for="star1.8" title="text">1 star</label>
-                        </div>
-                        100 reviews
-                    </div>
-                </div>
-            </div>*@
     </div>
 
     <div class="row text-center">
@@ -675,3 +246,81 @@
 
 </section>
 <!-- End Search   -->
+
+<script>
+    var type, category, university, course, country, rating;
+
+    function myFunc(obj) {
+
+        var data = {};
+
+        if (obj.id == "Type") {
+            type = obj.value;
+        }
+        if (obj.id == "Category") {
+            category = obj.value;
+        }
+        if (obj.id == "University") {
+            university = obj.value;
+        }
+        if (obj.id == "Course") {
+            course = obj.value;
+        }
+        if (obj.id == "Country") {
+            country = obj.value;
+        }
+        if (obj.id == "Rating") {
+            rating = obj.value;
+        }
+
+
+        if (type != null) {
+            data.Type = type;
+        }
+        if (category != null) {
+            data.Category = category;
+        }
+        if (university != null) {
+            data.University = university;
+        }
+        if (course != null) {
+            data.Course = course;
+        }
+        if (country != null) {
+            data.Country = country;
+        }
+        if (rating != null) {
+            data.Rating = rating;
+        }
+
+        console.log(data);
+
+        $.ajax({
+            method: 'GET',
+            url: '',
+            data: data,
+            success: function (data) {
+                document.body.innerHTML = data;
+            },
+            error: function () {
+                alert("Try Again");
+            }
+        });
+    }
+
+    //function SearchNotes() {
+    //    let input = document.getElementById('search').value
+    //    input = input.toLowerCase();
+    //    let x = document.getElementsByClassName('note-title');
+
+    //    for (i = 0; i < x.length; i++) {
+    //        if (!x[i].innerHTML.toLowerCase().includes(input)) {
+    //            x[i].style.display = "none";
+    //        }
+    //        else {
+    //            x[i].style.display = "list-item";
+    //        }
+    //    }
+    //}
+
+</script>

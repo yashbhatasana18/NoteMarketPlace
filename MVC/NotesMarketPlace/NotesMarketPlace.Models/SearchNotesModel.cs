@@ -43,5 +43,11 @@ namespace NotesMarketPlace.Models
         public decimal? SellingPrice { get; set; }
         public string NotesPreview { get; set; }
 
+        public decimal? Reviews { get; set; }
+        public int TotalReviews { get; set; }
+        public int TotalSpams { get; set; }
+
+        public SellerNotesReviewsModel SellerNotesReviewsModel { get; set; }
+
     }
 }

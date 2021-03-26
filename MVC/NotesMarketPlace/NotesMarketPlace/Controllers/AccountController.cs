@@ -165,6 +165,11 @@ namespace NotesMarketPlace.Controllers
                     var CountryCodeList = country;
                     ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
 
+                    if (UserProfile.ProfilePicture == null)
+                    {
+                        UserProfile.ProfilePicture = "~/Content/images/upload-file.png";
+                    }
+
                     //UserProfile.genderModel = gender.Select(x => new ReferenceDataModel { ReferenceDataID = x.ReferenceDataID, Value = x.Value }).ToList();
                     //UserProfile.countryModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, Name = x.Name }).ToList();
                     //UserProfile.CountryCodeModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, CountryCode = x.CountryCode }).ToList();
@@ -186,6 +191,11 @@ namespace NotesMarketPlace.Controllers
 
                     var CountryCodeList = country;
                     ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
+
+                    if (UserProfile.ProfilePicture == null)
+                    {
+                        UserProfile.ProfilePicture = "~/Content/images/upload-file.png";
+                    }
 
                     //UserProfile.genderModel = gender.Select(x => new ReferenceDataModel { ReferenceDataID = x.ReferenceDataID, Value = x.Value }).ToList();
                     //UserProfile.countryModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, Name = x.Name }).ToList();
@@ -233,13 +243,21 @@ namespace NotesMarketPlace.Controllers
 
                         CreateDirectory(currentuser);
 
-                        //UserProfilePicturePath
-                        string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(user.UserProfilePicturePath.FileName);
-                        string userProfilePicturePathExtension = Path.GetExtension(user.UserProfilePicturePath.FileName);
-                        userProfilePicturePathFileName = userProfilePicturePathFileName + DateTime.Now.ToString("yymmssff") + userProfilePicturePathExtension;
-                        user.ProfilePicture = "~/Members/" + currentuser + "/" + userProfilePicturePathFileName;
-                        userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Members/" + currentuser + "/"), userProfilePicturePathFileName);
-                        user.UserProfilePicturePath.SaveAs(userProfilePicturePathFileName);
+                        if (user.UserProfilePicturePath != null)
+                        {
+                            //UserProfilePicturePath
+                            string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(user.UserProfilePicturePath.FileName);
+                            string userProfilePicturePathExtension = Path.GetExtension(user.UserProfilePicturePath.FileName);
+                            userProfilePicturePathFileName = userProfilePicturePathFileName + DateTime.Now.ToString("yymmssff") + userProfilePicturePathExtension;
+                            user.ProfilePicture = "~/Members/" + currentuser + "/" + userProfilePicturePathFileName;
+                            userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Members/" + currentuser + "/"), userProfilePicturePathFileName);
+                            user.UserProfilePicturePath.SaveAs(userProfilePicturePathFileName);
+                        }
+
+                        if (user.ProfilePicture == null || user.ProfilePicture == "~/Content/images/upload-file.png")
+                        {
+                            user.ProfilePicture = null;
+                        }
 
                         detailsUpdate.DOB = user.DOB;
                         detailsUpdate.Gender = user.Gender;
@@ -262,6 +280,7 @@ namespace NotesMarketPlace.Controllers
                         var id = detailsUpdate.UserProfileID;
                         if (id > 0)
                         {
+                            //user.ProfilePicture = "~/Content/images/upload-file.png";
                             ModelState.Clear();
                             ViewBag.message = "Your Profile Updated Successfully.";
                         }
@@ -269,13 +288,21 @@ namespace NotesMarketPlace.Controllers
                     }
                     else
                     {
-                        //UserProfilePicturePath
-                        string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(user.UserProfilePicturePath.FileName);
-                        string userProfilePicturePathExtension = Path.GetExtension(user.UserProfilePicturePath.FileName);
-                        userProfilePicturePathFileName = userProfilePicturePathFileName + DateTime.Now.ToString("yymmssff") + userProfilePicturePathExtension;
-                        user.ProfilePicture = "~/Members/" + currentuser + "/" + userProfilePicturePathFileName;
-                        userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Members/" + currentuser + "/"), userProfilePicturePathFileName);
-                        user.UserProfilePicturePath.SaveAs(userProfilePicturePathFileName);
+                        if (user.UserProfilePicturePath != null)
+                        {
+                            //UserProfilePicturePath
+                            string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(user.UserProfilePicturePath.FileName);
+                            string userProfilePicturePathExtension = Path.GetExtension(user.UserProfilePicturePath.FileName);
+                            userProfilePicturePathFileName = userProfilePicturePathFileName + DateTime.Now.ToString("yymmssff") + userProfilePicturePathExtension;
+                            user.ProfilePicture = "~/Members/" + currentuser + "/" + userProfilePicturePathFileName;
+                            userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Members/" + currentuser + "/"), userProfilePicturePathFileName);
+                            user.UserProfilePicturePath.SaveAs(userProfilePicturePathFileName);
+                        }
+
+                        if (user.ProfilePicture == null || user.ProfilePicture == "~/Content/images/upload-file.png")
+                        {
+                            user.ProfilePicture = null;
+                        }
 
                         // create new details
                         UserProfile userProfile = new UserProfile()
@@ -310,12 +337,13 @@ namespace NotesMarketPlace.Controllers
                         if (id > 0)
                         {
                             ModelState.Clear();
+                            //userProfile.ProfilePicture = "~/Content/images/upload-file.png";
                             ViewBag.message = "Your Profile Updated Successfully.";
                         }
                     }
                 }
 
-
+                //user.ProfilePicture = "~/Content/images/upload-file.png";
 
                 var GenderList = gender;
                 ViewBag.GenderList = new SelectList(GenderList, "ReferenceDataID", "Value");
