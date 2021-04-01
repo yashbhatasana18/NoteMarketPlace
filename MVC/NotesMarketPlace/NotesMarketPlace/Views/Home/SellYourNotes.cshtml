@@ -1,9 +1,43 @@
-﻿@model IEnumerable<NotesMarketPlace.Models.SellerNotesModel>
+﻿@*@model IEnumerable<NotesMarketPlace.Models.SellerNotesModel>*@
 
 @{
     ViewBag.Title = "SellYourNotes";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
+
+<style>
+        /* =======================================================================
+                                Card
+    ======================================================================= */
+        .card {
+            height: 151px;
+            border: 1px solid #d1d1d1;
+        }
+
+        .card-count {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 34px;
+            color: #6255a5;
+        }
+
+        .my-earning {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 26px;
+            font-weight: 400;
+            line-height: 30px;
+            color: #6255a5;
+        }
+
+        .count-text {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 22px;
+            color: #333333;
+        }
+</style>
 
 <!-- Content -->
 <section id="content">
@@ -15,7 +49,7 @@
             </div>
 
             <div class="col-md-6 col-sm-6 text-right p-0">
-                <a class="btn btn-general" role="button" href="@Url.Action("AddNotes","Home")">Add Note</a>
+                <a class="btn btn-general" role="button" href="@Url.Action("AddNotes", "Home")">Add Note</a>
             </div>
         </div>
 
@@ -32,13 +66,17 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <p class="text-center card-count">100</p>
+                            <h4 class="text-center card-count">
+                                @ViewBag.SoldNotes
+                            </h4>
                             <p class="text-center count-text">Number of Notes Sold</p>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <p class="text-center card-count">$1,00,000</p>
+                            <h4 class="text-center card-count">
+                                $ @ViewBag.Earning
+                            </h4>
                             <p class="text-center count-text">Money Earned</p>
                         </div>
                     </div>
@@ -49,7 +87,9 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
-                                <p class="text-center card-count">38</p>
+                                <h4 class="text-center card-count">
+                                    @ViewBag.DownloadNotes
+                                </h4>
                                 <p class="text-center count-text">My Download</p>
                             </div>
                         </div>
@@ -57,7 +97,9 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
-                                <p class="text-center card-count">12</p>
+                                <h4 class="text-center card-count">
+                                    @ViewBag.RejectedNotes
+                                </h4>
                                 <p class="text-center count-text">My Rejected Notes</p>
                             </div>
                         </div>
@@ -65,7 +107,9 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
-                                <p class="text-center card-count">102</p>
+                                <h4 class="text-center card-count">
+                                    @ViewBag.BuyerRequest
+                                </h4>
                                 <p class="text-center count-text">Buyer Requests</p>
                             </div>
                         </div>
@@ -92,7 +136,6 @@
 
         <div class="row">
             <div class="table-top table-responsive">
-
                 <table class="table ">
                     <thead>
                         <tr>
@@ -108,22 +151,46 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td scope="row">@item.CreatedDate.Value.ToString("dd/MM/yyyy")</td>
-                                <td class="td-blue">@item.Title</td>
-                                <td>@item.CategoryName</td>
-                                <td>@item.StatusValue</td>
-                                <td class="text-center">
-                                    <img src="~/Content/images/edit.png" alt="edit-image">
-                                    <img src="~/Content/images/delete.png" alt="delete-image">
-                                </td>
-                            </tr>
+                        @{
+                            if (ViewBag.ProgressNotes.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="5" style="text-align:center">No Data Available</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in ViewBag.ProgressNotes)
+                                {
+                                    if (item.Status == "Draft")
+                                    {
+                                        <tr>
+                                            <td scope="row">@item.AddedDate</td>
+                                            <td class="td-blue">@item.Title</td>
+                                            <td>@item.Category</td>
+                                            <td>@item.Status</td>
+                                            <td class="text-center">
+                                                <img src="~/Content/images/edit.png" alt="edit-image">
+                                                <img src="~/Content/images/delete.png" alt="delete-image">
+                                            </td>
+                                        </tr>
+                                    }
+                                    {
+                                        <tr>
+                                            <td scope="row">@item.AddedDate</td>
+                                            <td class="td-blue">@item.Title</td>
+                                            <td>@item.Category</td>
+                                            <td>@item.Status</td>
+                                            <td class="text-center">
+                                                <img src="~/Content/images/edit.png" alt="edit-image">
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
                         }
                     </tbody>
                 </table>
-
             </div>
         </div>
 
@@ -150,7 +217,6 @@
                                 </a>
                             </li>
                         }
-
 
                         @for (int i = 1; i <= totalPages; i++)
                         {
@@ -184,11 +250,9 @@
                                 </a>
                             </li>
                         }
-
                     </ul>
                 </div>
             </div>
-
         }
 
 
@@ -214,10 +278,10 @@
                     <thead>
                         <tr>
                             <th scope="col">
-                                @Html.ActionLink("Added Date", "SellYourNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Added Date", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                                @Html.ActionLink("Added Date", "SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Added Date", PageNumber2 = ViewBag.PageNumber2 == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
                             <th scope="col">
-                                @Html.ActionLink("Title", "SellYourNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                                @Html.ActionLink("Title", "SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Title", PageNumber2 = ViewBag.PageNumber2 == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
                             <th scope="col">Category</th>
                             <th scope="col">Sell Type</th>
@@ -226,18 +290,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td scope="row">@item.CreatedDate.Value.ToString("dd/MM/yyyy")</td>
-                                <td class="td-blue">@item.Title</td>
-                                <td>@item.CategoryName</td>
-                                <td>@(item.IsPaid? "Paid" : "Free")</td>
-                                <td>$@item.SellingPrice</td>
-                                <td class="text-center">
-                                    <img src="~/Content/images/eye.png" alt="eye-image">
-                                </td>
-                            </tr>
+                        @{
+                            if (ViewBag.PublishedNotes.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="6" style="text-align:center">No Data Available</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in ViewBag.PublishedNotes)
+                                {
+                                    <tr>
+                                        <td scope="row">@item.AddedDate</td>
+                                        <td class="td-blue">@item.Title</td>
+                                        <td>@item.Category</td>
+                                        <td>@item.SellType</td>
+                                        <td>$@item.Price</td>
+                                        <td class="text-center">
+                                            <img src="~/Content/images/eye.png" alt="eye-image">
+                                        </td>
+                                    </tr>
+                                }
+                            }
                         }
                     </tbody>
                 </table>
@@ -245,7 +320,7 @@
             </div>
         </div>
 
-        <div class="row text-center">
+        @*<div class="row text-center">
             <div class="col-md-12 num">
                 <ul class="pagination justify-content-center">
                     <li class="page-item">
@@ -265,7 +340,68 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div>*@
+
+        @{
+            double totalPages2 = ViewBag.TotalPages2;
+
+            <div class="row text-center">
+                <div class="col-md-12 num">
+                    <ul class="pagination justify-content-center">
+
+                        @if (ViewBag.PageNumber2 == 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" aria-label="Previous" href="@Url.Action("SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : ViewBag.SortOrder2, SortBy2 = ViewBag.SortBy2 == null ? "Title" : ViewBag.SortBy2, PageNumber2 = ViewBag.PageNumber2 })">
+                                    <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" aria-label="Previous" href="@Url.Action("SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : ViewBag.SortOrder2, SortBy2 = ViewBag.SortBy2 == null ? "Title" : ViewBag.SortBy2, PageNumber2 = ViewBag.PageNumber2 - 1 })">
+                                    <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                                </a>
+                            </li>
+                        }
+
+                        @for (int i = 1; i <= totalPages2; i++)
+                        {
+                            if (i == ViewBag.PageNumber2)
+                            {
+                                <li class="page-item">
+                                    @Html.ActionLink(i.ToString(), "SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : ViewBag.SortOrder2, SortBy2 = ViewBag.SortBy2 == null ? "Title" : ViewBag.SortBy2, PageNumber2 = i }, htmlAttributes: new { @class = "page-link active" })
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    @Html.ActionLink(i.ToString(), "SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : ViewBag.SortOrder2, SortBy2 = ViewBag.SortBy2 == null ? "Title" : ViewBag.SortBy2, PageNumber2 = i }, htmlAttributes: new { @class = "page-link" })
+                                </li>
+                            }
+                        }
+
+                        @if (ViewBag.PageNumber2 == totalPages2)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" aria-label="Next" href="@Url.Action("SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : ViewBag.SortOrder2, SortBy2 = ViewBag.SortBy2 == null ? "Title" : ViewBag.SortBy2, PageNumber2 = ViewBag.PageNumber2 })">
+                                    <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" aria-label="Next" href="@Url.Action("SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : ViewBag.SortOrder2, SortBy2 = ViewBag.SortBy2 == null ? "Title" : ViewBag.SortBy2, PageNumber2 = ViewBag.PageNumber2 + 1 })">
+                                    <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
 
     </div>
 </section>

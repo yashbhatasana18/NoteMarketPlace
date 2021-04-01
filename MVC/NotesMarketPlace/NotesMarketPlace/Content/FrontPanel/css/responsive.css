@@ -94,9 +94,9 @@ ul.navig > li:last-child {
     -o-border-radius: 3px;
 }
 
-ul.navig > li:last-child a {
-    color: white !important;
-}
+    ul.navig > li:last-child a {
+        color: white !important;
+    }
 
 /* White */
 #mobile-nav ul.nav > li > a.active,
@@ -202,6 +202,20 @@ ul.navig > li:last-child a {
         margin-top: 20px;
     }
 
+    /* Card */
+    .my-earning {
+        font-size: 19px;
+        line-height: 24px;
+    }
+    .card-count {
+        font-size: 20px;
+        line-height: 23px;
+    }
+    .count-text {
+        font-size: 17px;
+        line-height: 20px;
+    }
+
     /* footer */
     .foot-text {
         width: 50%;
@@ -213,7 +227,7 @@ ul.navig > li:last-child a {
 }
 
 /*  Small devices (landscape phones, 576px and up) */
-@media (min-width: 588px)  and (max-width: 767.98px) {
+@media (min-width: 588px) and (max-width: 767.98px) {
     /* ========================================
                 Navigation
     ======================================== */
@@ -444,9 +458,9 @@ ul.navig > li:last-child a {
         left: -10px;
     }
 
-    .search-1 .input-search {
-        width: 220px;
-    }
+        .search-1 .input-search {
+            width: 220px;
+        }
 
     /* ========================================
                 Notes Details
@@ -575,19 +589,19 @@ ul.navig > li:last-child a {
         margin-left: 10px;
     }
 
-    .customer-review-ul p {
-        font-size: 14px;
-        line-height: 18px;
-    }
+        .customer-review-ul p {
+            font-size: 14px;
+            line-height: 18px;
+        }
 
     #customer-review .reviews {
         height: 550px;
     }
 
-    #customer-review .reviews img {
-        width: 50px;
-        height: 50px;
-    }
+        #customer-review .reviews img {
+            width: 50px;
+            height: 50px;
+        }
 
     #note-detail-preview .content-box {
         padding-bottom: 5px;
@@ -602,13 +616,3 @@ ul.navig > li:last-child a {
         margin: 10px 0;
     }
 }
-
-
-
-
-
-
-
-
-
-

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddNotesModel.cs" />
+    <Compile Include="BuyerRequestModel.cs" />
     <Compile Include="ChangePasswordModel.cs" />
     <Compile Include="ContactUsModel.cs" />
     <Compile Include="CountriesModel.cs" />

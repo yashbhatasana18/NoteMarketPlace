@@ -1,4 +1,5 @@
-﻿
+﻿@model  List<NotesMarketPlace.Models.BuyerRequestModel>
+
 @{
     ViewBag.Title = "BuyerRequest";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
@@ -38,256 +39,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-center" scope="row">1</td>
-                            <td class="td-blue">Data Science</td>
-                            <td>Science</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Paid</td>
-                            <td>$250</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
+                        @{
+                            if (Model.Count() == 0)
+                            {
+                                <tr>
+                                    <td colspan="9" style="text-align:center">No Data Available</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                int count = 0;
+                                foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <td class="text-center" scope="row">@count</td>
+                                        <td class="td-blue">@item.NoteTitle</td>
+                                        <td>@item.NoteCategory</td>
+                                        <td>@item.Downloader</td>
+                                        <td>@item.Phone</td>
+                                        <td>@item.IsPaid</td>
+                                        <td>$@item.PurchasedPrice</td>
+                                        <td>@item.AttachmentDownloadedDate.Value.ToString("dd MMMM, yyyy HH:mm:ss")</td>
+                                        <td class="text-center">
+                                            <img src="~/Content/images/eye.png" alt="eye-image">
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="dropdown">
+                                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                                   aria-haspopup="true" aria-expanded="false">
+                                                    <img src="~/Content/images/dots.png" alt="dot-image">
+                                                </a>
 
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" scope="row">2</td>
-                            <td class="td-blue">Accounts</td>
-                            <td>Commere</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Free</td>
-                            <td>$0</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" scope="row">3</td>
-                            <td class="td-blue">Social Studies</td>
-                            <td>Social</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Free</td>
-                            <td>$0</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" scope="row">4</td>
-                            <td class="td-blue">AI</td>
-                            <td>IT</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Paid</td>
-                            <td>$158</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" scope="row">5</td>
-                            <td class="td-blue">Lorem ipsum</td>
-                            <td>Lorem</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Free</td>
-                            <td>$0</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" scope="row">6</td>
-                            <td class="td-blue">Data Science</td>
-                            <td>Science</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Paid</td>
-                            <td>$555</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" scope="row">7</td>
-                            <td class="td-blue">Accounts</td>
-                            <td>Commere</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Free</td>
-                            <td>$0</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" scope="row">8</td>
-                            <td class="td-blue">Social Studies</td>
-                            <td>Social</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Free</td>
-                            <td>$0</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" scope="row">9</td>
-                            <td class="td-blue">AI</td>
-                            <td>IT</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Paid</td>
-                            <td>$250</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" scope="row">10</td>
-                            <td class="td-blue">Lorem ipsum</td>
-                            <td>Lorem</td>
-                            <td>testing123@gmail.com</td>
-                            <td>+91 9874563527</td>
-                            <td>Free</td>
-                            <td>$115</td>
-                            <td>27 Nov 2020, 11:24:34</td>
-                            <td class="text-center">
-                                <img src="~/Content/images/eye.png" alt="eye-image">
-                            </td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        <img src="~/Content/images/dots.png" alt="dot-image">
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="#">Yes, I Received</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item" href="#">Yes, I Received</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
                     </tbody>
                 </table>
             </div>

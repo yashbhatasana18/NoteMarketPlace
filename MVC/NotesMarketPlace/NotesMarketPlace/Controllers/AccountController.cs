@@ -10,18 +10,68 @@ using System.Net.Mail;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Web.Routing;
 
 namespace NotesMarketPlace.Controllers
 {
+    [Authorize(Roles = "Admin, Super Admin, Member")]
     public class AccountController : Controller
     {
         SignUpRepository signUpRepository = null;
 
+        #region Default Constructor
         public AccountController()
         {
             signUpRepository = new SignUpRepository();
+
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                // set social URL
+                var socialUrl = context.SystemConfigurations.Where(m => m.Key == "Facebook" || m.Key == "Twitter" || m.Key == "Linkedin").ToList();
+                ViewBag.URLs = socialUrl;
+            }
+        }
+        #endregion Default Constructor
+
+        #region Initialize User Information
+
+        protected override void Initialize(RequestContext requestContext)
+        {
+            base.Initialize(requestContext);
+            if (requestContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                using (var context = new NotesMarketPlaceEntities())
+                {
+                    // get current user
+                    var currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
+
+                    //current user profile image
+                    var img = (from Details in context.UserProfile
+                               join Users in context.Users on Details.UserID equals Users.UserID
+                               where Users.EmailID == requestContext.HttpContext.User.Identity.Name
+                               select Details.ProfilePicture).FirstOrDefault();
+
+                    string fileName = System.IO.Path.GetFileName(img);
+
+                    string filePath = "Members/" + currentUser.UserID + "/" + fileName;
+
+                    if (img == null)
+                    {
+                        // set default image
+                        var defaultImg = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
+                        ViewBag.UserProfile = defaultImg;
+                    }
+                    else
+                    {
+                        ViewBag.UserProfile = filePath;
+                    }
+                }
+            }
         }
 
+        #endregion Initialize User Information
+
+        #region User CRUD
         public ActionResult GetAllUsers()
         {
             var result = signUpRepository.GetAllUser();
@@ -57,13 +107,16 @@ namespace NotesMarketPlace.Controllers
             signUpRepository.DeleteUsers(id);
             return RedirectToAction("GetAllUsers");
         }
+        #endregion User CRUD
 
         #region SignUp
+        [AllowAnonymous]
         public ActionResult SignUp()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult SignUp(SignUpModel model)
         {
@@ -84,11 +137,13 @@ namespace NotesMarketPlace.Controllers
         #endregion SignUp
 
         #region Login
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
@@ -110,7 +165,6 @@ namespace NotesMarketPlace.Controllers
         #region User Profile
 
         // get my Profile
-        [Authorize(Roles = "Member")]
         public ActionResult UserProfile()
         {
             using (var _Context = new NotesMarketPlaceEntities())
@@ -208,7 +262,6 @@ namespace NotesMarketPlace.Controllers
 
         // Update my Profile
         [HttpPost]
-        [Authorize(Roles = "Member")]
         public ActionResult UserProfile(UserProfileModel user)
         {
             using (var _Context = new NotesMarketPlaceEntities())
@@ -288,6 +341,8 @@ namespace NotesMarketPlace.Controllers
                     }
                     else
                     {
+                        CreateDirectory(currentuser);
+
                         if (user.UserProfilePicturePath != null)
                         {
                             //UserProfilePicturePath
@@ -328,8 +383,6 @@ namespace NotesMarketPlace.Controllers
                         };
 
                         _Context.UserProfile.Add(userProfile);
-
-                        CreateDirectory(currentuser);
 
                         _Context.SaveChanges();
                         var id = userProfile.UserProfileID;
@@ -401,11 +454,13 @@ namespace NotesMarketPlace.Controllers
 
         #region Account Activation
 
+        [AllowAnonymous]
         public ActionResult Email_Verification()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult VerifyEmail(int userID)
         {
             ViewBag.userID = userID;
@@ -471,12 +526,14 @@ namespace NotesMarketPlace.Controllers
 
         #region ForgotPassword
 
+        [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult ForgotPassword(SignUpModel model)
         {
             BuildForgotPasswordTemplate(model.EmailID);
