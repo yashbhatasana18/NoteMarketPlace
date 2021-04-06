@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NotesMarketPlace.Models
 {
-    public class SellerNotesAttachements
+    public class SellerNotesAttachementsModel
     {
         public int SellerNotesAttachementsID { get; set; }
         public int NoteID { get; set; }

@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewBag.Title = "ManageAdministrator";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row heading">
+    <div class="col-md-12 p-0">
+        <h3 class="heading-1">Manage Administrator</h3>
+    </div>
+</div>
+
+<div class="row heading">
+    <div class="col-md-6 col-sm-6 p-0">
+        <a class="btn btn-general" href="AddAdministrator.html">Add Administrator</a>
+    </div>
+
+    <div class="col-md-6 col-sm-6 text-right search-1 p-0">
+        <img src="../images/search-icon.png" class="form-control-feedback" alt="search-icon">
+        <input class="input-search" type="search" placeholder="Search">
+        <a class="btn btn-general">Search</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-top table-responsive">
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">Sr No.</th>
+                    <th scope="col" class="text-center">Last Name</th>
+                    <th scope="col" class="text-center">First Name</th>
+                    <th scope="col" class="text-center">Email</th>
+                    <th scope="col" class="text-center">Phone No.</th>
+                    <th scope="col" class="text-center">Date Added</th>
+                    <th scope="col" class="text-center">Active</th>
+                    <th scope="col" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="shdow">
+                    <td scope="row" class="text-center">1</td>
+                    <td class="text-center">Khyati</td>
+                    <td class="text-center">Patel</td>
+                    <td class="text-center">khyatipatel@gmail.com</td>
+                    <td class="text-center">9897959512</td>
+                    <td class="text-center">09-10-2020, 10:10</td>
+                    <td class="text-center">Yes</td>
+                    <td class="text-center">
+                        <img src="../images/edit.png" alt="edit-image">
+                        <img src="../images/delete.png" alt="delete-image">
+                    </td>
+                </tr>
+                <tr class="shdow">
+                    <td scope="row" class="text-center">2</td>
+                    <td class="text-center">Rahul</td>
+                    <td class="text-center">Shah</td>
+                    <td class="text-center">rahulshah@gmail.com</td>
+                    <td class="text-center">9945321851</td>
+                    <td class="text-center">10-10-2020, 12:30</td>
+                    <td class="text-center">Yes</td>
+                    <td class="text-center">
+                        <img src="../images/edit.png" alt="edit-image">
+                        <img src="../images/delete.png" alt="delete-image">
+                    </td>
+                </tr>
+                <tr class="shdow">
+                    <td scope="row" class="text-center">3</td>
+                    <td class="text-center">Suman</td>
+                    <td class="text-center">Trivedi</td>
+                    <td class="text-center">sumantrivedi@gmail.com</td>
+                    <td class="text-center">7852189120</td>
+                    <td class="text-center">11-10-2020, 01:00</td>
+                    <td class="text-center">No</td>
+                    <td class="text-center">
+                        <img src="../images/edit.png" alt="edit-image">
+                        <img src="../images/delete.png" alt="delete-image">
+                    </td>
+                </tr>
+                <tr class="shdow">
+                    <td scope="row" class="text-center">4</td>
+                    <td class="text-center">Raj</td>
+                    <td class="text-center">Malhotra</td>
+                    <td class="text-center">rajmalhotra77@gmail.com</td>
+                    <td class="text-center">9852656874</td>
+                    <td class="text-center">12-10-2020, 10:10</td>
+                    <td class="text-center">Yes</td>
+                    <td class="text-center">
+                        <img src="../images/edit.png" alt="edit-image">
+                        <img src="../images/delete.png" alt="delete-image">
+                    </td>
+                </tr>
+                <tr class="shdow">
+                    <td scope="row" class="text-center">5</td>
+                    <td class="text-center">Niya</td>
+                    <td class="text-center">Patel</td>
+                    <td class="text-center">niyapatel@gmail.com</td>
+                    <td class="text-center">8516784532</td>
+                    <td class="text-center">13-10-2020, 11:25</td>
+                    <td class="text-center">No</td>
+                    <td class="text-center">
+                        <img src="../images/edit.png" alt="edit-image">
+                        <img src="../images/delete.png" alt="delete-image">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row text-center">
+    <div class="col-md-12 num">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <img src="../images/left-arrow.png" alt="left-arrow">
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link active" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <img src="../images/right-arrow.png" alt="right-arrow">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+

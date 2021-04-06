@@ -146,10 +146,11 @@
                 <div class="card">
                     <img src="@Url.Content(item.DisplayPicture)" class="card-img-top" alt="note-image">
                     <div class="card-body">
-                        <div class="card-title ">
-                            <a href="NoteDetails.html" style="color: #6655a5" data-toggle="tooltip" data-placement="bottom" data-original-title="Title">
+                        <div class="card-title">
+                            @Html.ActionLink(item.Title, "NoteDetails", new { id = @item.SellerNotesID }, htmlAttributes: new { style = "color: #6655a5; cursor : pointer;", datatoggle = "tooltip", dataplacement = "bottom", dataoriginaltitle = "Title" })
+                            @*<a id="noteTitle" href="">
                                 @Html.DisplayFor(modelItem => item.Title)
-                            </a>
+                            </a>*@
                         </div>
                         <div class="card-text">
                             <div class="card-content">
@@ -203,17 +204,6 @@
 
                                 }
                             }
-
-                            @*<input type="radio" id="star5.1" name="" value="5" />
-                                <label for="star5.1" title="text">5 stars</label>
-                                <input type="radio" id="star4.1" name="rate" value="4" />
-                                <label for="star4.1" title="text">4 stars</label>
-                                <input type="radio" id="star3.1" name="rate" value="3" />
-                                <label for="star3.1" title="text">3 stars</label>
-                                <input type="radio" id="star2.1" name="rate" value="2" />
-                                <label for="star2.1" title="text">2 stars</label>
-                                <input type="radio" id="star1.1" name="rate" value="1" />
-                                <label for="star1.1" title="text">1 star</label>*@
                         </div>
                         @(item.TotalReviews) reviews
                     </div>
@@ -307,6 +297,10 @@
             }
         });
     }
+
+    $('.card-title > a').click(function () {
+        location.href = "NoteDetails/" + $(this).attr('noteId');
+    });
 
     //function SearchNotes() {
     //    let input = document.getElementById('search').value

@@ -1,0 +1,429 @@
+﻿
+@{
+
+    ViewBag.Title = "NoteDetails";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+    //if (!User.Identity.IsAuthenticated)
+    //{
+    //    Layout = "~/Views/Shared/_Nav.cshtml";
+    //}
+    //else
+    //{
+    //    if (User.IsInRole("Member"))
+    //    {
+    //        Layout = "~/Views/Shared/_UserNav.cshtml";
+    //    }
+    //    if (User.IsInRole("Admin") || User.IsInRole("Super_Admin"))
+    //    {
+    //        Layout = "~/Views/Shared/_AdminNav.cshtml";
+    //    }
+    //}
+}
+
+<style>
+    /* note detail section left */
+
+    #note-detail .content-box {
+        padding: 150px 0 60px 0;
+    }
+
+    .note-detail-img img {
+        width: 100%;
+        height: 300px;
+    }
+
+    .note-detail-img h4,
+    .note-info h4 {
+        color: #6255a5;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .note-info h4 {
+        font-size: 34px;
+    }
+
+    #note-detail .note-detail-img,
+    #note-detail .note-info {
+        height: 100%;
+    }
+
+    #note-detail .note-info {
+        padding: 0;
+    }
+
+        #note-detail .note-info h6 {
+            margin-bottom: 20px;
+        }
+
+        #note-detail .note-info p {
+            color: #333333;
+            font-weight: 400;
+        }
+
+    .note-info {
+        margin-top: 50px;
+    }
+
+    /* note download button */
+    #note-detail .note-info .btn-primary {
+        background-color: #6255a5;
+        border-color: #6255a5;
+    }
+
+    /* note detail section right */
+
+    ul.note-full-detail {
+        list-style: none;
+    }
+
+    .note-details {
+        min-height: 270px;
+        padding: 35px 5px 5px 115px;
+    }
+
+    ul.note-full-detail li > span {
+        float: right;
+        color: #6255a5;
+    }
+
+    ul.note-full-detail li {
+        color: #333333;
+        padding-bottom: 9px;
+        font-weight: 400;
+    }
+
+        ul.note-full-detail li:last-child {
+            color: #d53434;
+            font-size: 12px;
+            padding-top: 5px;
+        }
+
+
+    /* note preview left side */
+
+    #note-detail-preview .note-preview iframe {
+        width: 100%;
+        height: 450px;
+    }
+
+    .note-preview h4,
+    #customer-review h4 {
+        color: #6255a5;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    .note-preview,
+    #customer-review {
+        min-height: 450px;
+    }
+
+        /* note preview right side (customer preview) */
+
+        #customer-review .reviews img {
+            width: 60px;
+            border-radius: 50%;
+            height: 60px;
+        }
+
+        #customer-review .reviews ul {
+            list-style: none;
+        }
+
+        #customer-review ul > li > h6 {
+            font-weight: 600;
+            color: #575757;
+            margin-bottom: 10px;
+        }
+
+        #customer-review ul > li > p {
+            color: #333333;
+            font-weight: 400;
+            margin-bottom: 0;
+        }
+
+        #customer-review .reviews {
+            border: 1px solid #d1d1d1;
+            padding: 25px;
+            height: 450px;
+        }
+
+            #customer-review .reviews hr {
+                margin: 15px 0;
+            }
+
+    .modal-body {
+        padding: 0 55px 0 40px;
+    }
+
+    .modal {
+        margin-top: 55px;
+    }
+
+    .popup-close-btn {
+        padding: 10px 10px 0 0;
+    }
+
+    .modal-body img {
+        height: auto;
+        margin: auto;
+        text-align: center;
+        left: 50%;
+        position: relative;
+        transform: translateX(-50%);
+        width: 63px;
+        height: 63px;
+    }
+
+    .modal-body h2 {
+        font-size: 26px;
+        font-weight: 600;
+        line-height: 30px;
+        color: #6255a5;
+        padding-top: 10px;
+        padding-bottom: 20px;
+    }
+
+    .modal-body p {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        color: #333333;
+        padding-bottom: 5px;
+    }
+
+    .modal-body h5 {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 22px;
+        color: #333333;
+    }
+</style>
+
+@{
+    foreach (var item in ViewBag.NoteDetails)
+    {
+        <!-- note detail section-->
+        <section id="note-detail">
+            <div class="content-box">
+                <div class="container">
+                    <div class="row">
+                        <!-- note details left -->
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                            <div class="row">
+                                <!-- Note details image -->
+                                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-12">
+                                    <div class="note-detail-img">
+                                        <h4>Notes Details</h4>
+                                        <img src="@Url.Content(@item.Image)" alt="image of note">
+                                    </div>
+                                </div>
+
+                                <!-- details of notes -->
+                                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-12">
+                                    <div class="note-info">
+                                        <h4>@item.Title</h4>
+                                        <h6>@item.Category</h6>
+                                        <p>@item.Description</p>
+                                        @using (Html.BeginForm("PurchaseNote", "Home", FormMethod.Post))
+                                        {
+                                            <button type="submit" class="btn btn-primary btn-lg" data-toggle="modal"
+                                                    data-target="#exampleModalScrollable" id="purchase_btn" noteId="@item.ID">
+                                                DOWNLOAD / $@item.Price
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- note details right -->
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                            <div class="note-details">
+                                <ul class="note-full-detail">
+                                    <li>institution:<span>@item.Institute</span></li>
+                                    <li>Country:<span>@item.Country</span></li>
+                                    <li>Course Name<span>@item.CourseName</span></li>
+                                    <li>Course Code:<span>@item.CourseCode</span></li>
+                                    <li>Professor:<span>@item.Professor</span></li>
+                                    <li>Number of Pages:<span>@item.Pages</span></li>
+                                    <li>Approved Date:<span>(@item.ApproveDate)</span></li>
+                                    <li>
+                                        Rating:
+                                        <span>
+                                            <div class="rate">
+                                                @{
+                                                    if (ViewBag.AverageReview == 0)
+                                                    {
+                                                        for (int i = 5; i > 0; i--)
+                                                        {
+                                                            <input type="radio" name="noterating" value="@i" /><label class="full"></label> }
+                                                    }
+                                                    else
+                                                    {
+                                                        for (int i = 5; i > 0; i--)
+                                                        {
+                                                            if (i == ViewBag.AverageReview)
+                                                            {
+                                                                <input type="radio" name="noterating" value="@i" checked /><label class="full"></label> }
+                                                            else
+                                                            {
+                                                                <input type="radio" name="noterating" value="@i" /><label class="full"></label> }
+                                                        }
+                                                    }
+                                                }
+                                            </div>@ViewBag.TotalReview Reviews
+                                        </span>
+                                        @*<span>
+                                                <div class="rate">
+                                                    <input type="radio" id="star5" name="rate" value="5" />
+                                                    <label for="star5" title="text">5 stars</label>
+                                                    <input type="radio" id="star4" name="rate" value="4" />
+                                                    <label for="star4" title="text">4 stars</label>
+                                                    <input type="radio" id="star3" name="rate" value="3" />
+                                                    <label for="star3" title="text">3 stars</label>
+                                                    <input type="radio" id="star2" name="rate" value="2" />
+                                                    <label for="star2" title="text">2 stars</label>
+                                                    <input type="radio" id="star1" name="rate" value="1" />
+                                                    <label for="star1" title="text">1 star</label>
+                                                </div>100 Reviews
+                                            </span>*@
+                                    </li>
+                                    <li>@ViewBag.Spam Users make this note as inappropriate</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end note detail section-->
+
+        <div class="container">
+            <hr class="p-0 m-0">
+        </div>
+
+        <!-- note-preview section-->
+        <section id="note-detail-preview">
+            <div class="content-box">
+                <div class="container">
+                    <div class="row">
+                        <!-- note review left-->
+                        <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                            <div class="note-preview">
+                                <h4>Note Preview</h4>
+                                <iframe src="@Url.Content(@item.NotePreview)"></iframe>
+                            </div>
+                        </div>
+
+                        <!-- note review right -->
+                        <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                            <div id="customer-review">
+                                <h4>Customer Reviews</h4>
+                                <div class="reviews" style="overflow-y: scroll;">
+                                    @{
+                                        int a = 0;
+                                        foreach (var review in ViewBag.Reviews)
+                                        {
+                                            a++;
+                                            <!-- customer review 1 -->
+                                            <div class="row">
+                                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+                                                    <img src="@Url.Content(@review.Image)" alt="customer1">
+                                                </div>
+
+                                                <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 review-details">
+                                                    <ul>
+                                                        <li>
+                                                            <h6>@review.FirstName @review.LastName</h6>
+                                                        </li>
+                                                        <li>
+                                                            <div class="d-inline-block">
+                                                                <div class="rate">
+                                                                    @{
+                                                                        for (int j = 5; j > 0; j--)
+                                                                        {
+                                                                            if (review.Ratings == j)
+                                                                            {
+                                                                                <input type="radio" name="customerrating @a" value="@j" checked /><label class="full"></label>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="radio" name="customerrating @a" value="@j" /><label class="full"></label>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <p>
+                                                                @review.Review
+                                                            </p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end note-preview section-->
+
+
+        <!-- thanks Popup box-->
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <!-- top close button -->
+                    <div class="popup-close-btn">
+                        <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="~/Content/images/close.png"></span>
+                        </button>
+                    </div>
+
+                    <!-- popup box content -->
+                    <div class="modal-body">
+                        <img src="~/Content/images/Success-Blue.png">
+                        <h2 class="text-center">Thank you for purchasing!</h2>
+                        <h5>Dear @TempData["UserName"],</h5>
+                        <p>
+                            As this is paid notes - you need to pay to seller @item.Seller offline. We will send him an email
+                            that you want to download this note. He may contact you further process compietion.
+                        </p>
+                        <p>In case, you have urgency,<br>Please contact us on +9195377345959</p>
+                        <p>
+                            Once he receives the payment and acknowledge us - selected notes you can see over my downloads
+                            tab for download.
+                        </p>
+                        <p>Have a good day.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end thanks Popup box-->
+    }
+}
+
+<script>
+    $('#purchase_btn').click(function () {
+
+        if (confirm("Are you sure you want to download this note. Please confirm.")) {
+            var noteId = $('#purchase_btn').attr('noteId');
+            location.href = "Purchase?noteId=" + noteId;
+        }
+
+    });
+</script>

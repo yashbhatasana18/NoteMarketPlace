@@ -20,7 +20,7 @@ namespace NotesMarketPlace.Models
             {
                 string HostAddress = "smtp.gmail.com";
                 string FormEmailId = supportEmail;
-                string Password = "";
+                string Password = "Mahakal@18@52";
                 string Port = "587";
 
                 MailMessage mailMessage = new MailMessage();

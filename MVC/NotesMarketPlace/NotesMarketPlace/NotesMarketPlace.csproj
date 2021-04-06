@@ -98,6 +98,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\CommonCSS\upload.css" />
+    <Content Include="Content\CommonJS\upload.js" />
     <Content Include="Content\icons-1.4.0\.fantasticonrc.js" />
     <Content Include="Content\icons-1.4.0\.gitattributes" />
     <Content Include="Content\icons-1.4.0\.github\preview.png" />
@@ -1476,7 +1478,9 @@
     <Content Include="Content\icons-1.4.0\icons\youtube.svg" />
     <Content Include="Content\icons-1.4.0\icons\zoom-in.svg" />
     <Content Include="Content\icons-1.4.0\icons\zoom-out.svg" />
-    <Content Include="Content\NotesImages\Images\Screenshot %287%2921502943.png" />
+    <Content Include="Content\NotesImages\Images\search421243095.png" />
+    <Content Include="Content\NotesImages\Images\search621264417.png" />
+    <Content Include="Members\2\Illustrator 21363121.jpg" />
     <Content Include="Views\EmailTemplate\AccountConfirmation.html" />
     <Content Include="Content\Account\responsive.css" />
     <Content Include="Content\Account\signup.css" />
@@ -2941,8 +2945,10 @@
     <Content Include="Content\icons-1.4.0\package.json" />
     <Content Include="Content\icons-1.4.0\README.md" />
     <Content Include="Content\icons-1.4.0\svgo.yml" />
-    <Content Include="Content\NotesImages\NotesPDF\TSC Training Plan for Batch 2020-202121504764.pdf" />
-    <Content Include="Content\NotesImages\NotesPreview\TSC Training Plan for Batch 2020-202121504923.pdf" />
+    <Content Include="Content\NotesImages\NotesPDF\sample21243095.pdf" />
+    <Content Include="Content\NotesImages\NotesPDF\sample21264419.pdf" />
+    <Content Include="Content\NotesImages\NotesPreview\sample21243095.pdf" />
+    <Content Include="Content\NotesImages\NotesPreview\sample21264419.pdf" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -3025,6 +3031,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\SuperAdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -3068,6 +3075,12 @@
     <Content Include="Views\Account\EditUsers.cshtml" />
     <Content Include="Views\Account\UserProfile.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Home\NoteDetails.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\SuperAdmin\Index.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageAdministrator.cshtml" />
+    <Content Include="Views\Home\MyRejectedNotes.cshtml" />
+    <Content Include="Views\Home\EditNote.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3077,7 +3090,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Members\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

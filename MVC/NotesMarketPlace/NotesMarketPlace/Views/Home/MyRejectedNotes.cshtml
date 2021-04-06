@@ -1,7 +1,7 @@
-﻿@model  List<NotesMarketPlace.Models.BuyerRequestModel>
+﻿@model List<NotesMarketPlace.Models.MyRejectedNotesModel>
 
 @{
-    ViewBag.Title = "BuyerRequest";
+    ViewBag.Title = "MyRejectedNotes";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
@@ -9,17 +9,21 @@
 <section id="content">
     <div class="container">
 
-        <div class="row heading">
-            <div class="col-md-6 col-sm-6 p-0">
-                <h3 class="heading-1">Buyer Requests</h3>
-            </div>
+        @using (Html.BeginForm("MyRejectedNotes", "Home", FormMethod.Post))
+        {
+            <div class="row heading">
+                <div class="col-md-6 col-sm-6 p-0">
+                    <h3 class="heading-1">My Rejected Notes</h3>
+                </div>
 
-            <div class="col-md-6 col-sm-6 text-right search-1 p-0">
-                <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
-                <input class="input-search" type="search" placeholder="Search">
-                <a class="btn btn-general">Search</a>
+                <div class="col-md-6 col-sm-6 text-right search-1 p-0 form-group has-search">
+                    <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
+                    @Html.TextBox("txtSearch1", null, new { @class = "form-control input-search", @placeholder = "Search" })
+                    <button class="btn btn-general" type="submit">Search</button>
+                </div>
+
             </div>
-        </div>
+        }
 
         <div class="row">
             <div class="table-top table-responsive">
@@ -29,12 +33,8 @@
                             <th class="text-center" scope="col">Sr No.</th>
                             <th scope="col">Note Title</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Buyer</th>
-                            <th scope="col">Phone no.</th>
-                            <th scope="col">Sell Type</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Download Date/Time</th>
-                            <th class="text-center" scope="col"></th>
+                            <th scope="col">Remarks</th>
+                            <th scope="col">Clone</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -43,7 +43,7 @@
                             if (Model.Count() == 0)
                             {
                                 <tr>
-                                    <td colspan="9" style="text-align:center">No Data Available</td>
+                                    <td colspan="6" style="text-align:center">No Data Available</td>
                                 </tr>
                             }
                             else
@@ -54,25 +54,19 @@
                                     count++;
                                     <tr>
                                         <td class="text-center" scope="row">@count</td>
-                                        <td class="td-blue">@item.NoteTitle</td>
-                                        <td>@item.NoteCategory</td>
-                                        <td>@item.Downloader</td>
-                                        <td>@item.Phone</td>
-                                        <td>@item.IsPaid</td>
-                                        <td>$@item.PurchasedPrice</td>
-                                        <td>@item.AttachmentDownloadedDate.Value.ToString("dd MMMM, yyyy HH:mm:ss")</td>
-                                        <td class="text-center">
-                                            <img src="~/Content/images/eye.png" alt="eye-image" onclick="View(@item.NoteID)">
-                                        </td>
+                                        <td class="td-blue">@item.Title</td>
+                                        <td>@item.Category</td>
+                                        <td>@item.Remark</td>
+                                        <td class="td-blue" onclick="Clone(@item.Id)">Clone</td>
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <img src="~/Content/images/dots.png" alt="dot-image">
+                                                    <img src="../images/dots.png" alt="dot-image">
                                                 </a>
 
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" onclick="Allow(@item.DownloadsID)">Yes, I Received</a>
+                                                    <a class="dropdown-item" onclick="Download(@item.Id)">Download Notes</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -90,7 +84,7 @@
                 <ul class="pagination justify-content-center">
                     <li class="page-item">
                         <a class="page-link" href="#" aria-label="Previous">
-                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                            <img src="../images/left-arrow.png" alt="left-arrow">
                         </a>
                     </li>
                     <li class="page-item"><a class="page-link active" href="#">1</a></li>
@@ -100,7 +94,7 @@
                     <li class="page-item"><a class="page-link" href="#">5</a></li>
                     <li class="page-item">
                         <a class="page-link" href="#" aria-label="Next">
-                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                            <img src="../images/right-arrow.png" alt="right-arrow">
                         </a>
                     </li>
                 </ul>
@@ -109,26 +103,4 @@
 
     </div>
 </section>
-<!-- End Content -->
 
-<script>
-
-    function View(id) {
-        location.href = "../NoteDetails/" + id;
-    }
-
-    function Allow(id) {
-        $.ajax({
-            method: 'POST',
-            url: 'AllowDownload',
-            data: { id: id },
-            success: function () {
-                location.reload();
-            },
-            error: function () {
-                alert("Try Again");
-            }
-        });
-    }
-
-</script>

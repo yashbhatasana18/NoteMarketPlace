@@ -5,36 +5,41 @@ namespace NotesMarketPlace.DB.DBOperations
 {
     public class AddNotesRepository
     {
-        public int AddNotes(AddNotesModel model)
+        public int AddNotes(AddNotesModel model, string Command)
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                SellerNotes addNotes = new SellerNotes()
+                SellerNotes addNotes = new SellerNotes();
+
+                addNotes.SellerID = model.SellerID;
+                addNotes.Title = model.Title;
+                addNotes.Category = model.Category;
+                addNotes.ActionedBy = model.SellerID;
+                addNotes.DisplayPicture = model.DisplayPicture;
+                addNotes.NotesPreview = model.NotesPreview;
+                addNotes.NoteType = model.NoteType;
+                addNotes.Status = Command == "Save" ? 6 : 7;
+                addNotes.NumberOfPages = model.NumberOfPages;
+                addNotes.Description = model.Description;
+                addNotes.Country = model.Country;
+                addNotes.UniversityName = model.UniversityName;
+                addNotes.Course = model.Course;
+                addNotes.CourseCode = model.CourseCode;
+                addNotes.Professor = model.Professor;
+                addNotes.SellingPrice = model.SellingPrice;
+                addNotes.PublishedDate = DateTime.Now;
+                addNotes.CreatedDate = DateTime.Now;
+                addNotes.CreatedBy = model.SellerID;
+                addNotes.ModifiedDate = DateTime.Now;
+                addNotes.ModifiedBy = model.SellerID;
+                addNotes.IsPaid = model.IsPaid;
+                addNotes.IsActive = true;
+
+                if (addNotes.Status == 7)
                 {
-                    SellerID = model.SellerID,
-                    Title = model.Title,
-                    Category = model.Category,
-                    ActionedBy = model.SellerID,
-                    DisplayPicture = model.DisplayPicture,
-                    NotesPreview = model.NotesPreview,
-                    NoteType = model.NoteType,
-                    Status = 5,
-                    NumberOfPages = model.NumberOfPages,
-                    Description = model.Description,
-                    Country = model.Country,
-                    UniversityName = model.UniversityName,
-                    Course = model.Course,
-                    CourseCode = model.CourseCode,
-                    Professor = model.Professor,
-                    SellingPrice = model.SellingPrice,
-                    IsPaid = model.IsPaid,
-                    PublishedDate = DateTime.Now,
-                    CreatedDate = DateTime.Now,
-                    CreatedBy = model.SellerID,
-                    ModifiedDate = DateTime.Now,
-                    ModifiedBy = model.SellerID,
-                    IsActive = true,
-                };
+                    addNotes.PublishedDate = DateTime.Now;
+                    context.SaveChanges();
+                }
 
                 context.SellerNotes.Add(addNotes);
                 context.SaveChanges();

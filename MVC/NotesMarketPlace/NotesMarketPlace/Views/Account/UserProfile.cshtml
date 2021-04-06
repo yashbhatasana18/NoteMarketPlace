@@ -109,7 +109,7 @@
                     @Html.LabelFor(model => model.PhoneNumber, "Phone Number", new { @for = "phoneNo" })
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            @Html.DropDownListFor(model => model.PhoneNumberCountryCode, ViewBag.CountryCodeList as SelectList, "Select Your Country Code", new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.PhoneNumberCountryCode, ViewBag.CountryCodeList as SelectList, new { @class = "form-control" })
 
                             @*@Html.DropDownListFor(model => model.CountryCodeModel, new SelectList(Model.CountryCodeModel, "CountriesID", "CountryCode"), new { @class = "form-control" })*@
                         </div>

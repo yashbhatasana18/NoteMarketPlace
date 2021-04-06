@@ -1,9 +1,10 @@
-﻿@model NotesMarketPlace.Models.AddNotesModel
-
+﻿
 @{
-    ViewBag.Title = "AddNotes";
+    ViewBag.Title = "EditNotes";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
+
+@model NotesMarketPlace.Models.AddNotesModel
 
 <style>
     label {
@@ -109,7 +110,7 @@
             <div class="row">
                 <div class="head-content-inner">
                     <div class="head-heading">
-                        Add Notes
+                        Edit Notes
                     </div>
                 </div>
             </div>
@@ -127,7 +128,7 @@
             <h1 class="title">Basic Note Details</h1>
         </div>
     </div>
-    @using (Html.BeginForm("AddNotes", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("EditNote", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })

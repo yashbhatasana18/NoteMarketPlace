@@ -1,0 +1,116 @@
+.uploader {
+    display: block;
+    clear: both;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+    .uploader label {
+        float: left;
+        clear: both;
+        width: 100%;
+        padding: 1rem 1.5rem;
+        text-align: center;
+        background: #fff;
+        border-radius: 7px;
+        border: 3px solid #eee;
+        transition: all 0.2s ease;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        .uploader label.hover {
+            border: 3px solid #454cad;
+            box-shadow: inset 0 0 0 6px #eee;
+        }
+
+            .uploader label.hover #start i.fa,
+            .uploader label.hover #start2 i.fa,
+            .uploader label.hover #start3 i.fa {
+                transform: scale(0.8);
+                opacity: 0.3;
+            }
+
+    .uploader #start,
+    .uploader #start2,
+    .uploader #start3 {
+        float: left;
+        clear: both;
+        width: 100%;
+    }
+
+        .uploader #start.hidden,
+        .uploader #start2.hidden,
+        .uploader #start3.hidden {
+            display: none;
+        }
+
+        .uploader #start i.fa,
+        .uploader #start2 i.fa,
+        .uploader #start3 i.fa {
+            font-size: 50px;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+    .uploader #response,
+    .uploader #response2,
+    .uploader #response3 {
+        float: left;
+        clear: both;
+        width: 100%;
+    }
+
+        .uploader #response.hidden,
+        .uploader #response2.hidden,
+        .uploader #response3.hidden {
+            display: none;
+        }
+
+        .uploader #response #messages,
+        .uploader #response2 #messages2,
+        .uploader #response3 #messages3 {
+            margin-bottom: 0.5rem;
+        }
+
+    .uploader #file-image,
+    .uploader #file-pdf,
+    .uploader #file-preview {
+        display: inline;
+        margin: 0 auto 0.5rem auto;
+        width: auto;
+        height: auto;
+        max-width: 180px;
+    }
+
+        .uploader #file-image.hidden,
+        .uploader #file-pdf.hidden,
+        .uploader #file-preview.hidden {
+            display: none;
+        }
+
+    .uploader #notimage,
+    .uploader #notimage2,
+    .uploader #notimage3 {
+        display: block;
+        float: left;
+        clear: both;
+        width: 100%;
+    }
+
+        .uploader #notimage.hidden,
+        .uploader #notimage2.hidden,
+        .uploader #notimage3.hidden {
+            display: none;
+        }
+
+    .uploader input[type=file] {
+        display: none;
+    }
+
+    .uploader div {
+        color: #5f6982;
+    }

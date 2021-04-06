@@ -6,37 +6,37 @@
 }
 
 <style>
-        /* =======================================================================
+    /* =======================================================================
                                 Card
     ======================================================================= */
-        .card {
-            height: 151px;
-            border: 1px solid #d1d1d1;
-        }
+    .card {
+        height: 151px;
+        border: 1px solid #d1d1d1;
+    }
 
-        .card-count {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 30px;
-            font-weight: 700;
-            line-height: 34px;
-            color: #6255a5;
-        }
+    .card-count {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 34px;
+        color: #6255a5;
+    }
 
-        .my-earning {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 26px;
-            font-weight: 400;
-            line-height: 30px;
-            color: #6255a5;
-        }
+    .my-earning {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 26px;
+        font-weight: 400;
+        line-height: 30px;
+        color: #6255a5;
+    }
 
-        .count-text {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 18px;
-            font-weight: 400;
-            line-height: 22px;
-            color: #333333;
-        }
+    .count-text {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 22px;
+        color: #333333;
+    }
 </style>
 
 <!-- Content -->
@@ -162,29 +162,36 @@
                             {
                                 foreach (var item in ViewBag.ProgressNotes)
                                 {
-                                    if (item.Status == "Draft")
+                                    using (Html.BeginForm("Delete", "Home", new { id = @item.Id }))
                                     {
-                                        <tr>
-                                            <td scope="row">@item.AddedDate</td>
-                                            <td class="td-blue">@item.Title</td>
-                                            <td>@item.Category</td>
-                                            <td>@item.Status</td>
-                                            <td class="text-center">
-                                                <img src="~/Content/images/edit.png" alt="edit-image">
-                                                <img src="~/Content/images/delete.png" alt="delete-image">
-                                            </td>
-                                        </tr>
-                                    }
-                                    {
-                                        <tr>
-                                            <td scope="row">@item.AddedDate</td>
-                                            <td class="td-blue">@item.Title</td>
-                                            <td>@item.Category</td>
-                                            <td>@item.Status</td>
-                                            <td class="text-center">
-                                                <img src="~/Content/images/edit.png" alt="edit-image">
-                                            </td>
-                                        </tr>
+                                        if (item.Status == "Draft")
+                                        {
+                                            <tr>
+                                                <td scope="row">@item.AddedDate</td>
+                                                <td class="td-blue">@item.Title</td>
+                                                <td>@item.Category</td>
+                                                <td>@item.Status</td>
+                                                <td class="text-center">
+                                                    <a href="@Url.Action("EditNote", "Home", new { id = @item.Id})"><img src="~/Content/images/edit.png" alt="edit-image"></a>
+                                                    <button type="submit" class="customButton" onclick="return confirm('Are you sure you want to delete @item.Title Book')">
+                                                        <img src="~/Content/images/delete.png" alt="delete">
+                                                    </button>
+
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td scope="row">@item.AddedDate</td>
+                                                <td class="td-blue">@item.Title</td>
+                                                <td>@item.Category</td>
+                                                <td>@item.Status</td>
+                                                <td class="text-center">
+                                                    <a href="@Url.Action("NoteDetails", "SearchNote" , new { id=@item.Id })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
                                 }
                             }
@@ -308,7 +315,7 @@
                                         <td>@item.SellType</td>
                                         <td>$@item.Price</td>
                                         <td class="text-center">
-                                            <img src="~/Content/images/eye.png" alt="eye-image">
+                                            <a href="@Url.Action("NoteDetails", "SearchNote" , new { id=@item.Id })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
                                         </td>
                                     </tr>
                                 }
@@ -319,28 +326,6 @@
 
             </div>
         </div>
-
-        @*<div class="row text-center">
-            <div class="col-md-12 num">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>*@
 
         @{
             double totalPages2 = ViewBag.TotalPages2;
@@ -405,4 +390,3 @@
 
     </div>
 </section>
-

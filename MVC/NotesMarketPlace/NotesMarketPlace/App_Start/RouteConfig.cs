@@ -18,6 +18,8 @@ namespace NotesMarketPlace
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "SearchNotes", id = UrlParameter.Optional }
             );
+
+            //routes.MapMvcAttributeRoutes();
         }
     }
 }

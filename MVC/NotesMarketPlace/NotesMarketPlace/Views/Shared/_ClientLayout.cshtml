@@ -57,11 +57,11 @@
 
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                             <a class="dropdown-item @(ViewBag.Title == "UserProfile"? "active" : "" )" href="@Url.Action("UserProfile", "Account")">My Profile</a>
-                                            <a class="dropdown-item @(ViewBag.Title == "MyDownload"? "active" : "" )" href="@Url.Action("MyDownload", "MyDownload")">My Download</a>
-                                            <a class="dropdown-item @(ViewBag.Title == "MySoldNotes"? "active" : "" )" href="@Url.Action("MySoldNotes", "MySoldNotes")">My Sold Notes</a>
-                                            <a class="dropdown-item @(ViewBag.Title == "MyRejectedNotes"? "active" : "" )" href="@Url.Action("MyRejectedNotes", "MyRejectedNotes")">My Rejected Notes</a>
+                                            <a class="dropdown-item @(ViewBag.Title == "MyDownload"? "active" : "" )" href="@Url.Action("MyDownload", "Home")">My Download</a>
+                                            <a class="dropdown-item @(ViewBag.Title == "MySoldNotes"? "active" : "" )" href="@Url.Action("MySoldNotes", "Home")">My Sold Notes</a>
+                                            <a class="dropdown-item @(ViewBag.Title == "MyRejectedNotes"? "active" : "" )" href="@Url.Action("MyRejectedNotes", "Home")">My Rejected Notes</a>
                                             <a class="dropdown-item @(ViewBag.Title == "ChangePassword"? "active" : "" )" href="@Url.Action("ChangePassword", "Account")">Change Password</a>
-                                            <a class="dropdown-item btn-logout" href="@Url.Action("Login", "Account")">LogOut</a>
+                                            <a class="dropdown-item btn-logout" href="@Url.Action("LogOut", "Account")">LogOut</a>
                                         </div>
                                     </div>
                                 </li>
@@ -103,9 +103,9 @@
 
                                             <div id="collapseExample3" class="collapse">
                                                 <a class="dropdown-item @(ViewBag.Title == "UserProfile"? "active" : "" )" href="@Url.Action("UserProfile", "Account")">My Profile</a>
-                                                <a class="dropdown-item @(ViewBag.Title == "MyDownload"? "active" : "" )" href="@Url.Action("MyDownload", "MyDownload")">My Download</a>
-                                                <a class="dropdown-item @(ViewBag.Title == "MySoldNotes"? "active" : "" )" href="@Url.Action("MySoldNotes", "MySoldNotes")">My Sold Notes</a>
-                                                <a class="dropdown-item @(ViewBag.Title == "MyRejectedNotes"? "active" : "" )" href="@Url.Action("MyRejectedNotes", "MyRejectedNotes")">My Rejected Notes</a>
+                                                <a class="dropdown-item @(ViewBag.Title == "MyDownload"? "active" : "" )" href="@Url.Action("MyDownload", "Home")">My Download</a>
+                                                <a class="dropdown-item @(ViewBag.Title == "MySoldNotes"? "active" : "" )" href="@Url.Action("MySoldNotes", "Home")">My Sold Notes</a>
+                                                <a class="dropdown-item @(ViewBag.Title == "MyRejectedNotes"? "active" : "" )" href="@Url.Action("MyRejectedNotes", "Home")">My Rejected Notes</a>
                                                 <a class="dropdown-item @(ViewBag.Title == "ChangePassword"? "active" : "" )" href="@Url.Action("ChangePassword", "Account")">Change Password</a>
                                                 <a class="dropdown-item btn-logout" href="@Url.Action("Login", "Account")">LogOut</a>
                                             </div>
@@ -164,6 +164,7 @@
             </div>
         </footer>
         <!-- End Footer -->
+
     </div>
 
     <!-- Modernizr JS -->

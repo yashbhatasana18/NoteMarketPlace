@@ -55,7 +55,7 @@ namespace NotesMarketPlace.Models
         public int? ModifiedBy { get; set; }
         public bool IsActive { get; set; }
 
-        public SellerNotesAttachements SellerNotesAttachements { get; set; }
+        public SellerNotesAttachementsModel SellerNotesAttachements { get; set; }
 
         public NoteCategoriesModel NoteCategoriesList { get; set; }
 
