@@ -3048,7 +3048,6 @@
     <Content Include="Scripts\README.md" />
     <Content Include="Views\Account\SignUp.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_ClientLayout.cshtml" />
     <Content Include="Views\Account\VerifyEmail.cshtml" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
@@ -3081,6 +3080,9 @@
     <Content Include="Views\SuperAdmin\ManageAdministrator.cshtml" />
     <Content Include="Views\Home\MyRejectedNotes.cshtml" />
     <Content Include="Views\Home\EditNote.cshtml" />
+    <Content Include="Views\Home\Home.cshtml" />
+    <Content Include="Views\Shared\_HomeLayout.cshtml" />
+    <Content Include="Views\Home\MySoldNotes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

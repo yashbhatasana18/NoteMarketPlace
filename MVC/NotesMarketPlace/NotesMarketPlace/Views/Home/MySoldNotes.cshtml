@@ -1,7 +1,8 @@
-﻿@model List<NotesMarketPlace.Models.MyRejectedNotesModel>
+﻿
+@model List<NotesMarketPlace.Models.MySoldNotesModel>
 
 @{
-    ViewBag.Title = "MyRejectedNotes";
+    ViewBag.Title = "MySoldNotes";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
@@ -9,11 +10,11 @@
 <section id="content">
     <div class="container">
 
-        @using (Html.BeginForm("MyRejectedNotes", "Home", FormMethod.Post))
+        @using (Html.BeginForm("MySoldNotes", "Home", FormMethod.Post))
         {
             <div class="row heading">
                 <div class="col-md-6 col-sm-6 p-0">
-                    <h3 class="heading-1">My Rejected Notes</h3>
+                    <h3 class="heading-1">My Sold Notes</h3>
                 </div>
 
                 <div class="col-md-6 col-sm-6 text-right search-1 p-0 form-group has-search">
@@ -32,13 +33,17 @@
                         <tr>
                             <th class="text-center" scope="col">Sr No.</th>
                             <th scope="col">
-                                @Html.ActionLink("Note Title", "MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                                @Html.ActionLink("Note Title", "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
                             <th scope="col">
-                                @Html.ActionLink("Category", "MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                                @Html.ActionLink("Category", "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
-                            <th scope="col">Remarks</th>
-                            <th scope="col">Clone</th>
+                            <th scope="col">Buyer</th>
+                            <th scope="col">Phone no.</th>
+                            <th scope="col">Sell Type</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Download Date/Time</th>
+                            <th class="text-center" scope="col"></th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -47,7 +52,7 @@
                             if (Model.Count() == 0)
                             {
                                 <tr>
-                                    <td colspan="6" style="text-align:center">No Data Available</td>
+                                    <td colspan="10" style="text-align:center">No Data Available</td>
                                 </tr>
                             }
                             else
@@ -60,8 +65,22 @@
                                         <td class="text-center" scope="row">@count</td>
                                         <td class="td-blue">@item.Title</td>
                                         <td>@item.Category</td>
-                                        <td>@item.Remark</td>
-                                        <td class="td-blue" onclick="Clone(@item.Id)">Clone</td>
+                                        <td>@item.EmailID</td>
+                                        <td>@item.Phone</td>
+                                        @if (item.SellType == "Paid")
+                                        {
+                                            <td>paid</td>
+                                            <td>$@item.Price</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Free</td>
+                                            <td>$0</td>
+                                        }
+                                        <td>@item.DownloadDate.Value.ToString("dd MMMM, yyyy HH:mm:ss")</td>
+                                        <td class="text-center">
+                                            <a href="@Url.Action("NoteDetails", "Home" , new { id=@item.NoteId })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
+                                        </td>
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
@@ -70,7 +89,7 @@
                                                 </a>
 
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    @Html.ActionLink("Download Notes", "Download", "Home", new { noteId = @item.Id, userId = @item.UserId }, new { @class = "dropdown-item" })
+                                                    @Html.ActionLink("Download Notes", "Download", "Home", new { noteId = @item.NoteId, userId = @item.UserID }, new { @class = "dropdown-item" })
                                                 </div>
                                             </div>
                                         </td>
@@ -81,6 +100,7 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
 
         @* Pagination *@
@@ -94,7 +114,7 @@
                         @if (ViewBag.PageNumber == 1)
                         {
                             <li class="page-item">
-                                <a class="page-link" aria-label="Previous" href="@Url.Action("MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                                <a class="page-link" aria-label="Previous" href="@Url.Action("MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
                                     <img src="~/Content/images/left-arrow.png" alt="left-arrow">
                                 </a>
                             </li>
@@ -102,7 +122,7 @@
                         else
                         {
                             <li class="page-item">
-                                <a class="page-link" aria-label="Previous" href="@Url.Action("MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber - 1 })">
+                                <a class="page-link" aria-label="Previous" href="@Url.Action("MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber - 1 })">
                                     <img src="~/Content/images/left-arrow.png" alt="left-arrow">
                                 </a>
                             </li>
@@ -113,13 +133,13 @@
                             if (i == ViewBag.PageNumber)
                             {
                                 <li class="page-item">
-                                    @Html.ActionLink(i.ToString(), "MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
+                                    @Html.ActionLink(i.ToString(), "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
                                 </li>
                             }
                             else
                             {
                                 <li class="page-item">
-                                    @Html.ActionLink(i.ToString(), "MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link" })
+                                    @Html.ActionLink(i.ToString(), "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link" })
                                 </li>
                             }
                         }
@@ -127,7 +147,7 @@
                         @if (ViewBag.PageNumber == totalPages)
                         {
                             <li class="page-item">
-                                <a class="page-link" aria-label="Next" href="@Url.Action("MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                                <a class="page-link" aria-label="Next" href="@Url.Action("MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
                                     <img src="~/Content/images/right-arrow.png" alt="right-arrow">
                                 </a>
                             </li>
@@ -135,7 +155,7 @@
                         else
                         {
                             <li class="page-item">
-                                <a class="page-link" aria-label="Next" href="@Url.Action("MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber + 1 })">
+                                <a class="page-link" aria-label="Next" href="@Url.Action("MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber + 1 })">
                                     <img src="~/Content/images/right-arrow.png" alt="right-arrow">
                                 </a>
                             </li>
@@ -147,4 +167,3 @@
 
     </div>
 </section>
-

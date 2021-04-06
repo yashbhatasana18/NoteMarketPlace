@@ -22,6 +22,18 @@ namespace NotesMarketPlace.Controllers
 
         readonly NotesMarketPlaceEntities db;
 
+        [AllowAnonymous]
+        public ActionResult Home()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Faq()
+        {
+            return View();
+        }
+
         #region Default Constructor
         public HomeController()
         {
@@ -75,11 +87,6 @@ namespace NotesMarketPlace.Controllers
         }
 
         #endregion Initialize User Information
-
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         #region Sell Your Notes
 
@@ -308,19 +315,16 @@ namespace NotesMarketPlace.Controllers
 
         #endregion  AddNote
 
-        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult EditNote(int id, AddNotesModel editnote, string Command)
+        #region Edit Note
+
+        [HttpGet]
+        public ActionResult EditNote(int id)
         {
-            Users user = db.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
+            var user = db.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
 
-            var note = db.SellerNotes.Where(x => x.SellerNotesID == id && x.Status == 6 && x.SellerID == user.UserID && x.IsActive == true).FirstOrDefault();
+            var note = db.SellerNotes.Where(x => x.SellerNotesID == id && x.SellerID == user.UserID && x.Status == 6).FirstOrDefault();
 
-            SellerNotesAttachements AttachFile = db.SellerNotesAttachements.FirstOrDefault(x => x.NoteID == note.SellerNotesID && x.IsActive == true);
-
-            if (note == null)
-            {
-                return Content("You can't have access to this file");
-            }
+            var FileNote = db.SellerNotesAttachements.Where(x => x.NoteID == note.SellerNotesID).ToList();
 
             var NoteCategoryList = db.NoteCategories.ToList();
             ViewBag.NotesCategory = new SelectList(NoteCategoryList, "NoteCategoriesID", "Name");
@@ -331,6 +335,9 @@ namespace NotesMarketPlace.Controllers
             var CountryList = db.Countries.ToList();
             ViewBag.NotesCountry = new SelectList(CountryList, "CountriesID", "Name");
 
+            AddNotesModel editnote = new AddNotesModel();
+
+            editnote.SellerNotesID = note.SellerNotesID;
             editnote.NoteType = note.NoteType;
             editnote.Title = note.Title;
             editnote.Category = note.Category;
@@ -354,27 +361,21 @@ namespace NotesMarketPlace.Controllers
             ViewBag.ImageName = Path.GetFileName(note.DisplayPicture);
             ViewBag.PreviewName = Path.GetFileName(note.NotesPreview);
 
+            return View(editnote);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditNote(AddNotesModel editnote, string Command)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
+
+            SellerNotes note = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == editnote.SellerNotesID && x.Status == 6 && x.SellerID == user.UserID && x.IsActive == true);
+
+            SellerNotesAttachements AttachFile = db.SellerNotesAttachements.FirstOrDefault(x => x.NoteID == note.SellerNotesID && x.IsActive == true);
+
             if (user != null && ModelState.IsValid)
             {
-                note.Title = editnote.Title;
-                note.Status = Command == "Save" ? 6 : 7;
-                note.Category = editnote.Category;
-                note.NoteType = editnote.NoteType;
-                note.NumberOfPages = editnote.NumberOfPages;
-                note.Description = editnote.Description;
-                note.UniversityName = editnote.UniversityName;
-                note.Country = editnote.Country;
-                note.Course = editnote.Course;
-                note.CourseCode = editnote.CourseCode;
-                note.Professor = editnote.Professor;
-                note.IsPaid = editnote.IsPaid;
-                note.SellingPrice = editnote.IsPaid == false ? 0 : note.SellingPrice;
-                note.ModifiedDate = DateTime.Now;
-
-                db.Configuration.ValidateOnSaveEnabled = false;
-                db.SaveChanges();
-
-
                 if (editnote.DisplayPicture != null)
                 {
                     string FileNameDelete = System.IO.Path.GetFileName(note.DisplayPicture);
@@ -387,7 +388,7 @@ namespace NotesMarketPlace.Controllers
                     string displayPictureFileName = Path.GetFileNameWithoutExtension(editnote.NoteDisplayPicturePath.FileName);
                     string displayPictureExtension = Path.GetExtension(editnote.NoteDisplayPicturePath.FileName);
                     displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
-                    editnote.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
+                    note.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
                     displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
                     editnote.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
 
@@ -407,7 +408,7 @@ namespace NotesMarketPlace.Controllers
                     string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NotePreviewFilePath.FileName);
                     string notePreviewFilePathExtension = Path.GetExtension(editnote.NotePreviewFilePath.FileName);
                     notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
-                    editnote.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
+                    note.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
                     notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
                     editnote.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
 
@@ -417,8 +418,7 @@ namespace NotesMarketPlace.Controllers
 
                 if (editnote.NoteUploadFilePath != null)
                 {
-
-                    string FileNameDelete = System.IO.Path.GetFileName(AttachFile.FilePath);
+                    string FileNameDelete = System.IO.Path.GetFileName(editnote.FilePath);
                     string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
                     FileInfo file = new FileInfo(PathPreview);
                     if (file.Exists)
@@ -436,11 +436,32 @@ namespace NotesMarketPlace.Controllers
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.SaveChanges();
                 }
+
+                note.Title = editnote.Title;
+                note.Status = Command == "Save" ? 6 : 7;
+                note.Category = editnote.Category;
+                note.NoteType = editnote.NoteType;
+                note.NumberOfPages = editnote.NumberOfPages;
+                note.Description = editnote.Description;
+                note.UniversityName = editnote.UniversityName;
+                note.Country = editnote.Country;
+                note.Course = editnote.Course;
+                note.CourseCode = editnote.CourseCode;
+                note.Professor = editnote.Professor;
+                note.IsPaid = editnote.IsPaid;
+                note.SellingPrice = editnote.IsPaid == false ? 0 : note.SellingPrice;
+                note.ModifiedDate = DateTime.Now;
+
+                db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+
                 return RedirectToAction("SellYourNotes", "Home");
             }
 
             return View(editnote);
         }
+
+        #endregion Edit Note
 
         #region Delete Note
 
@@ -502,6 +523,112 @@ namespace NotesMarketPlace.Controllers
 
         #endregion Delete Note
 
+        #region Search Notes
+
+        [AllowAnonymous]
+        public ActionResult SearchNotes(int? Type, int? Category, string University, string Course, int? Country, int? Rating, string search)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                // get all types
+                var type = context.NoteTypes.Where(m => m.IsActive == true).ToList();
+                // get all category
+                var category = context.NoteCategories.Where(m => m.IsActive == true).ToList();
+                // get distinct university
+                var university = context.SellerNotes.Where(m => m.UniversityName != null).Select(x => x.UniversityName).Distinct().ToList();
+                // get distinct courses
+                var course = context.SellerNotes.Where(m => m.Course != null).Select(x => x.Course).Distinct().ToList();
+                // get all countries
+                var country = context.SellerNotes.Where(m => m.Countries != null).Select(x => x.Countries).Distinct().ToList();
+
+                // get all book details
+                var notes = (from Notes in context.SellerNotes
+                             join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
+                             where Status.Value == "Published" && Notes.IsActive == true
+                             let avgRatings = (from Review in context.SellerNotesReviews
+                                               where Review.NoteID == Notes.SellerID
+                                               group Review by Review.NoteID into grp
+                                               select new SellerNotesReviewsModel
+                                               {
+                                                   Ratings = Math.Round(grp.Average(m => m.Ratings)),
+                                                   Total = grp.Count()
+                                               })
+                             let spamNote = (from Spam in context.SellerNotesReportedIssues
+                                             where Spam.NoteID == Notes.SellerID
+                                             group Spam by Spam.ReportedByID into grp
+                                             select new SellerNotesReportedIssuesModel
+                                             {
+                                                 Total = grp.Count()
+                                             })
+                             select new SearchNotesModel
+                             {
+                                 SellerID = Notes.SellerID,
+                                 SellerNotesID = Notes.SellerNotesID,
+                                 Title = Notes.Title,
+                                 Status = Notes.Status,
+                                 ActionedBy = Notes.ActionedBy,
+                                 AdminRemarks = Notes.AdminRemarks,
+                                 PublishedDate = Notes.PublishedDate,
+                                 DisplayPicture = Notes.DisplayPicture,
+                                 NoteType = Notes.NoteType,
+                                 NumberOfPages = Notes.NumberOfPages,
+                                 Description = Notes.Description,
+                                 UniversityName = Notes.UniversityName,
+                                 Country = Notes.Country,
+                                 Course = Notes.Course,
+                                 CourseCode = Notes.CourseCode,
+                                 Professor = Notes.Professor,
+                                 IsPaid = Notes.IsPaid,
+                                 SellingPrice = Notes.SellingPrice,
+                                 NotesPreview = Notes.NotesPreview,
+                                 Reviews = avgRatings.Select(a => a.Ratings).FirstOrDefault(),
+                                 TotalReviews = avgRatings.Select(a => a.Total).FirstOrDefault(),
+                                 TotalSpams = spamNote.Select(a => a.Total).FirstOrDefault()
+                             }).ToList();
+
+                ViewBag.TypeList = type;
+                ViewBag.CategoryList = category;
+                ViewBag.University = university;
+                ViewBag.Course = course;
+                ViewBag.Country = country;
+
+                var filternotes = notes;
+
+                // if filter value is available
+                if (!Type.Equals(null))
+                {
+                    filternotes = filternotes.Where(m => m.NoteType == Type).ToList();
+                }
+                if (!Category.Equals(null))
+                {
+                    filternotes = filternotes.Where(m => m.Category == Category).ToList();
+                }
+                if (University != null)
+                {
+                    filternotes = filternotes.Where(m => m.UniversityName == University).ToList();
+                }
+                if (Course != null)
+                {
+                    filternotes = filternotes.Where(m => m.Course == Course).ToList();
+                }
+                if (!Country.Equals(null))
+                {
+                    filternotes = filternotes.Where(m => m.Country == Country).ToList();
+                }
+                if (!Rating.Equals(null))
+                {
+                    filternotes = filternotes.Where(m => m.Reviews >= Rating).ToList();
+                }
+                if (search != null)
+                {
+                    filternotes = filternotes.Where(m => m.Title.ToLower().Contains(search.ToLower())).ToList();
+                }
+                return View(filternotes);
+            }
+        }
+
+        #endregion Search Notes
+
         #region Note Details
 
         [AllowAnonymous]
@@ -527,6 +654,7 @@ namespace NotesMarketPlace.Controllers
                                  Description = Notes.Description,
                                  Image = Notes.DisplayPicture,
                                  Price = Notes.SellingPrice,
+                                 IsPaid = Notes.IsPaid,
                                  Institute = Notes.UniversityName == null ? "--" : Notes.UniversityName,
                                  Country = Country.Name == null ? "--" : Country.Name,
                                  CourseName = Notes.Course == null ? "--" : Notes.Course,
@@ -684,127 +812,109 @@ namespace NotesMarketPlace.Controllers
 
         #endregion Purchase Note
 
-        byte[] GetFile(string s)
+        #region Download Note
+
+        public ActionResult Download(int noteId, int userId)
         {
-            FileStream fs = System.IO.File.OpenRead(s);
-            byte[] data = new byte[fs.Length];
-            int br = fs.Read(data, 0, data.Length);
-            if (br != fs.Length)
+            //Download the file                                                
+            var user = db.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
+
+            //check user enter the profile details or not
+            bool temp = db.UserProfile.Any(x => x.UserID == user.UserID);
+            if (!temp)
             {
-                throw new IOException(s);
+                return RedirectToAction("MyProfile", "Account");
             }
-            return data;
+
+            //count notes for zip or simple note download
+            var note = db.SellerNotes.Find(noteId);
+            var count = db.SellerNotesAttachements.Where(x => x.NoteID == noteId).Count();
+            string notesattachementpath = "~/Content/NotesImages/NotesPDF/";
+            if (count > 1)
+            {
+                var noteattachement = db.SellerNotesAttachements.Where(x => x.NoteID == note.SellerNotesID).ToList();
+            }
+
+            //full path for download file
+            string filename = db.SellerNotesAttachements.FirstOrDefault(x => x.NoteID == noteId).FileName;
+            string attachmentspath = notesattachementpath + filename;
+            string fullpath = System.IO.Path.Combine(notesattachementpath, filename);
+
+            //when user first time download
+            if (!db.Downloads.Any(x => x.NoteID == noteId && x.Downloader == user.UserID))
+            {
+
+                //Save data in database 
+                SellerNotes obj = new SellerNotes();
+                NoteCategories cat = new NoteCategories();
+                int category = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId).Category;
+                string title = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId).Title;
+
+                Downloads downloadnotedetail = new Downloads();
+
+                downloadnotedetail.NoteID = noteId;
+                downloadnotedetail.Seller = userId;
+                downloadnotedetail.Downloader = user.UserID;
+                downloadnotedetail.AttachmentPath = fullpath;
+                downloadnotedetail.NoteTitle = title;
+                downloadnotedetail.NoteCategory = db.NoteCategories.FirstOrDefault(x => x.NoteCategoriesID == category).Name;
+                downloadnotedetail.CreatedDate = DateTime.Now;
+                downloadnotedetail.CreatedBy = userId;
+                downloadnotedetail.ModifiedDate = DateTime.Now;
+                downloadnotedetail.ModifiedBy = userId;
+                downloadnotedetail.AttachmentDownloadedDate = DateTime.Now;
+                //downloadnotedetail.IsActive = true;
+
+
+                var notes = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId);
+                if (notes.IsPaid)
+                {
+                    downloadnotedetail.IsSellerHasAllowedDownload = false;
+                    downloadnotedetail.IsAttachmentDownloaded = false;
+                    downloadnotedetail.IsPaid = true;
+                    downloadnotedetail.PurchasedPrice = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId).SellingPrice;
+
+                    db.Downloads.Add(downloadnotedetail);
+                    db.SaveChanges();
+
+                    return RedirectToAction("NoteDetails", new { id = noteId });
+                }
+
+                downloadnotedetail.IsSellerHasAllowedDownload = true;
+                downloadnotedetail.IsAttachmentDownloaded = true;
+                downloadnotedetail.PurchasedPrice = 0;
+                downloadnotedetail.IsPaid = false;
+
+                db.Downloads.Add(downloadnotedetail);
+                db.SaveChanges();
+            }
+
+            //check allow download
+            var res = db.Downloads.FirstOrDefault(x => x.NoteID == noteId);
+            if (res.IsSellerHasAllowedDownload == false && res.IsPaid == true)
+            {
+                int userOfNote = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId).SellerID;
+                string name = db.Users.FirstOrDefault(x => x.UserID == userOfNote).FirstName;
+                string fullName = user.FirstName + " " + user.LastName;
+                //forallowdownload(name, fullName);
+
+                return RedirectToAction("NoteDetails", new { id = noteId });
+            }
+
+            Downloads forModifydata = new Downloads();
+            forModifydata.ModifiedDate = DateTime.Now;
+            forModifydata.AttachmentDownloadedDate = DateTime.Now;
+            db.SaveChanges();
+
+            //for only one file
+            return File(fullpath, "text/plain", filename);
         }
 
-        #region Search Notes
-
-        [AllowAnonymous]
-        public ActionResult SearchNotes(int? Type, int? Category, string University, string Course, int? Country, int? Rating, string search)
-        {
-            using (var context = new NotesMarketPlaceEntities())
-            {
-                // get all types
-                var type = context.NoteTypes.Where(m => m.IsActive == true).ToList();
-                // get all category
-                var category = context.NoteCategories.Where(m => m.IsActive == true).ToList();
-                // get distinct university
-                var university = context.SellerNotes.Where(m => m.UniversityName != null).Select(x => x.UniversityName).Distinct().ToList();
-                // get distinct courses
-                var course = context.SellerNotes.Where(m => m.Course != null).Select(x => x.Course).Distinct().ToList();
-                // get all countries
-                var country = context.SellerNotes.Where(m => m.Countries != null).Select(x => x.Countries).Distinct().ToList();
-
-                // get all book details
-                var notes = (from Notes in context.SellerNotes
-                             join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
-                             where Status.Value == "Published" && Notes.IsActive == true
-                             let avgRatings = (from Review in context.SellerNotesReviews
-                                               where Review.NoteID == Notes.SellerID
-                                               group Review by Review.NoteID into grp
-                                               select new SellerNotesReviewsModel
-                                               {
-                                                   Ratings = Math.Round(grp.Average(m => m.Ratings)),
-                                                   Total = grp.Count()
-                                               })
-                             let spamNote = (from Spam in context.SellerNotesReportedIssues
-                                             where Spam.NoteID == Notes.SellerID
-                                             group Spam by Spam.ReportedByID into grp
-                                             select new SellerNotesReportedIssuesModel
-                                             {
-                                                 Total = grp.Count()
-                                             })
-                             select new SearchNotesModel
-                             {
-                                 SellerID = Notes.SellerID,
-                                 SellerNotesID = Notes.SellerNotesID,
-                                 Title = Notes.Title,
-                                 Status = Notes.Status,
-                                 ActionedBy = Notes.ActionedBy,
-                                 AdminRemarks = Notes.AdminRemarks,
-                                 PublishedDate = Notes.PublishedDate,
-                                 DisplayPicture = Notes.DisplayPicture,
-                                 NoteType = Notes.NoteType,
-                                 NumberOfPages = Notes.NumberOfPages,
-                                 Description = Notes.Description,
-                                 UniversityName = Notes.UniversityName,
-                                 Country = Notes.Country,
-                                 Course = Notes.Course,
-                                 CourseCode = Notes.CourseCode,
-                                 Professor = Notes.Professor,
-                                 IsPaid = Notes.IsPaid,
-                                 SellingPrice = Notes.SellingPrice,
-                                 NotesPreview = Notes.NotesPreview,
-                                 Reviews = avgRatings.Select(a => a.Ratings).FirstOrDefault(),
-                                 TotalReviews = avgRatings.Select(a => a.Total).FirstOrDefault(),
-                                 TotalSpams = spamNote.Select(a => a.Total).FirstOrDefault()
-                             }).ToList();
-
-                ViewBag.TypeList = type;
-                ViewBag.CategoryList = category;
-                ViewBag.University = university;
-                ViewBag.Course = course;
-                ViewBag.Country = country;
-
-                var filternotes = notes;
-
-                // if filter value is available
-                if (!Type.Equals(null))
-                {
-                    filternotes = filternotes.Where(m => m.NoteType == Type).ToList();
-                }
-                if (!Category.Equals(null))
-                {
-                    filternotes = filternotes.Where(m => m.Category == Category).ToList();
-                }
-                if (University != null)
-                {
-                    filternotes = filternotes.Where(m => m.UniversityName == University).ToList();
-                }
-                if (Course != null)
-                {
-                    filternotes = filternotes.Where(m => m.Course == Course).ToList();
-                }
-                if (!Country.Equals(null))
-                {
-                    filternotes = filternotes.Where(m => m.Country == Country).ToList();
-                }
-                if (!Rating.Equals(null))
-                {
-                    filternotes = filternotes.Where(m => m.Reviews >= Rating).ToList();
-                }
-                if (search != null)
-                {
-                    filternotes = filternotes.Where(m => m.Title.ToLower().Contains(search.ToLower())).ToList();
-                }
-                return View(filternotes);
-            }
-        }
-
-        #endregion Search Notes
+        #endregion Download Note
 
         #region Buyer Request
 
-        public ActionResult BuyerRequest()
+        public ActionResult BuyerRequest(string txtSearch, string SortOrder, string SortBy, int PageNumber = 1)
         {
             string userEmail = User.Identity.Name;
 
@@ -831,7 +941,30 @@ namespace NotesMarketPlace.Controllers
                                   AttachmentDownloadedDate = Purchase.AttachmentDownloadedDate
                               }).OrderByDescending(m => m.AttachmentDownloadedDate).ToList();
 
-                return View(result);
+                ViewBag.SortOrder = SortOrder;
+                ViewBag.SortBy = SortBy;
+                var BuyerRequestresult = result;
+
+                if (txtSearch != null)
+                {
+                    BuyerRequestresult = BuyerRequestresult.Where(x => x.NoteTitle.ToLower().Contains(txtSearch.ToLower())).ToList();
+
+                    //Sorting
+                    BuyerRequestresult = ApplySorting(SortOrder, SortBy, BuyerRequestresult);
+
+                    //Pagination
+                    BuyerRequestresult = ApplyPagination(BuyerRequestresult, PageNumber);
+                }
+                else
+                {
+                    //Sorting
+                    BuyerRequestresult = ApplySorting(SortOrder, SortBy, BuyerRequestresult);
+
+                    //Pagination
+                    BuyerRequestresult = ApplyPagination(BuyerRequestresult, PageNumber);
+                }
+
+                return View(BuyerRequestresult);
 
             }
         }
@@ -883,9 +1016,77 @@ namespace NotesMarketPlace.Controllers
 
         #endregion AllowDownload
 
+        #region My Download Notes
+
+
+
+        #endregion My Download Notes
+
+        #region My Sold Notes
+
+        public ActionResult MySoldNotes(string txtSearch, string SortOrder, string SortBy, int PageNumber = 1)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                // current login userId
+                int currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name).UserID;
+
+                var result = (from Purchase in context.Downloads
+                              join Note in context.SellerNotes on Purchase.NoteID equals Note.SellerNotesID
+                              join Downloader in context.Users on Purchase.Downloader equals Downloader.UserID
+                              //join Seller in context.Users on Purchase.Seller equals Seller.UserID
+                              //join Users in context.Users on Note.SellerID equals Users.UserID
+                              join UserProfile in context.UserProfile on Note.SellerID equals UserProfile.UserID
+                              join Category in context.NoteCategories on Note.Category equals Category.NoteCategoriesID
+                              where Purchase.IsSellerHasAllowedDownload == true && Purchase.Seller == currentUser
+                              select new MySoldNotesModel
+                              {
+                                  Id = Purchase.DownloadsID,
+                                  UserID = currentUser,
+                                  NoteId = Purchase.NoteID,
+                                  Title = Note.Title,
+                                  Category = Category.Name,
+                                  EmailID = Downloader.EmailID,
+                                  Phone = UserProfile.PhoneNumber,
+                                  Buyer = Downloader.EmailID,
+                                  SellType = Purchase.PurchasedPrice == 0 ? "Free" : "Paid",
+                                  Price = Purchase.PurchasedPrice,
+                                  DownloadDate = Purchase.AttachmentDownloadedDate
+                              }).ToList();
+
+                ViewBag.SortOrder = SortOrder;
+                ViewBag.SortBy = SortBy;
+                var MySoldNotesresult = result;
+
+                if (txtSearch != null)
+                {
+                    MySoldNotesresult = MySoldNotesresult.Where(x => x.Title.ToLower().Contains(txtSearch.ToLower())).ToList();
+
+                    //Sorting
+                    MySoldNotesresult= ApplySorting(SortOrder, SortBy, MySoldNotesresult);
+
+                    //Pagination
+                    MySoldNotesresult= ApplyPagination(MySoldNotesresult, PageNumber);
+                }
+                else
+                {
+                    //Sorting
+                    MySoldNotesresult= ApplySorting(SortOrder, SortBy, MySoldNotesresult);
+
+                    //Pagination
+                    MySoldNotesresult= ApplyPagination(MySoldNotesresult, PageNumber);
+                }
+
+                return View(MySoldNotesresult);
+
+            }
+        }
+
+        #endregion My Sold Notes
+
         #region My Rejected Notes
 
-        public ActionResult MyRejectedNotes()
+        public ActionResult MyRejectedNotes(string txtSearch, string SortOrder, string SortBy, int PageNumber = 1)
         {
             using (var context = new NotesMarketPlaceEntities())
             {
@@ -899,12 +1100,37 @@ namespace NotesMarketPlace.Controllers
                               select new MyRejectedNotesModel
                               {
                                   Id = Notes.SellerNotesID,
+                                  UserId = Notes.SellerID,
                                   Title = Notes.Title,
                                   Category = Category.Name,
                                   Remark = Notes.AdminRemarks,
                                   DownloadNote = Attachment.FilePath
                               }).ToList();
-                return View(result);
+
+                ViewBag.SortOrder = SortOrder;
+                ViewBag.SortBy = SortBy;
+                var MyRejectedNotesresult = result;
+
+                if (txtSearch != null)
+                {
+                    MyRejectedNotesresult = MyRejectedNotesresult.Where(x => x.Title.ToLower().Contains(txtSearch.ToLower())).ToList();
+
+                    //Sorting
+                    MyRejectedNotesresult = ApplySorting(SortOrder, SortBy, MyRejectedNotesresult);
+
+                    //Pagination
+                    MyRejectedNotesresult = ApplyPagination(MyRejectedNotesresult, PageNumber);
+                }
+                else
+                {
+                    //Sorting
+                    MyRejectedNotesresult = ApplySorting(SortOrder, SortBy, MyRejectedNotesresult);
+
+                    //Pagination
+                    MyRejectedNotesresult = ApplyPagination(MyRejectedNotesresult, PageNumber);
+                }
+
+                return View(MyRejectedNotesresult);
             }
         }
 
@@ -977,12 +1203,6 @@ namespace NotesMarketPlace.Controllers
         }
 
         #endregion ContactUs
-
-        [AllowAnonymous]
-        public ActionResult Faq()
-        {
-            return View();
-        }
 
         #region Apply Sorting
 
@@ -1094,6 +1314,168 @@ namespace NotesMarketPlace.Controllers
             }
             return result;
         }
+        public List<MyRejectedNotesModel> ApplySorting(string SortOrder, string SortBy, List<MyRejectedNotesModel> result)
+        {
+            switch (SortBy)
+            {
+                case "Category":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Category).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Title":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Title).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                default:
+                    result = result.OrderByDescending(x => x.CreatedDate).ToList();
+                    break;
+            }
+            return result;
+        }
+        public List<BuyerRequestModel> ApplySorting(string SortOrder, string SortBy, List<BuyerRequestModel> result)
+        {
+            switch (SortBy)
+            {
+                case "Category":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.NoteCategory).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.NoteCategory).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.NoteCategory).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Title":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.NoteTitle).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.NoteTitle).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.NoteTitle).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                default:
+                    result = result.OrderByDescending(x => x.CreatedDate).ToList();
+                    break;
+            }
+            return result;
+        }
+        public List<MySoldNotesModel> ApplySorting(string SortOrder, string SortBy, List<MySoldNotesModel> result)
+        {
+            switch (SortBy)
+            {
+                case "Category":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Category).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Title":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Title).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                default:
+                    result = result.OrderByDescending(x => x.DownloadDate).ToList();
+                    break;
+            }
+            return result;
+        }
 
         #endregion Apply Sorting
 
@@ -1117,7 +1499,46 @@ namespace NotesMarketPlace.Controllers
 
             return result;
         }
+        public List<MyRejectedNotesModel> ApplyPagination(List<MyRejectedNotesModel> result, int PageNumber)
+        {
+            ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
+            ViewBag.PageNumber = PageNumber;
+
+            result = result.Skip((PageNumber - 1) * 5).Take(5).ToList();
+
+            return result;
+        }
+        public List<BuyerRequestModel> ApplyPagination(List<BuyerRequestModel> result, int PageNumber)
+        {
+            ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
+            ViewBag.PageNumber = PageNumber;
+
+            result = result.Skip((PageNumber - 1) * 5).Take(5).ToList();
+
+            return result;
+        }
+        public List<MySoldNotesModel> ApplyPagination(List<MySoldNotesModel> result, int PageNumber)
+        {
+            ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
+            ViewBag.PageNumber = PageNumber;
+
+            result = result.Skip((PageNumber - 1) * 5).Take(5).ToList();
+
+            return result;
+        }
 
         #endregion Apply Pagination
+
+        byte[] GetFile(string s)
+        {
+            FileStream fs = System.IO.File.OpenRead(s);
+            byte[] data = new byte[fs.Length];
+            int br = fs.Read(data, 0, data.Length);
+            if (br != fs.Length)
+            {
+                throw new IOException(s);
+            }
+            return data;
+        }
     }
 }

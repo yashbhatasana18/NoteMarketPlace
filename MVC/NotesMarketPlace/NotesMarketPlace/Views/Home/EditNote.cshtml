@@ -132,6 +132,7 @@
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.SellerNotesID)
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">

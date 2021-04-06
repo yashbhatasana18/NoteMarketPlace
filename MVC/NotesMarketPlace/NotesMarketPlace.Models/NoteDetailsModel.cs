@@ -21,6 +21,7 @@ namespace NotesMarketPlace.Models
         public string CourseCode { get; set; }
         public string Professor { get; set; }
         public decimal Pages { get; set; }
+        public bool IsPaid { get; set; }
 
         public DateTime? ApprovedDate { get; set; }
         public string ApproveDate { get; set; }

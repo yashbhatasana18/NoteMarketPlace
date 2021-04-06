@@ -188,7 +188,7 @@
                                                 <td>@item.Category</td>
                                                 <td>@item.Status</td>
                                                 <td class="text-center">
-                                                    <a href="@Url.Action("NoteDetails", "SearchNote" , new { id=@item.Id })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
+                                                    <a href="@Url.Action("NoteDetails", "Home" , new { id=@item.Id })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
                                                 </td>
                                             </tr>
                                         }
@@ -201,6 +201,7 @@
             </div>
         </div>
 
+        @* Pagination *@
         @{
             double totalPages = ViewBag.TotalPages;
 
@@ -315,7 +316,7 @@
                                         <td>@item.SellType</td>
                                         <td>$@item.Price</td>
                                         <td class="text-center">
-                                            <a href="@Url.Action("NoteDetails", "SearchNote" , new { id=@item.Id })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
+                                            <a href="@Url.Action("NoteDetails", "Home" , new { id=@item.Id })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
                                         </td>
                                     </tr>
                                 }
@@ -327,6 +328,7 @@
             </div>
         </div>
 
+        @* Pagination *@
         @{
             double totalPages2 = ViewBag.TotalPages2;
 

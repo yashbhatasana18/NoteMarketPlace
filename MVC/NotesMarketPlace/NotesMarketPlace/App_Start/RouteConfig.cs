@@ -16,7 +16,7 @@ namespace NotesMarketPlace
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "SearchNotes", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Home", id = UrlParameter.Optional }
             );
 
             //routes.MapMvcAttributeRoutes();

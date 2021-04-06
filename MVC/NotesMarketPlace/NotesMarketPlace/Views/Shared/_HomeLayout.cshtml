@@ -26,7 +26,7 @@
 
     <!-- Navigation -->
     <header>
-        <nav class="navbar navbar-expand-lg fixed-top ">
+        <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container p-0">
                 <div class="row">
 
@@ -54,7 +54,7 @@
                                     <div class="dropdown">
                                         <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                            aria-haspopup="true" aria-expanded="false">
-                                            <img src="/@ViewBag.UserProfile" width="30" height="30" alt="user-image"
+                                            <img src="../@ViewBag.UserProfile" width="30" height="30" alt="user-image"
                                                  class="d-inline-block align-top avatar-header rounded-circle">
                                         </a>
 
@@ -186,13 +186,49 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
 
     <!-- Custom JS -->
-    <script src="~/Content/FrontPanel/js/upload.js"></script>
-    <script src="~/Content/FrontPanel/js/script.js"></script>
+    @*<script src="~/Content/FrontPanel/js/upload.js"></script>*@
+    @*<script src="~/Content/FrontPanel/js/script.js"></script>*@
 
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+        $(function () {
+            // on page load
+            showHideNav();
+
+            $(window).scroll(function () {
+                showHideNav();
+            });
+
+            function showHideNav() {
+                if ($(window).scrollTop() > 50) {
+                    // show white navigation
+                    $("nav").addClass("white-nav-top");
+                    // logo
+                    $(".navbar-brand img").attr("src", "../../Content/images/logo.png");
+                } else {
+                    // hide white navigation
+                    $("nav").removeClass("white-nav-top");
+                    $(".navbar-brand img").attr("src", "../../Content/images/top-logo.png");
+                }
+            }
+        });
+        /* =======================================================================
+                Mobile Navigation
+        ======================================================================= */
+        $(function () {
+            // show
+            $("#mobile-nav-open-btn").click(function () {
+                $("#mobile-nav").css("height", "100%");
+                $("#mobile-nav-open-btn").css("display", "none");
+            });
+            // hide
+            $("#mobile-nav-close-btn").click(function () {
+                $("#mobile-nav").css("height", "0%");
+                $("#mobile-nav-open-btn").css("display", "");
+            });
+        });
     </script>
 
 </body>
