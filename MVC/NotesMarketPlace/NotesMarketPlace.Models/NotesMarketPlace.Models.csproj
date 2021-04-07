@@ -56,6 +56,7 @@
     <Compile Include="EditNoteModel.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
     <Compile Include="LoginModel.cs" />
+    <Compile Include="MyDownloadsModel.cs" />
     <Compile Include="MyRejectedNotesModel.cs" />
     <Compile Include="MySoldNotesModel.cs" />
     <Compile Include="NoteCategoriesModel.cs" />

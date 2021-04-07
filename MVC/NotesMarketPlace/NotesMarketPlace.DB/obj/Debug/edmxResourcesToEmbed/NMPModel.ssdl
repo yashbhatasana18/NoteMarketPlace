@@ -140,7 +140,7 @@
     <Property Name="NoteID" Type="int" Nullable="false" />
     <Property Name="ReviewedByID" Type="int" Nullable="false" />
     <Property Name="AgainstDownloadID" Type="int" Nullable="false" />
-    <Property Name="Ratings" Type="decimal" Precision="1" Scale="1" Nullable="false" />
+    <Property Name="Ratings" Type="decimal" Precision="18" Scale="0" Nullable="false" />
     <Property Name="Comments" Type="varchar(max)" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />

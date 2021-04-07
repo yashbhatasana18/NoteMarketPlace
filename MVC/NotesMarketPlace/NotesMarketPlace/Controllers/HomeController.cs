@@ -1018,7 +1018,136 @@ namespace NotesMarketPlace.Controllers
 
         #region My Download Notes
 
+        public ActionResult MyDownloads(string txtSearch, string SortOrder, string SortBy, int PageNumber = 1)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                // current login userId
+                int currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name).UserID;
 
+                var result = (from Purchase in context.Downloads
+                              join Note in context.SellerNotes on Purchase.NoteID equals Note.SellerNotesID
+                              join Downloader in context.Users on Purchase.Downloader equals Downloader.UserID
+                              join Seller in context.Users on Purchase.Seller equals Seller.UserID
+                              join UserProfile in context.UserProfile on Note.SellerID equals UserProfile.UserID
+                              join Category in context.NoteCategories on Note.Category equals Category.NoteCategoriesID
+                              where Purchase.IsSellerHasAllowedDownload == true && Purchase.Downloader == currentUser
+                              select new MyDownloadsModel
+                              {
+                                  NoteId = Purchase.NoteID,
+                                  UserID = currentUser,
+                                  PurchaseId = Purchase.DownloadsID,
+                                  Title = Note.Title,
+                                  Category = Category.Name,
+                                  Buyer = Downloader.EmailID,
+                                  EmailID = Downloader.EmailID,
+                                  Phone = UserProfile.PhoneNumber,
+                                  Price = Purchase.PurchasedPrice,
+                                  SellType = Purchase.PurchasedPrice == 0 ? "Free" : "Paid",
+                                  DownloadDate = Purchase.AttachmentDownloadedDate
+                              }).ToList();
+
+                ViewBag.SortOrder = SortOrder;
+                ViewBag.SortBy = SortBy;
+                var MyDownloadsresult = result;
+
+                if (txtSearch != null)
+                {
+                    MyDownloadsresult = MyDownloadsresult.Where(x => x.Title.ToLower().Contains(txtSearch.ToLower())).ToList();
+
+                    //Sorting
+                    MyDownloadsresult = ApplySorting(SortOrder, SortBy, MyDownloadsresult);
+
+                    //Pagination
+                    MyDownloadsresult = ApplyPagination(MyDownloadsresult, PageNumber);
+                }
+                else
+                {
+                    //Sorting
+                    MyDownloadsresult = ApplySorting(SortOrder, SortBy, MyDownloadsresult);
+
+                    //Pagination
+                    MyDownloadsresult = ApplyPagination(MyDownloadsresult, PageNumber);
+                }
+
+                return View(MyDownloadsresult);
+            }
+        }
+
+        // user review
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserReview(FormCollection form)
+        {
+            var user = db.Users.Where(x => x.EmailID == User.Identity.Name).FirstOrDefault();
+
+            SellerNotesReviews reviews = new SellerNotesReviews();
+
+            int NoteID = Convert.ToInt32(form["noteid"]);
+            if (!db.SellerNotesReviews.Any(x => x.NoteID == NoteID && x.ReviewedByID == user.UserID))
+            {
+                reviews.NoteID = Convert.ToInt32(form["noteid"]);
+                reviews.AgainstDownloadID = Convert.ToInt32(form["downloadid"]);
+                reviews.ReviewedByID = user.UserID;
+                reviews.Ratings = Convert.ToDecimal(form["rate"]);
+                reviews.Comments = form["review"];
+                reviews.CreatedDate = DateTime.Now;
+                reviews.CreatedBy = user.UserID;
+                reviews.IsActive = true;
+
+                db.SellerNotesReviews.Add(reviews);
+                db.SaveChanges();
+            }
+            else
+            {
+                var review = db.SellerNotesReviews.FirstOrDefault(x => x.NoteID == NoteID && x.ReviewedByID == user.UserID);
+                review.AgainstDownloadID = Convert.ToInt32(form["downloadid"]);
+                review.Ratings = Convert.ToDecimal(form["rate"]);
+                review.Comments = form["review"];
+                review.ModifiedDate = DateTime.Now;
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("MyDownloads");
+
+        }
+
+        // user report spam
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserReport(FormCollection form)
+        {
+            var user = db.Users.Where(x => x.EmailID == User.Identity.Name).FirstOrDefault();
+
+            SellerNotesReportedIssues spamnote = new SellerNotesReportedIssues();
+
+            int NoteID = Convert.ToInt32(form["noteid"]);
+
+            if (!db.SellerNotesReportedIssues.Any(x => x.NoteID == NoteID && x.ReportedByID == user.UserID))
+            {
+                spamnote.NoteID = Convert.ToInt32(form["noteid"]);
+                spamnote.AgainstDownloadID = Convert.ToInt32(form["downloadid"]);
+                spamnote.ReportedByID = user.UserID;
+                spamnote.Remarks = form["spamreport"];
+                spamnote.CreatedDate = DateTime.Now;
+                spamnote.CreatedBy = user.UserID;
+
+                db.SellerNotesReportedIssues.Add(spamnote);
+                db.SaveChanges();
+            }
+            else
+            {
+                var spamreport = db.SellerNotesReportedIssues.FirstOrDefault(x => x.NoteID == NoteID && x.ReportedByID == user.UserID);
+                spamreport.AgainstDownloadID = Convert.ToInt32(form["downloadid"]);
+                spamreport.Remarks = form["spamreport"];
+                spamreport.ModifiedDate = DateTime.Now;
+
+                db.SaveChanges();
+            }
+            return RedirectToAction("MyDownloads");
+
+        }
 
         #endregion My Download Notes
 
@@ -1063,18 +1192,18 @@ namespace NotesMarketPlace.Controllers
                     MySoldNotesresult = MySoldNotesresult.Where(x => x.Title.ToLower().Contains(txtSearch.ToLower())).ToList();
 
                     //Sorting
-                    MySoldNotesresult= ApplySorting(SortOrder, SortBy, MySoldNotesresult);
+                    MySoldNotesresult = ApplySorting(SortOrder, SortBy, MySoldNotesresult);
 
                     //Pagination
-                    MySoldNotesresult= ApplyPagination(MySoldNotesresult, PageNumber);
+                    MySoldNotesresult = ApplyPagination(MySoldNotesresult, PageNumber);
                 }
                 else
                 {
                     //Sorting
-                    MySoldNotesresult= ApplySorting(SortOrder, SortBy, MySoldNotesresult);
+                    MySoldNotesresult = ApplySorting(SortOrder, SortBy, MySoldNotesresult);
 
                     //Pagination
-                    MySoldNotesresult= ApplyPagination(MySoldNotesresult, PageNumber);
+                    MySoldNotesresult = ApplyPagination(MySoldNotesresult, PageNumber);
                 }
 
                 return View(MySoldNotesresult);
@@ -1476,6 +1605,60 @@ namespace NotesMarketPlace.Controllers
             }
             return result;
         }
+        public List<MyDownloadsModel> ApplySorting(string SortOrder, string SortBy, List<MyDownloadsModel> result)
+        {
+            switch (SortBy)
+            {
+                case "Category":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Category).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Title":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Title).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                default:
+                    result = result.OrderByDescending(x => x.DownloadDate).ToList();
+                    break;
+            }
+            return result;
+        }
 
         #endregion Apply Sorting
 
@@ -1518,6 +1701,15 @@ namespace NotesMarketPlace.Controllers
             return result;
         }
         public List<MySoldNotesModel> ApplyPagination(List<MySoldNotesModel> result, int PageNumber)
+        {
+            ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
+            ViewBag.PageNumber = PageNumber;
+
+            result = result.Skip((PageNumber - 1) * 5).Take(5).ToList();
+
+            return result;
+        }
+        public List<MyDownloadsModel> ApplyPagination(List<MyDownloadsModel> result, int PageNumber)
         {
             ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
             ViewBag.PageNumber = PageNumber;

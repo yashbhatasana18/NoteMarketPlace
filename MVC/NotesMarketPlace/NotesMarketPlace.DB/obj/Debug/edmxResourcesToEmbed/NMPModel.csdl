@@ -166,7 +166,7 @@
     <Property Name="NoteID" Type="Int32" Nullable="false" />
     <Property Name="ReviewedByID" Type="Int32" Nullable="false" />
     <Property Name="AgainstDownloadID" Type="Int32" Nullable="false" />
-    <Property Name="Ratings" Type="Decimal" Precision="1" Scale="1" Nullable="false" />
+    <Property Name="Ratings" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
     <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedBy" Type="Int32" />
