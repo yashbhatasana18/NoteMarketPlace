@@ -60,9 +60,6 @@ E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace\obj\Debug\
 E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csproj.CopyComplete
 E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.dll
 E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.pdb
-E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\EntityFramework.xml
-E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Mvc.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\NotesMarketPlace.dll.config
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\NotesMarketPlace.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\NotesMarketPlace.pdb
@@ -112,13 +109,16 @@ E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bi
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\NotesMarketPlace.DB.pdb
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\NotesMarketPlace.DB.dll.config
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\NotesMarketPlace.Models.pdb
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\EntityFramework.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\EntityFramework.SqlServer.xml
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\Newtonsoft.Json.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Razor.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Webpages.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Webpages.Deployment.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Webpages.Razor.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Helpers.xml
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Mvc.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csprojAssemblyReference.cache
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csproj.CoreCompileInputs.cache
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csproj.CopyComplete

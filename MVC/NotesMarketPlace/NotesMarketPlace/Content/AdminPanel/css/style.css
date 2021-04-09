@@ -150,8 +150,8 @@ ul.navbar-nav > li > a.active {
 ======================================================================= */
 /* head */
 #content {
-    margin-top: 150px;
-    margin-bottom: 60px;
+    margin-top: 60px;
+    margin-bottom: 20px;
 }
 
 .heading {
@@ -591,7 +591,7 @@ section {
                             Form
 ======================================================================= */
 .form-group {
-    margin-bottom: 30px !important;
+    /*margin-bottom: 30px !important;*/
 }
 
 .input-group-prepend {
@@ -945,4 +945,20 @@ ul.pagination > li > a {
 .rate > input:checked ~ label:hover ~ label,
 .rate > label:hover ~ input:checked ~ label {
     color: #c59b08;
+}
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+    margin-right: 10px;
+    width: 180px;
+}
+
+.has-search .form-control-feedback {
+    display: block;
+    width: 1.375rem;
+    height: 1.375rem;
+    line-height: 1.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
 }

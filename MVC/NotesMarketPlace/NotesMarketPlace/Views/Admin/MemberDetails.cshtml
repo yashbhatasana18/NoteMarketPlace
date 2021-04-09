@@ -1,7 +1,6 @@
-﻿@model List<NotesMarketPlace.Models.Admin.DashboardModel>
-
+﻿
 @{
-    ViewBag.Title = "Dashboard";
+    ViewBag.Title = "MemberDetails";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -9,65 +8,103 @@
     <div class="container">
 
         <div class="row heading">
-            <div class="col-md-6 col-sm-6 p-0">
-                <h3 class="heading-1">Dashboard</h3>
+            <div class="col-md-12 p-0">
+                <h3 class="heading-1">Member Details</h3>
             </div>
-
-            @*<div class="col-md-6 col-sm-6 text-right p-0">
-                    <a class="btn btn-general" href="../FrontPanel/AddNotes.html">Add Note</a>
-                </div>*@
         </div>
 
-        <div class="row" style="margin-bottom: 60px;">
-            <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2 col-sm-2">
+                <img src="/@ViewBag.Details.ProfileImage" alt="member-image" style=" width: 175px; ">
+            </div>
+            <div class="col-md-5 col-sm-4">
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="text-center card-count">@ViewBag.InReview</p>
-                                <p class="text-center count-text">Numbers of Notes in Review for Publish</p>
-                            </div>
-                        </div>
+                    <div class="col-md-5 td-1">
+                        First Name:
                     </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="text-center card-count">@ViewBag.Downloads</p>
-                                <p class="text-center count-text">Numbers of New Notes Downloaded (Last 7 days)</p>
-                            </div>
-                        </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.FirstName
                     </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="text-center card-count">@ViewBag.Registration</p>
-                                <p class="text-center count-text">Numbers of New Registrations (Last 7 days)</p>
-                            </div>
-                        </div>
+                    <div class="col-md-5 td-1">
+                        Last Name:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.LastName
+                    </div>
+                    <div class="col-md-5 td-1">
+                        Email:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.Email
+                    </div>
+                    <div class="col-md-5 td-1">
+                        DOB:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @(ViewBag.Details.DOB ?? "N/A")
+                    </div>
+                    <div class="col-md-5 td-1">
+                        Phone Number:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @(ViewBag.Details.Phone ?? "N/A")
+                    </div>
+                    <div class="col-md-5  td-1">
+                        College/University:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.University
+                    </div>
+                </div>
+            </div>
+            <span class="vertical-line"></span>
+            <div class="col-md-4 col-sm-4">
+                <div class="row">
+                    <div class="col-md-5 td-1">
+                        Address 1:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.Address1
+                    </div>
+                    <div class="col-md-5 td-1">
+                        Address 2:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.Address2
+                    </div>
+                    <div class="col-md-5 td-1">
+                        City:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.City
+                    </div>
+                    <div class="col-md-5 td-1">
+                        State:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.State
+                    </div>
+                    <div class="col-md-5 td-1">
+                        Country:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.Country
+                    </div>
+                    <div class="col-md-5  td-1">
+                        Zip Code:
+                    </div>
+                    <div class="col-md-7 td-3">
+                        @ViewBag.Details.Zipcode
                     </div>
                 </div>
             </div>
         </div>
+
+        <hr>
 
         <div class="row heading">
-            <div class="col-md-6 col-sm-6 p-0">
-                <h3 class="heading-2">Published Notes</h3>
-            </div>
-
-            <div class="col-md-6 col-sm-6">
-                <div class="row">
-                    @using (Html.BeginForm("Dashboard", "Admin", FormMethod.Post))
-                    {
-                        <div class="col-md-12 col-sm-8 text-right search-1 p-0 form-group has-search">
-                            <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
-                            @Html.TextBox("txtSearch", null, new { @class = "form-control input-search", @placeholder = "Search" })
-                            <button class="btn btn-general" type="submit">Search</button>
-                        </div>
-                    }
-                    <div class="col-md-4 col-sm-4 search-dropdown">
-                        @Html.DropDownList("Month", new SelectList(ViewBag.MonthList, "digit", "Month"), new { @onchange = "MonthFilter(this)", @class = "form-control customDropDown-Multiple" })
-                    </div>
-                </div>
+            <div class="col-md-12 p-0">
+                <h3 class="heading-1">Notes</h3>
             </div>
         </div>
 
@@ -77,27 +114,21 @@
                     <thead>
                         <tr>
                             <th scope="col" class="text-center">Sr No.</th>
-                            <th scope="col">
-                                @Html.ActionLink("Note Title", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
-                            </th>
-                            <th scope="col">
-                                @Html.ActionLink("Category", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
-                            </th>
-                            <th scope="col" class="text-center">Attachment Size</th>
-                            <th scope="col" class="text-center">Sell Type</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Publisher</th>
-                            <th scope="col" class="text-center">Published Date</th>
-                            <th scope="col" class="text-center">Number of Downloads</th>
-                            <th scope="col"></th>
+                            <th scope="col">Note Title</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-center">Downloaded Notes</th>
+                            <th scope="col" class="text-center">Total Earnings</th>
+                            <th scope="col">Date Added</th>
+                            <th scope="col">Published Date</th>
+                            <th scope="col" class="text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            if (Model.Count == 0)
+                        @{ if (Model.Count == 0)
                             {
                                 <tr>
-                                    <td colspan="10" style="text-align:center;">No Data Available</td>
+                                    <td colspan="9" style="text-align:center;">No Record Found</td>
                                 </tr>
                             }
                             else
@@ -108,25 +139,22 @@
                                     count++;
                                     <tr>
                                         <td scope="row" class="text-center">@count</td>
-                                        <td class="td-blue">@item.Title</td>
+                                        <td class="td-text" style="cursor:pointer;" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
                                         <td>@item.Category</td>
-                                        <td class="text-center">@item.AttachmentSize KB</td>
-                                        <td class="text-center">@(item.Price == 0 ? "Free" : "Paid" )</td>
-                                        <td>$@item.Price</td>
-                                        <td>@item.Publisher</td>
-                                        <td class="text-center">@item.PublishDate.ToString("dd-MM-yyyy, HH:mm")</td>
-                                        <td class="text-center td-blue">@item.TotalDownloads</td>
+                                        <td>@item.Status</td>
+                                        <td class="text-center td-text">@item.DownloadedNote</td>
+                                        <td class="text-center">$@(item.Earning ?? 0)</td>
+                                        <td>@item.DateAdded.ToString("dd-MM-yyyy, HH:mm")</td>
+                                        <td>@(item.PublishedDate == null ? "N/A" : item.PublishedDate.GetValueOrDefault().ToString("dd-MM-yyyy, HH:mm"))</td>
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <img src="../Content/images/dots.png" alt="dot-image">
+                                                    <img src="~/Content/images/dots.png" alt="dot-image">
                                                 </a>
 
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="#">Download Notes</a>
-                                                    <a class="dropdown-item" onclick="NoteDetail(@item.Id)">View More Details</a>
-                                                    <a class="dropdown-item" href="#">Unpublish</a>
+                                                    <a class="dropdown-item" href="/Admin/DownloadFile?noteid=@item.NoteId">Download Notes</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -205,10 +233,11 @@
 </section>
 
 <script>
-    function MonthFilter(obj) {
-        location.href = "Dashboard?month=" + obj.value;
+    function Downloaded(id) {
+        location.href = "DownloadedNotes?noteId=" + id;
     }
+
     function NoteDetail(id) {
-        location.href = '../Home/NoteDetails/' + id;
+        location.href = "../Home/NoteDetails/" + id;
     }
 </script>

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AddNotesModel.cs" />
     <Compile Include="Admin\DashboardModel.cs" />
+    <Compile Include="Admin\MembersModel.cs" />
     <Compile Include="BuyerRequestModel.cs" />
     <Compile Include="ChangePasswordModel.cs" />
     <Compile Include="ContactUsModel.cs" />

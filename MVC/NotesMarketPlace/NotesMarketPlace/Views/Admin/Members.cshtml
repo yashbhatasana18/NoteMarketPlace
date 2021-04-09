@@ -1,0 +1,187 @@
+﻿
+@{
+    ViewBag.Title = "Members";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section id="content">
+    <div class="container">
+        <form>
+            <div class="row heading">
+                <div class="col-md-6 col-sm-6 p-0">
+                    <h3 class="heading-1">Members</h3>
+                </div>
+
+                @using (Html.BeginForm("Dashboard", "Admin", FormMethod.Post))
+                {
+                    <div class="col-md-6 col-sm-6 text-right search-1 p-0 form-group has-search">
+                        <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
+                        @Html.TextBox("txtSearch", null, new { @class = "form-control input-search", @placeholder = "Search" })
+                        <button class="btn btn-general" type="submit">Search</button>
+                    </div>
+                }
+            </div>
+
+            <div class="row">
+                <div class="table-top table-responsive">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sr No.</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Joining Date</th>
+                                <th scope="col">Under Review Notes</th>
+                                <th scope="col">Published Notes</th>
+                                <th scope="col">Downloaded Notes</th>
+                                <th scope="col">Total Expenses</th>
+                                <th scope="col">Total Earnings</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ if (Model.Count == 0)
+                                {
+                                    <tr>
+                                        <td colspan="11" style="text-align:center;">No Record found</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int count = 0;
+                                    foreach (var item in Model)
+                                    {
+                                        count++;
+                                        <tr>
+                                            <td class="text-center" scope="row">@count</td>
+                                            <td>@item.FirstName</td>
+                                            <td>@item.LastName</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.JoinDate.ToString("dd-MM-yyyy, HH:mm")</td>
+                                            <td style="cursor:pointer" class="text-center table-td td-blue" onclick="UnderReview('@item.Id')">@item.UnderReviewNotes</td>
+                                            <td style="cursor:pointer" class="text-center table-td td-blue" onclick="Published('@item.Id')">@item.PublishedNotes</td>
+                                            <td style="cursor:pointer" class="text-center table-td td-blue" onclick="Downloaded('@item.Id')">@item.DownloadedNotes</td>
+                                            <td style="cursor:pointer" class="text-center table-td td-blue" onclick="Downloaded('@item.Id')">$@(item.TotalExpense == null ? 0 : item.TotalExpense )</td>
+                                            <td class="text-center">$@(item.TotalEarning == null ? 0 : item.TotalEarning )</td>
+                                            <td class="text-center">
+                                                <div class="dropdown">
+                                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                                       aria-haspopup="true" aria-expanded="false">
+                                                        <img src="~/Content/images/dots.png" alt="dot-image">
+                                                    </a>
+
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                        <a class="dropdown-item" href="/Admin/MemberDetails?id=@item.Id">View More Details</a>
+                                                        <a class="dropdown-item" onclick="Deactivate('@item.Id')">Deactive</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @* Pagination *@
+            @{
+                double totalPages = ViewBag.TotalPages;
+
+                <div class="row text-center">
+                    <div class="col-md-12 num">
+                        <ul class="pagination justify-content-center">
+
+                            @if (ViewBag.PageNumber == 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" aria-label="Previous" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                                        <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" aria-label="Previous" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber - 1 })">
+                                        <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int i = 1; i <= totalPages; i++)
+                            {
+                                if (i == ViewBag.PageNumber)
+                                {
+                                    <li class="page-item">
+                                        @Html.ActionLink(i.ToString(), "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item">
+                                        @Html.ActionLink(i.ToString(), "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link" })
+                                    </li>
+                                }
+                            }
+
+                            @if (ViewBag.PageNumber == totalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" aria-label="Next" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                                        <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" aria-label="Next" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber + 1 })">
+                                        <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+
+        </form>
+    </div>
+</section>
+
+<script>
+
+    function UnderReview(id) {
+        location.href = "NotesUnderReview?sellerId=" + id;
+    }
+
+    function Published(id) {
+        location.href = "PublishedNotes?sellerId=" + id;
+    }
+
+    function Downloaded(id) {
+        location.href = "DownloadedNotes?buyerId=" + id;
+    }
+
+    function Deactivate(id) {
+
+        if (confirm("Are you sure you want to make this member inactive?")) {
+            $.ajax({
+                method: 'POST',
+                url: 'DeactivateUser',
+                data: { userId: id },
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
+
+    }
+
+</script>
