@@ -11,6 +11,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Web.Routing;
+using System.Web;
 
 namespace NotesMarketPlace.Controllers
 {
@@ -140,6 +141,18 @@ namespace NotesMarketPlace.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
+            //HttpCookie cookie = Request.Cookies["LoginModel"];
+            //if (cookie != null)
+            //{
+            //    ViewBag.emailID = cookie["emailID"].ToString();
+
+            //    string EncryptedPassword = cookie["pwd"].ToString();
+            //    byte[] b = Convert.FromBase64String(EncryptedPassword);
+            //    string DecryptPassword = ASCIIEncoding.ASCII.GetString(b);
+
+            //    ViewBag.pwd = DecryptPassword.ToString();
+            //}
+            TempData["WrongPassword"] = "";
             return View();
         }
 
@@ -149,15 +162,84 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                bool isValid = context.Users.Any(x => x.EmailID == model.EmailID && x.Password == model.Password);
-
-                if (isValid)
+                if (!ModelState.IsValid)
                 {
-                    FormsAuthentication.SetAuthCookie(model.EmailID, false);
-                    return RedirectToAction("SearchNotes", "Home");
+                    return RedirectToAction("Login", "Account");
                 }
-                ModelState.AddModelError("", "Invalid EmailID And Password.");
-                return View();
+
+                var isValid = context.Users.Where(x => x.EmailID == model.EmailID).FirstOrDefault();
+
+                if (isValid == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                // user is not active
+                if (isValid.IsActive == false)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                // email not verified
+                if (isValid.IsEmailVerified == false)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                //HttpCookie cookie = new HttpCookie("LoginModel");
+                // if Remember me is checked
+                if (model.RememberMe == true)
+                {
+                    //cookie["emailID"] = model.EmailID;
+
+                    //byte[] b = ASCIIEncoding.ASCII.GetBytes(model.Password);
+                    //string EncryptedPassword = Convert.ToBase64String(b);
+
+                    //cookie["pwd"] = EncryptedPassword;
+                    //cookie.Expires = DateTime.Now.AddDays(2);
+                    //HttpContext.Response.Cookies.Add(cookie);
+                    FormsAuthentication.SetAuthCookie(isValid.EmailID, true);
+                }
+                else
+                {
+                    //cookie.Expires = DateTime.Now.AddDays(-1);
+                    //HttpContext.Response.Cookies.Add(cookie);
+                    FormsAuthentication.SetAuthCookie(isValid.EmailID, false);
+                }
+
+                // check password
+                if (isValid.Password.Equals(model.Password))
+                {
+                    // user is Member
+                    if (isValid.RoleID == 3)
+                    {
+                        // if first time login
+                        var firsttime = context.UserProfile.FirstOrDefault(m => m.UserID == isValid.UserID);
+
+                        if (firsttime == null)
+                        {
+                            //Session["emailID"] = model.EmailID;
+                            return RedirectToAction("MyProfile", "Account");
+                        }
+                        else
+                        {
+                            //Session["emailID"] = model.EmailID;
+                            return RedirectToAction("SearchNotes", "Home");
+                        }
+                    }
+                    // user is Admin
+                    else
+                    {
+                        //Session["emailID"] = model.EmailID;
+                        return RedirectToAction("Dashboard", "Admin");
+                    }
+
+                }
+                else
+                {
+                    TempData["WrongPassword"] = "Wrong Password";
+                    return View("Login");
+                }
             }
         }
         #endregion Login
@@ -167,18 +249,18 @@ namespace NotesMarketPlace.Controllers
         // get my Profile
         public ActionResult UserProfile()
         {
-            using (var _Context = new NotesMarketPlaceEntities())
+            using (var context = new NotesMarketPlaceEntities())
             {
                 // get gender for dropdown
-                var gender = _Context.ReferenceData.Where(m => m.RefCategory == "Gender").ToList();
+                var gender = context.ReferenceData.Where(m => m.RefCategory == "Gender").ToList();
                 // get country
-                var country = _Context.Countries.ToList();
+                var country = context.Countries.ToList();
 
                 // get current userId
-                var currentuser = _Context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
+                var currentuser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
 
                 // get user details
-                var isDetailsAvailable = _Context.UserProfile.FirstOrDefault(m => m.UserID == currentuser.UserID);
+                var isDetailsAvailable = context.UserProfile.FirstOrDefault(m => m.UserID == currentuser.UserID);
 
 
                 var UserProfile = new UserProfileModel();
@@ -186,9 +268,9 @@ namespace NotesMarketPlace.Controllers
                 // check user details available or not
                 if (isDetailsAvailable != null)
                 {
-                    UserProfile = (from Detail in _Context.UserProfile
-                                   join User in _Context.Users on Detail.UserID equals User.UserID
-                                   join Country in _Context.UserProfile on Detail.Country equals Country.Country
+                    UserProfile = (from Detail in context.UserProfile
+                                   join User in context.Users on Detail.UserID equals User.UserID
+                                   join Country in context.UserProfile on Detail.Country equals Country.Country
                                    where Detail.UserID == currentuser.UserID
                                    select new UserProfileModel
                                    {
@@ -264,35 +346,35 @@ namespace NotesMarketPlace.Controllers
         [HttpPost]
         public ActionResult UserProfile(UserProfileModel user)
         {
-            using (var _Context = new NotesMarketPlaceEntities())
+            using (var context = new NotesMarketPlaceEntities())
             {
                 // get gender for dropdown
-                var gender = _Context.ReferenceData.Where(m => m.RefCategory == "Gender").ToList();
+                var gender = context.ReferenceData.Where(m => m.RefCategory == "Gender").ToList();
                 // get country
-                var country = _Context.Countries.ToList();
+                var country = context.Countries.ToList();
 
                 if (ModelState.IsValid)
                 {
                     // get current userId
-                    int currentuser = _Context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name).UserID;
+                    int currentuser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name).UserID;
 
                     // get user details
-                    var isDetailsAvailable = _Context.UserProfile.FirstOrDefault(m => m.UserID == currentuser);
+                    var isDetailsAvailable = context.UserProfile.FirstOrDefault(m => m.UserID == currentuser);
 
                     // check user details available or not
                     if (isDetailsAvailable != null && user != null)
                     {
                         // update details
-                        var userUpdate = _Context.Users.FirstOrDefault(m => m.UserID == currentuser);
-                        var detailsUpdate = _Context.UserProfile.FirstOrDefault(m => m.UserID == currentuser);
+                        var userUpdate = context.Users.FirstOrDefault(m => m.UserID == currentuser);
+                        var detailsUpdate = context.UserProfile.FirstOrDefault(m => m.UserID == currentuser);
 
                         userUpdate.FirstName = user.FirstName;
                         userUpdate.LastName = user.LastName;
                         userUpdate.EmailID = user.EmailID;
                         userUpdate.ModifiedDate = DateTime.Now;
 
-                        _Context.Entry(userUpdate).State = System.Data.Entity.EntityState.Modified;
-                        _Context.SaveChanges();
+                        context.Entry(userUpdate).State = System.Data.Entity.EntityState.Modified;
+                        context.SaveChanges();
 
                         CreateDirectory(currentuser);
 
@@ -328,8 +410,8 @@ namespace NotesMarketPlace.Controllers
                         detailsUpdate.ModifiedBy = currentuser;
                         detailsUpdate.ModifiedDate = DateTime.Now;
 
-                        _Context.Entry(detailsUpdate).State = System.Data.Entity.EntityState.Modified;
-                        _Context.SaveChanges();
+                        context.Entry(detailsUpdate).State = System.Data.Entity.EntityState.Modified;
+                        context.SaveChanges();
                         var id = detailsUpdate.UserProfileID;
                         if (id > 0)
                         {
@@ -382,9 +464,9 @@ namespace NotesMarketPlace.Controllers
                             ModifiedBy = currentuser
                         };
 
-                        _Context.UserProfile.Add(userProfile);
+                        context.UserProfile.Add(userProfile);
 
-                        _Context.SaveChanges();
+                        context.SaveChanges();
                         var id = userProfile.UserProfileID;
                         //return RedirectToAction("UserProfile");
                         if (id > 0)

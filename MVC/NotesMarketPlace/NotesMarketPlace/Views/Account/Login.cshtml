@@ -1,5 +1,23 @@
 ﻿@model NotesMarketPlace.Models.LoginModel
 
+@{
+    string wrongPassword()
+    {
+        if (TempData["WrongPassword"].Equals("Wrong Password"))
+            return "block";
+        else
+            return "none";
+    }
+
+    string wrongPassword2()
+    {
+        if (TempData["WrongPassword"].Equals("Wrong Password"))
+            return "wrong_password";
+        else
+            return "";
+    }
+}
+
 <!DOCTYPE html>
 
 <html>
@@ -25,6 +43,30 @@
 
     <!--Responsive CSS-->
     <link rel="stylesheet" href="~/Content/AdminPanel/css/responsive.css">
+
+    <style>
+        #msg p {
+            text-align: start;
+            font-family: "Open Sans", sans-serif;
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 20px;
+            color: #ff3636;
+            margin: 10px 0 20px 0;
+            display: none;
+        }
+
+        .wrong_password {
+            font-family: "Open Sans", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            border: 1px solid #ff5e5e !important;
+            width: 480px;
+            height: 50px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
 
@@ -51,13 +93,11 @@
 
                     <div class="form-group m-b-30">
                         @Html.LabelFor(model => model.EmailID, "Email")
-
-                        @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control", @id = "login-email", @placeholder = "Enter Email" } })
+                        @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.emailID, @id = "login-email", @placeholder = "Enter Email", required = "required" } })
                         @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group">
-
                         <div class="row">
                             <div class="col-md-6" style="width: 30%;">
                                 @Html.LabelFor(model => model.Password, "Password", new { @style = "display: inline-block;" })
@@ -68,16 +108,19 @@
                         </div>
 
                         <div class="inputContainer">
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @id = "password", @placeholder = "Enter your password", name = "password" } })
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control " + wrongPassword2(), @Value = ViewBag.pwd, @id = "password", @placeholder = "Enter your password", name = "password", required = "required" } })
                             <img src="~/Content/images/eye.png" toggle="#password" class="field-icon toggle-password">
                         </div>
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                        @*<small id="error-password" class="form-text text-muted"><span>The password that you've enter is incorrect.</span></small>*@
+
+                        <div id="msg">
+                            <p style="display: @wrongPassword()">The password you have entered is incorrect</p>
+                        </div>
                     </div>
 
                     <div class="form-group login-checkbox">
-                        <input type="checkbox" id="login-check">
-                        <label for="login-check">Remember Me</label>
+                        @Html.CheckBoxFor(model => model.RememberMe, new { @id = "login-check", @name = "RememberMe" })
+                        @Html.LabelFor(model => model.RememberMe, new { @for = "login-check" })
                     </div>
 
                     <input type="submit" class="btn btn-primary btn-lg btn-block m-b-20" id="login-btn" value="LOGIN" style="border-color: #6255a5" />
