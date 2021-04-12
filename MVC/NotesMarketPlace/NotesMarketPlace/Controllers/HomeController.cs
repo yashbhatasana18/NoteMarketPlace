@@ -1,5 +1,6 @@
 ﻿using NotesMarketPlace.DB;
 using NotesMarketPlace.DB.DBOperations;
+using NotesMarketPlace.Email;
 using NotesMarketPlace.Models;
 using System;
 using System.Collections.Generic;

@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-<!-- Content -->
 <section id="content">
     <div class="container">
 
@@ -15,15 +14,14 @@
                 <div class="col-md-6 col-sm-6 p-0">
                     <h3 class="heading-1">My Rejected Notes</h3>
                 </div>
-
-                <div class="col-md-6 col-sm-6 text-right search-1 p-0 form-group has-search">
+                <div class="col-md-6 col-sm-6 text-right search-1 p-0 has-search">
                     <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
                     @Html.TextBox("txtSearch", null, new { @class = "form-control input-search", @placeholder = "Search" })
                     <button class="btn btn-general" type="submit">Search</button>
                 </div>
-
             </div>
         }
+
 
         <div class="row">
             <div class="table-top table-responsive">
@@ -147,4 +145,3 @@
 
     </div>
 </section>
-

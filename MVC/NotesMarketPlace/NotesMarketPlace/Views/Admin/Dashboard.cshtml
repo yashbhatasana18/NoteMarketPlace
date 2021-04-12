@@ -5,204 +5,246 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<section id="content">
-    <div class="container">
+<style>
+    #btnSubmit, #btnPublish {
+        padding: 6px 10px;
+        margin-bottom: 0;
+        background-color: #6255a5;
+        width: 150px;
+        height: 40px;
+        border-radius: 3px;
+        color: #ffffff;
+        text-decoration: none;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 18px;
+        line-height: 22px;
+    }
 
-        <div class="row heading">
-            <div class="col-md-6 col-sm-6 p-0">
-                <h3 class="heading-1">Dashboard</h3>
-            </div>
+    .modal-footer {
+        justify-content: flex-start;
+        padding: 15px 20px;
+    }
+</style>
 
-            @*<div class="col-md-6 col-sm-6 text-right p-0">
-                    <a class="btn btn-general" href="../FrontPanel/AddNotes.html">Add Note</a>
-                </div>*@
-        </div>
+<div class="row heading">
+    <div class="col-md-6 col-sm-6 p-0">
+        <h3 class="heading-1">Dashboard</h3>
+    </div>
 
-        <div class="row" style="margin-bottom: 60px;">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="text-center card-count">@ViewBag.InReview</p>
-                                <p class="text-center count-text">Numbers of Notes in Review for Publish</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="text-center card-count">@ViewBag.Downloads</p>
-                                <p class="text-center count-text">Numbers of New Notes Downloaded (Last 7 days)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="text-center card-count">@ViewBag.Registration</p>
-                                <p class="text-center count-text">Numbers of New Registrations (Last 7 days)</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    @*<div class="col-md-6 col-sm-6 text-right p-0">
+            <a class="btn btn-general" href="../FrontPanel/AddNotes.html">Add Note</a>
+        </div>*@
+</div>
 
-        <div class="row heading">
-            <div class="col-md-6 col-sm-6 p-0">
-                <h3 class="heading-2">Published Notes</h3>
-            </div>
-
-            <div class="col-md-6 col-sm-6">
-                <div class="row">
-                    @using (Html.BeginForm("Dashboard", "Admin", FormMethod.Post))
-                    {
-                        <div class="col-md-12 col-sm-8 text-right search-1 p-0 form-group has-search">
-                            <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
-                            @Html.TextBox("txtSearch", null, new { @class = "form-control input-search", @placeholder = "Search" })
-                            <button class="btn btn-general" type="submit">Search</button>
-                        </div>
-                    }
-                    <div class="col-md-4 col-sm-4 search-dropdown">
-                        @Html.DropDownList("Month", new SelectList(ViewBag.MonthList, "digit", "Month"), new { @onchange = "MonthFilter(this)", @class = "form-control customDropDown-Multiple" })
-                    </div>
-                </div>
-            </div>
-        </div>
-
+<div class="row" style="margin-bottom: 60px;">
+    <div class="col-md-12">
         <div class="row">
-            <div class="table-top table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-center">Sr No.</th>
-                            <th scope="col">
-                                @Html.ActionLink("Note Title", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
-                            </th>
-                            <th scope="col">
-                                @Html.ActionLink("Category", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
-                            </th>
-                            <th scope="col" class="text-center">Attachment Size</th>
-                            <th scope="col" class="text-center">Sell Type</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Publisher</th>
-                            <th scope="col" class="text-center">Published Date</th>
-                            <th scope="col" class="text-center">Number of Downloads</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            if (Model.Count == 0)
-                            {
-                                <tr>
-                                    <td colspan="10" style="text-align:center;">No Data Available</td>
-                                </tr>
-                            }
-                            else
-                            {
-                                int count = 0;
-                                foreach (var item in Model)
-                                {
-                                    count++;
-                                    <tr>
-                                        <td scope="row" class="text-center">@count</td>
-                                        <td class="td-blue">@item.Title</td>
-                                        <td>@item.Category</td>
-                                        <td class="text-center">@item.AttachmentSize KB</td>
-                                        <td class="text-center">@(item.Price == 0 ? "Free" : "Paid" )</td>
-                                        <td>$@item.Price</td>
-                                        <td>@item.Publisher</td>
-                                        <td class="text-center">@item.PublishDate.ToString("dd-MM-yyyy, HH:mm")</td>
-                                        <td class="text-center td-blue">@item.TotalDownloads</td>
-                                        <td class="text-center">
-                                            <div class="dropdown">
-                                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                                   aria-haspopup="true" aria-expanded="false">
-                                                    <img src="../Content/images/dots.png" alt="dot-image">
-                                                </a>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-center card-count">@ViewBag.InReview</p>
+                        <p class="text-center count-text">Numbers of Notes in Review for Publish</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-center card-count">@ViewBag.Downloads</p>
+                        <p class="text-center count-text">Numbers of New Notes Downloaded (Last 7 days)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-center card-count">@ViewBag.Registration</p>
+                        <p class="text-center count-text">Numbers of New Registrations (Last 7 days)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="#">Download Notes</a>
-                                                    <a class="dropdown-item" onclick="NoteDetail(@item.Id)">View More Details</a>
-                                                    <a class="dropdown-item" href="#">Unpublish</a>
+<div class="row heading">
+    <div class="col-md-6 col-sm-6 p-0">
+        <h3 class="heading-2">Published Notes</h3>
+    </div>
+
+    <div class="col-md-6 col-sm-6 search-2">
+        <div class="row">
+            @using (Html.BeginForm("Dashboard", "Admin", FormMethod.Post, new { @class = "col-md-8 col-sm-8 inner-search search-1 p-0 has-search" }))
+            {
+                <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
+                @Html.TextBox("txtSearch", null, new { @class = "form-control input-search", @placeholder = "Search" })
+                <button class="btn btn-general" type="submit">Search</button>
+            }
+            <div class="col-md-4 col-sm-4 search-dropdown">
+                @Html.DropDownList("Month", new SelectList(ViewBag.MonthList, "digit", "Month"), new { @onchange = "MonthFilter(this)", @class = "form-control customDropDown-Multiple" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-top table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">Sr No.</th>
+                    <th scope="col">
+                        @Html.ActionLink("Note Title", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Category", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">Attachment Size</th>
+                    <th scope="col" class="text-center">Sell Type</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Publisher</th>
+                    <th scope="col" class="text-center">Published Date</th>
+                    <th scope="col" class="text-center">Number of Downloads</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="10" style="text-align:center;">No Data Available</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int count = 0;
+                        foreach (var item in Model)
+                        {
+                            count++;
+                            <tr>
+                                <td scope="row" class="text-center">@count</td>
+                                <td class="td-blue">@item.Title</td>
+                                <td>@item.Category</td>
+                                <td class="text-center">@item.AttachmentSize KB</td>
+                                <td class="text-center">@(item.Price == 0 ? "Free" : "Paid" )</td>
+                                <td>$@item.Price</td>
+                                <td>@item.Publisher</td>
+                                <td class="text-center">@item.PublishDate.ToString("dd-MM-yyyy, HH:mm")</td>
+                                <td class="text-center td-blue">@item.TotalDownloads</td>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false">
+                                            <img src="~/Content/images/dots.png" alt="dot-image">
+                                        </a>
+
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" href="/Admin/DownloadFile?noteid=@item.Id">Download Notes</a>
+                                            <a class="dropdown-item" onclick="NoteDetail(@item.Id)">View More Details</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#rejectModal" onclick="setNoteId('@item.Id', '@item.Title')">Unpublish</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                 aria-hidden="true">
+                                <div class="vertical-alignment-helper">
+                                    <div class="modal-dialog vertical-align-center">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <img src="~/Content/images/close.png" alt="close" class="close" data-dismiss="modal">
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="reject-popup">
+                                                    <h4>@item.Title</h4>
+                                                    @using (Html.BeginForm("Dashboard", "Admin", FormMethod.Post))
+                                                    {
+                                                        <input name="noteid" value="@item.Id" hidden>
+
+                                                        <label>Remarks*</label>
+
+                                                        @Html.TextArea("Remarks", new { @placeholder = "Write remarks", required = "required", cols = "50" })
+
+                                                        <button class="btn pull-right" type="submit" id="btnSubmit" formaction="Unpublishnote">Unpublish</button>
+                                                        <button class="btn btn-danger pull-right" data-dismiss="modal">Cancel</button>
+                                                    }
                                                 </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                }
-                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        @* Pagination *@
-        @{
-            double totalPages = ViewBag.TotalPages;
-
-            <div class="row text-center">
-                <div class="col-md-12 num">
-                    <ul class="pagination justify-content-center">
-
-                        @if (ViewBag.PageNumber == 1)
-                        {
-                            <li class="page-item">
-                                <a class="page-link" aria-label="Previous" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
-                                    <img src="~/Content/images/left-arrow.png" alt="left-arrow">
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="page-item">
-                                <a class="page-link" aria-label="Previous" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber - 1 })">
-                                    <img src="~/Content/images/left-arrow.png" alt="left-arrow">
-                                </a>
-                            </li>
-                        }
-
-                        @for (int i = 1; i <= totalPages; i++)
-                        {
-                            if (i == ViewBag.PageNumber)
-                            {
-                                <li class="page-item">
-                                    @Html.ActionLink(i.ToString(), "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="page-item">
-                                    @Html.ActionLink(i.ToString(), "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link" })
-                                </li>
-                            }
-                        }
-
-                        @if (ViewBag.PageNumber == totalPages)
-                        {
-                            <li class="page-item">
-                                <a class="page-link" aria-label="Next" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
-                                    <img src="~/Content/images/right-arrow.png" alt="right-arrow">
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="page-item">
-                                <a class="page-link" aria-label="Next" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber + 1 })">
-                                    <img src="~/Content/images/right-arrow.png" alt="right-arrow">
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        }
-
+                    }
+                }
+            </tbody>
+        </table>
     </div>
-</section>
+</div>
+
+@* Pagination *@
+@{
+    double totalPages = ViewBag.TotalPages;
+
+    <div class="row text-center">
+        <div class="col-md-12 num">
+            <ul class="pagination justify-content-center">
+
+                @if (ViewBag.PageNumber == 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber - 1 })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    if (i == ViewBag.PageNumber)
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link" })
+                        </li>
+                    }
+                }
+
+                @if (ViewBag.PageNumber == totalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber + 1 })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
 
 <script>
     function MonthFilter(obj) {
@@ -211,4 +253,7 @@
     function NoteDetail(id) {
         location.href = '../Home/NoteDetails/' + id;
     }
+    $('#rejectModal form').on('submit', function () {
+        return confirm('Are you sure you want to Unpublish this note?');
+    });
 </script>

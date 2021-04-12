@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 
-namespace NotesMarketPlace.Models
+namespace NotesMarketPlace.Email
 {
     public class SendEmailUser
     {

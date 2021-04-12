@@ -1,0 +1,223 @@
+﻿@model List<NotesMarketPlace.Models.Admin.DownloadedNotesModel>
+
+@{
+    ViewBag.Title = "DownloadedNotes";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row heading">
+    <div class="col-md-6 col-sm-6 p-0">
+        <h3 class="heading-1">Downloaded Notes</h3>
+    </div>
+</div>
+
+<div class="row heading">
+    <div class="col-md-6 col-sm-6" style="padding-left: 5px">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 search-dropdown">
+                <label>Note</label>
+                @Html.DropDownList("NoteId", new SelectList(ViewBag.NoteList, "NoteId", "NoteTitle"), "Select Note", new { @onchange = "Filter(this)", @class = "form-control customDropDown-Multiple" })
+            </div>
+            <div class="col-md-4 col-sm-4 search-dropdown">
+                <label>Seller</label>
+                @Html.DropDownList("SellerId", new SelectList(ViewBag.SellerList, "SellerId", "SellerName"), "Select Seller", new { @onchange = "Filter(this)", @class = "form-control customDropDown-Multiple" })
+            </div>
+            <div class="col-md-4 col-sm-4 search-dropdown">
+                <label>Buyer</label>
+                @Html.DropDownList("BuyerId", new SelectList(ViewBag.BuyerList, "BuyerId", "BuyerName"), "Select Buyer", new { @onchange = "Filter(this)", @class = "form-control customDropDown-Multiple" })
+            </div>
+        </div>
+    </div>
+    @using (Html.BeginForm("DownloadedNotes", "Admin", FormMethod.Post, new { @class = "col-md-6 col-sm-6 text-right search-1 p-0 has-search", @style = "align-items: flex-end" }))
+    {
+        <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon" style="bottom: 8px">
+        @Html.TextBox("txtSearch", null, new { @class = "form-control input-search", @placeholder = "Search" })
+        <button class="btn btn-general" type="submit">Search</button>
+    }
+</div>
+
+<div class="row">
+    <div class="table-top table-responsive">
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col">Sr No.</th>
+                    <th scope="col">
+                        @Html.ActionLink("Note Title", "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Category", "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">Buyer</th>
+                    <th scope="col"></th>
+                    <th scope="col">Seller</th>
+                    <th scope="col"></th>
+                    <th scope="col">Sell Type</th>
+                    <th scope="col">Price</th>
+                    <th class="text-center" scope="col">Downloaded<br>Date/Time</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="9" style="text-align:center;">No Records found</td>
+                        </tr>
+                    }
+                    else
+                    {
+
+                        int count = 0;
+                        foreach (var item in Model)
+                        {
+                            count++;
+                            <tr>
+                                <td class="text-center" scope="row">@count</td>
+                                <td class="td-blue" style="cursor:pointer" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
+                                <td>@item.Category</td>
+                                <td>@item.BuyerName</td>
+                                <td>
+                                    <img src="../Content/images/eye.png" alt="eye-image" onclick="Member('@item.SellerId')">
+                                </td>
+                                <td>@item.SellerName</td>
+                                <td>
+                                    <img src="../Content/images/eye.png" alt="eye-image" onclick="Member('@item.SellerId')">
+                                </td>
+                                <td>@(item.Price == 0 ? "Free" : "Paid")</td>
+                                <td>$@item.Price</td>
+                                <td>@item.DownloadedDate.ToString("dd-MM-yyyy, HH:mm")</td>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false">
+                                            <img src="../Content/images/dots.png" alt="dot-image">
+                                        </a>
+
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" href="/Admin/DownloadFile?noteid=@item.NoteId">Download Notes</a>
+                                            <a class="dropdown-item" onclick="NoteDetail('@item.NoteId')">View More Details</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* Pagination *@
+@{
+    double totalPages = ViewBag.TotalPages;
+
+    <div class="row text-center">
+        <div class="col-md-12 num">
+            <ul class="pagination justify-content-center">
+
+                @if (ViewBag.PageNumber == 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber - 1 })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    if (i == ViewBag.PageNumber)
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link" })
+                        </li>
+                    }
+                }
+
+                @if (ViewBag.PageNumber == totalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber + 1 })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+<script>
+    var sellerId, noteId, buyerId;
+
+    function Filter(obj) {
+
+        var data = {};
+
+        if (obj.id == "NoteId") {
+            noteId = obj.value;
+        }
+        if (obj.id == "SellerId") {
+            sellerId = obj.value;
+        }
+        if (obj.id == "BuyerId") {
+            buyerId = obj.value;
+        }
+
+        if (sellerId != null) {
+            data.sellerId = sellerId;
+        }
+        if (noteId != null) {
+            data.noteId = noteId;
+        }
+        if (buyerId != null) {
+            data.buyerId = buyerId;
+        }
+
+        console.log(data);
+
+        $.ajax({
+            method: 'GET',
+            url: 'DownloadedNotes',
+            data: data,
+            success: function (data) {
+                document.body.innerHTML = data;
+            },
+            error: function () {
+                alert("Try Again");
+            }
+        });
+    }
+
+    function NoteDetail(id) {
+        location.href = '../Home/NoteDetails/' + id;
+    }
+
+    function Member(id) {
+        location.href = 'MemberDetails?id=' + id;
+    }
+</script>
