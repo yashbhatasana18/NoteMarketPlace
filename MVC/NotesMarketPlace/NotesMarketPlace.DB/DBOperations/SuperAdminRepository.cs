@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NotesMarketPlace.DB.DBOperations
 {
-    public class AdminRepository
+    class SuperAdminRepository
     {
 
     }

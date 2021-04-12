@@ -1,4 +1,5 @@
-﻿
+﻿@model List<NotesMarketPlace.Models.Admin.ManageAdministratorModel>
+
 @{
     ViewBag.Title = "ManageAdministrator";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -12,14 +13,15 @@
 
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
-        <a class="btn btn-general" href="AddAdministrator.html">Add Administrator</a>
+        <a class="btn btn-general" onclick="location.href='AddAdministrator'">Add Administrator</a>
     </div>
 
-    <div class="col-md-6 col-sm-6 text-right search-1 p-0">
-        <img src="../images/search-icon.png" class="form-control-feedback" alt="search-icon">
-        <input class="input-search" type="search" placeholder="Search">
-        <a class="btn btn-general">Search</a>
-    </div>
+    @using (Html.BeginForm("ManageAdministrator", "SuperAdmin", FormMethod.Post, new { @class = "col-md-6 col-sm-6 text-right search-1 p-0 has-search" }))
+    {
+        <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
+        @Html.TextBox("txtSearch", null, new { @class = "form-control input-search", @placeholder = "Search" })
+        <button class="btn btn-general" type="submit">Search</button>
+    }
 </div>
 
 <div class="row">
@@ -28,9 +30,15 @@
             <thead>
                 <tr>
                     <th scope="col" class="text-center">Sr No.</th>
-                    <th scope="col" class="text-center">Last Name</th>
-                    <th scope="col" class="text-center">First Name</th>
-                    <th scope="col" class="text-center">Email</th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("First Name", "ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "FirstName", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Last Name", "ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "LastName", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Email", "ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Email", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col" class="text-center">Phone No.</th>
                     <th scope="col" class="text-center">Date Added</th>
                     <th scope="col" class="text-center">Active</th>
@@ -38,95 +46,117 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="shdow">
-                    <td scope="row" class="text-center">1</td>
-                    <td class="text-center">Khyati</td>
-                    <td class="text-center">Patel</td>
-                    <td class="text-center">khyatipatel@gmail.com</td>
-                    <td class="text-center">9897959512</td>
-                    <td class="text-center">09-10-2020, 10:10</td>
-                    <td class="text-center">Yes</td>
-                    <td class="text-center">
-                        <img src="../images/edit.png" alt="edit-image">
-                        <img src="../images/delete.png" alt="delete-image">
-                    </td>
-                </tr>
-                <tr class="shdow">
-                    <td scope="row" class="text-center">2</td>
-                    <td class="text-center">Rahul</td>
-                    <td class="text-center">Shah</td>
-                    <td class="text-center">rahulshah@gmail.com</td>
-                    <td class="text-center">9945321851</td>
-                    <td class="text-center">10-10-2020, 12:30</td>
-                    <td class="text-center">Yes</td>
-                    <td class="text-center">
-                        <img src="../images/edit.png" alt="edit-image">
-                        <img src="../images/delete.png" alt="delete-image">
-                    </td>
-                </tr>
-                <tr class="shdow">
-                    <td scope="row" class="text-center">3</td>
-                    <td class="text-center">Suman</td>
-                    <td class="text-center">Trivedi</td>
-                    <td class="text-center">sumantrivedi@gmail.com</td>
-                    <td class="text-center">7852189120</td>
-                    <td class="text-center">11-10-2020, 01:00</td>
-                    <td class="text-center">No</td>
-                    <td class="text-center">
-                        <img src="../images/edit.png" alt="edit-image">
-                        <img src="../images/delete.png" alt="delete-image">
-                    </td>
-                </tr>
-                <tr class="shdow">
-                    <td scope="row" class="text-center">4</td>
-                    <td class="text-center">Raj</td>
-                    <td class="text-center">Malhotra</td>
-                    <td class="text-center">rajmalhotra77@gmail.com</td>
-                    <td class="text-center">9852656874</td>
-                    <td class="text-center">12-10-2020, 10:10</td>
-                    <td class="text-center">Yes</td>
-                    <td class="text-center">
-                        <img src="../images/edit.png" alt="edit-image">
-                        <img src="../images/delete.png" alt="delete-image">
-                    </td>
-                </tr>
-                <tr class="shdow">
-                    <td scope="row" class="text-center">5</td>
-                    <td class="text-center">Niya</td>
-                    <td class="text-center">Patel</td>
-                    <td class="text-center">niyapatel@gmail.com</td>
-                    <td class="text-center">8516784532</td>
-                    <td class="text-center">13-10-2020, 11:25</td>
-                    <td class="text-center">No</td>
-                    <td class="text-center">
-                        <img src="../images/edit.png" alt="edit-image">
-                        <img src="../images/delete.png" alt="delete-image">
-                    </td>
-                </tr>
+                @{
+                    if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="8" style="text-align:center;">No record found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int count = 0;
+                        foreach (var item in Model)
+                        {
+                            count++;
+                            <tr class="shdow">
+                                <td scope="row" class="text-center">@count</td>
+                                <td class="text-center">@item.FirstName</td>
+                                <td class="text-center">@item.LastName</td>
+                                <td class="text-center">@item.Email</td>
+                                <td class="text-center">@item.Phone</td>
+                                <td class="text-center">@item.DateAdded.Value.ToString("dd-MM-yyyy, HH:mm")</td>
+                                <td class="text-center">@item.Active</td>
+                                <td class="text-center">
+                                    <img src="~/Content/images/edit.png" alt="edit-image" onclick="Edit('@item.Id')">
+                                    <img src="~/Content/images/delete.png" alt="delete-image" onclick="Delete('@item.Id')">
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
             </tbody>
         </table>
     </div>
 </div>
 
-<div class="row text-center">
-    <div class="col-md-12 num">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <img src="../images/left-arrow.png" alt="left-arrow">
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link active" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <img src="../images/right-arrow.png" alt="right-arrow">
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
+@* Pagination *@
+@{
+    double totalPages = ViewBag.TotalPages;
 
+    <div class="row text-center">
+        <div class="col-md-12 num">
+            <ul class="pagination justify-content-center">
+
+                @if (ViewBag.PageNumber == 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber - 1 })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    if (i == ViewBag.PageNumber)
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link" })
+                        </li>
+                    }
+                }
+
+                @if (ViewBag.PageNumber == totalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber + 1 })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+<script>
+    function Edit(id) {
+        location.href = "AddAdministrator?id=" + id;
+    }
+    function Delete(id) {
+        $.ajax({
+            method: 'POST',
+            url: 'DeleteAdministrator',
+            data: { id: id },
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                alert("Try Again");
+            }
+        });
+    }
+</script>

@@ -1,8 +1,34 @@
-﻿
+﻿@model List<NotesMarketPlace.Models.Admin.NotesUnderReviewModel>
+
 @{
     ViewBag.Title = "NotesUnderReview";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
+<style>
+    .btn-action {
+        width: 100px;
+    }
+
+    #btnSubmit, #btnPublish {
+        padding: 6px 10px;
+        margin-bottom: 0;
+        background-color: #6255a5;
+        width: 150px;
+        height: 40px;
+        border-radius: 3px;
+        color: #ffffff;
+        text-decoration: none;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .modal-footer {
+        justify-content: flex-start;
+        padding: 15px 20px;
+    }
+</style>
 
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
@@ -15,18 +41,16 @@
         <div class="row">
             <div class="col-md-4 col-sm-4 search-dropdown">
                 <label>Seller</label>
-                <select class="form-control customDropDown-Multiple">
-                    <option>Select seller</option>
-                </select>
+                @Html.DropDownList("SellerId", new SelectList(ViewBag.SellerList, "SellerId", "SellerName"), "Select Seller", new { @onchange = "FilterSeller(this)", @class = "form-control customDropDown-Multiple" })
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-sm-6 text-right p-0 search-1" style="align-items: flex-end">
-        <img src="../images/search-icon.png" class="form-control-feedback" alt="search-icon"
-             style="bottom: 8px">
-        <input class="input-search" type="search" placeholder="Search">
-        <a class="btn btn-general">Search</a>
-    </div>
+    @using (Html.BeginForm("NotesUnderReview", "Admin", FormMethod.Post, new { @class = "col-md-6 col-sm-6 text-right search-1 p-0 has-search", @style = "align-items: flex-end" }))
+    {
+        <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon" style="bottom: 8px">
+        @Html.TextBox("txtSearch", null, new { @class = "form-control input-search", @placeholder = "Search" })
+        <button class="btn btn-general" type="submit">Search</button>
+    }
 </div>
 
 <div class="row">
@@ -35,8 +59,12 @@
             <thead>
                 <tr>
                     <th class="text-center" scope="col">Sr No.</th>
-                    <th scope="col">Note Title</th>
-                    <th scope="col">Category</th>
+                    <th scope="col">
+                        @Html.ActionLink("Note Title", "NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Category", "NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col">Seller</th>
                     <th scope="col"></th>
                     <th scope="col">Date Added</th>
@@ -46,185 +74,213 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="text-center" scope="row">1</td>
-                    <td class="td-blue">Software Engineer</td>
-                    <td>IT</td>
-                    <td>Khyati Patel</td>
-                    <td>
-                        <img src="../images/eye.png" alt="eye-image">
-                    </td>
-                    <td style="white-space: nowrap;">09-10-2020, 10:10</td>
-                    <td>InReview</td>
-                    <td class="text-center ">
-                        <div class="td-action">
-                            <button type="button" class="btn btn-action btn-approve">Approve</button>
-                            <a type="button" href="#" class="btn btn-action btn-reject"
-                               data-toggle="modal" data-target="#exampleModal">Reject</a>
-                            <button type="button"
-                                    class="btn btn-action btn-interview ">
-                                InReview
-                            </button>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <div class="dropdown">
-                            <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <img src="../images/dots.png" alt="dot-image">
-                            </a>
+                @{
+                    if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="8" style="text-align: center;">No Record Available</td>
+                        </tr>
+                    }
+                    else
+                    {
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">View More Details</a>
-                                <a class="dropdown-item" href="#">Download Notes</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" scope="row">2</td>
-                    <td class="td-blue">Computer Basic</td>
-                    <td>Computer</td>
-                    <td>Khyati Patel</td>
-                    <td>
-                        <img src="../images/eye.png" alt="eye-image">
-                    </td>
-                    <td>10-10-2020, 11:25</td>
-                    <td>Submitted for Review</td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-action btn-approve">Approve</button>
-                        <a type="button" href="#" class="btn btn-action btn-reject" data-toggle="modal"
-                           data-target="#exampleModal">Reject</a>
-                        <button type="button" class="btn btn-action btn-interview ">InReview</button>
-                    </td>
-                    <td class="text-center">
-                        <div class="dropdown">
-                            <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <img src="../images/dots.png" alt="dot-image">
-                            </a>
+                        int count = 0;
+                        foreach (var item in Model)
+                        {
+                            count++;
+                            <tr>
+                                <td class="text-center" scope="row">@count</td>
+                                <td class="td-blue" style="cursor:pointer" onclick="NoteDetail(@item.NoteId)">@item.Title</td>
+                                <td>@item.Category</td>
+                                <td>@item.Seller</td>
+                                <td>
+                                    <img src="../Content/images/eye.png" alt="eye-image" onclick="Member('@item.SellerId')">
+                                </td>
+                                <td style="white-space: nowrap;">@item.CreatedDate.Value.ToString("dd-MM-yyyy, HH:mm")</td>
+                                <td>@item.status</td>
+                                <td class="text-center ">
+                                    <div class="td-action">
+                                        <button type="button" class="btn btn-action btn-approve" onclick="Approve(@item.NoteId)">Approve</button>
+                                        <a type="button" href="#" class="btn btn-action btn-reject" data-toggle="modal" data-target="#rejectModal" onclick="setdata('@item.NoteId', '@item.Title', '@item.Category')">Reject</a>
+                                        <button type="button" class="btn btn-action btn-interview" onclick="InReview(@item.NoteId)">InReview</button>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false">
+                                            <img src="../Content/images/dots.png" alt="dot-image">
+                                        </a>
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">View More Details</a>
-                                <a class="dropdown-item" href="#">Download Notes</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" scope="row">3</td>
-                    <td class="td-blue">Human Body</td>
-                    <td>Science</td>
-                    <td>Khyati Patel</td>
-                    <td>
-                        <img src="../images/eye.png" alt="eye-image">
-                    </td>
-                    <td>11-10-2020, 01:00</td>
-                    <td>InReview</td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-action btn-approve">Approve</button>
-                        <a type="button" href="#" class="btn btn-action btn-reject" data-toggle="modal"
-                           data-target="#exampleModal">Reject</a>
-                        <button type="button" class="btn btn-action btn-interview ">InReview</button>
-                    </td>
-                    <td class="text-center">
-                        <div class="dropdown">
-                            <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <img src="../images/dots.png" alt="dot-image">
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">View More Details</a>
-                                <a class="dropdown-item" href="#">Download Notes</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" scope="row">4</td>
-                    <td class="td-blue">world war 2</td>
-                    <td>History</td>
-                    <td>Khyati Patel</td>
-                    <td>
-                        <img src="../images/eye.png" alt="eye-image">
-                    </td>
-                    <td>12-10-2020, 10:10</td>
-                    <td>InReview</td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-action btn-approve">Approve</button>
-                        <a type="button" href="#" class="btn btn-action btn-reject" data-toggle="modal"
-                           data-target="#exampleModal">Reject</a>
-                        <button type="button" class="btn btn-action btn-interview ">InReview</button>
-                    </td>
-                    <td class="text-center">
-                        <div class="dropdown">
-                            <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <img src="../images/dots.png" alt="dot-image">
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">View More Details</a>
-                                <a class="dropdown-item" href="#">Download Notes</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" scope="row">5</td>
-                    <td class="td-blue">Accounting</td>
-                    <td>Accounts</td>
-                    <td>Khyati Patel</td>
-                    <td>
-                        <img src="../images/eye.png" alt="eye-image">
-                    </td>
-                    <td>13-10-2020, 11:25</td>
-                    <td>InReview</td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-action btn-approve">Approve</button>
-                        <a type="button" href="#" class="btn btn-action btn-reject" data-toggle="modal"
-                           data-target="#exampleModal">Reject</a>
-                        <button type="button" class="btn btn-action btn-interview ">InReview</button>
-                    </td>
-                    <td class="text-center">
-                        <div class="dropdown">
-                            <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <img src="../images/dots.png" alt="dot-image">
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">View More Details</a>
-                                <a class="dropdown-item" href="#">Download Notes</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" href="/Admin/DownloadFile?noteid=@item.NoteId">Download Notes</a>
+                                            <a class="dropdown-item" onclick="NoteDetail('@item.NoteId')">View More Details</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
             </tbody>
         </table>
     </div>
 </div>
 
-<div class="row text-center">
-    <div class="col-md-12 num">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <img src="../images/left-arrow.png" alt="left-arrow">
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link active" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <img src="../images/right-arrow.png" alt="right-arrow">
-                </a>
-            </li>
-        </ul>
+@*Note Reject Model*@
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="~/Content/images/close.png" alt="close" class="close" data-dismiss="modal">
+                </div>
+                <div class="modal-body">
+                    <div class="reject-popup">
+                        <h4>Note Title</h4>
+                        @using (Html.BeginForm("NotesUnderReview", "Admin", FormMethod.Post))
+                        {
+                            @Html.Hidden("noteId");
+                            @*<input name="noteid" value="@item.NoteId" hidden>*@
+
+                            <label>Remarks*</label>
+
+                            @Html.TextArea("Remarks", new { @placeholder = "Write remarks", required = "required", cols = "50" })
+
+                            <button class="btn pull-right" type="submit" id="btnSubmit" formaction="Unpublishnote">Unpublish</button>
+                            <button class="btn btn-danger pull-right" data-dismiss="modal">Cancel</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+@* Pagination *@
+@{
+    double totalPages = ViewBag.TotalPages;
+
+    <div class="row text-center">
+        <div class="col-md-12 num">
+            <ul class="pagination justify-content-center">
+
+                @if (ViewBag.PageNumber == 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber - 1 })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    if (i == ViewBag.PageNumber)
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link" })
+                        </li>
+                    }
+                }
+
+                @if (ViewBag.PageNumber == totalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber + 1 })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+<script>
+    function FilterSeller(obj) {
+        $.ajax({
+            method: 'GET',
+            url: 'NotesUnderReview',
+            data: { sellerId: obj.value },
+            success: function (data) {
+                document.body.innerHTML = data;
+            },
+            error: function () {
+                alert("Try Again");
+            }
+        });
+    }
+
+    function NoteDetail(id) {
+        location.href = "../Home/NoteDetails/" + id;
+    }
+
+    function SellerDetail(id) {
+        location.href = "MemberDetails?id=" + id;
+    }
+
+    function InReview(id) {
+        if (confirm("Via marking the note In Review – System will let user know that review process has been initiated.Please press yes to continue.")) {
+            $.ajax({
+                method: 'POST',
+                url: 'NoteStatusUpdate',
+                data: { noteid: id, status: "InReview" },
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
+    }
+
+    function Approve(id) {
+        if (confirm("If you approve the notes – System will publish the notes over portal. Please press yes to continue.")) {
+            $.ajax({
+                method: 'POST',
+                url: 'NoteStatusUpdate',
+                data: { noteid: id, status: "Approve" },
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
+    }
+
+    function setdata(id, title, category) {
+        $("#rejectModal input[type='hidden']").attr('value', id);
+        $('.reject-popup>h4').text(title + " - " + category);
+    }
+
+    $('#rejectModal form').on('submit', function () {
+        return confirm('Are you sure you want to reject seller request?');
+    });
+</script>

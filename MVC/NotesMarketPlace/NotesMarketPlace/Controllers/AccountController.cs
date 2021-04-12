@@ -246,13 +246,13 @@ namespace NotesMarketPlace.Controllers
 
         #region User Profile
 
-        // get my Profile
         public ActionResult UserProfile()
         {
             using (var context = new NotesMarketPlaceEntities())
             {
                 // get gender for dropdown
                 var gender = context.ReferenceData.Where(m => m.RefCategory == "Gender").ToList();
+
                 // get country
                 var country = context.Countries.ToList();
 
@@ -342,7 +342,6 @@ namespace NotesMarketPlace.Controllers
             }
         }
 
-        // Update my Profile
         [HttpPost]
         public ActionResult UserProfile(UserProfileModel user)
         {
@@ -496,6 +495,7 @@ namespace NotesMarketPlace.Controllers
         #endregion User Profile
 
         #region Mail Send
+
         public static void SendEmail(MailMessage mail)
         {
             SmtpClient client = new SmtpClient();
@@ -514,6 +514,7 @@ namespace NotesMarketPlace.Controllers
                 throw ex;
             }
         }
+
         #endregion Mail Send
 
         #region Random Password
@@ -723,6 +724,8 @@ namespace NotesMarketPlace.Controllers
         }
         #endregion Change Password
 
+        #region Create Directory
+
         public string CreateDirectory(int userid)
         {
             string path = @"E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\Members\" + userid;
@@ -737,6 +740,8 @@ namespace NotesMarketPlace.Controllers
                 return null;
             }
         }
+
+        #endregion Create Directory
 
         public ActionResult LogOut()
         {

@@ -148,6 +148,7 @@
                                 </td>
                             </tr>
 
+                            //Note Reject Model
                             <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                                  aria-hidden="true">
                                 <div class="vertical-alignment-helper">
@@ -158,9 +159,10 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="reject-popup">
-                                                    <h4>@item.Title</h4>
+                                                    <h4>Note Title</h4>
                                                     @using (Html.BeginForm("Dashboard", "Admin", FormMethod.Post))
                                                     {
+                                                        @Html.Hidden("noteid")
                                                         <input name="noteid" value="@item.Id" hidden>
 
                                                         <label>Remarks*</label>
@@ -176,6 +178,7 @@
                                     </div>
                                 </div>
                             </div>
+                            //Note Reject Model End
                         }
                     }
                 }
@@ -252,6 +255,10 @@
     }
     function NoteDetail(id) {
         location.href = '../Home/NoteDetails/' + id;
+    }
+    function setNoteId(id, title) {
+        $("#rejectModal input[type='hidden']").attr('value', id);
+        $('.reject-popup>h4').text(title);
     }
     $('#rejectModal form').on('submit', function () {
         return confirm('Are you sure you want to Unpublish this note?');

@@ -64,6 +64,7 @@
     <Compile Include="DBOperations\SearchRepository.cs" />
     <Compile Include="DBOperations\SellYourNotesRepository.cs" />
     <Compile Include="DBOperations\SignUpRepository.cs" />
+    <Compile Include="DBOperations\SuperAdminRepository.cs" />
     <Compile Include="Downloads.cs">
       <DependentUpon>NMPModel.tt</DependentUpon>
     </Compile>

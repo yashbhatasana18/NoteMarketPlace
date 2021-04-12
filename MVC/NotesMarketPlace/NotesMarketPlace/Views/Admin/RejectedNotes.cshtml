@@ -158,8 +158,6 @@
 }
 
 <script>
-    
-
     function Filter(obj) {
         $.ajax({
             method: 'GET',
@@ -173,9 +171,10 @@
             }
         });
     }
-    console.log(data);
-    function Approve(id) {
 
+    console.log(data);
+
+    function Approve(id) {
         $.ajax({
             method: 'POST',
             url: 'NoteStatusUpdate',
@@ -187,7 +186,6 @@
                 alert("Try Again");
             }
         });
-
     }
 
     function NoteDetail(id) {

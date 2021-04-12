@@ -1480,6 +1480,7 @@
     <Content Include="Content\icons-1.4.0\icons\zoom-out.svg" />
     <Content Include="Content\NotesImages\Images\search421243095.png" />
     <Content Include="Content\NotesImages\Images\search621264417.png" />
+    <Content Include="Members\2\Illustrator 21363121.jpg" />
     <Content Include="Members\3\Illustrator 21363121.jpg" />
     <Content Include="Views\EmailTemplate\AccountConfirmation.html" />
     <Content Include="Content\Account\responsive.css" />
@@ -3077,7 +3078,6 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Home\NoteDetails.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
-    <Content Include="Views\SuperAdmin\Index.cshtml" />
     <Content Include="Views\SuperAdmin\ManageAdministrator.cshtml" />
     <Content Include="Views\Home\MyRejectedNotes.cshtml" />
     <Content Include="Views\Home\EditNote.cshtml" />
@@ -3093,6 +3093,8 @@
     <Content Include="Views\Admin\PublishedNotes.cshtml" />
     <Content Include="Views\Admin\NotesUnderReview.cshtml" />
     <Content Include="Views\Admin\SpamReports.cshtml" />
+    <Content Include="Views\Admin\MyProfile.cshtml" />
+    <Content Include="Views\SuperAdmin\AddAdministrator.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

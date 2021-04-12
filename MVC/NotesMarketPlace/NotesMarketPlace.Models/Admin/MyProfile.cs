@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace NotesMarketPlace.Models.Admin
 {
@@ -27,6 +28,8 @@ namespace NotesMarketPlace.Models.Admin
 
         public string ProfileImage { get; set; }
 
-        public List<CountriesModel> PhoneCodeModel { get; set; }
+        public HttpPostedFileBase UserProfilePicturePath { get; set; }
+
+        public CountriesModel PhoneCodeModel { get; set; }
     }
 }

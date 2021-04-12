@@ -1,0 +1,60 @@
+﻿@model NotesMarketPlace.Models.Admin.AddAdministratorModel
+
+@{ 
+    ViewBag.Title = "AddAdministrator";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; 
+}
+
+
+<div class="row heading">
+    <div class="col-md-12">
+        <h1 class="heading-1">Add Administrator</h1>
+    </div>
+</div>
+
+@using (Html.BeginForm("AddAdministrator", "SuperAdmin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        <div class="row heading">
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FirstName, "First Name *", new { @for = "InputFirstName" })
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = "Enter your first name", id = "InputFirstName" })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LastName, "Last Name *", new { @for = "InputLastName" })
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", placeholder = "Enter your last name", id = "InputLastName" })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, "Email address *", new { @for = "InputEmail" })
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", id = "InputEmail", placeholder = "Enter your email address" })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Phone, "Phone Number", new { @for = "phoneNo" })
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            @Html.DropDownListFor(model => model.CountryCode, ViewBag.CountryCodeList as SelectList, new { @class = "form-control customDropDown-Multiple" })
+                        </div>
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", placeholder = "Enter your phone number", id = "phoneNo" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="margin-left: 15px">
+                    <button type="submit" id="btnSubmit" class="btn" formaction="@(ViewBag.Edit == true ? "AddAdministrator?id="+Model.Id : "AddAdministrator" )">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+}

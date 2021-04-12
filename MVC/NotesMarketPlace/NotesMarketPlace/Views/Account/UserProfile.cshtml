@@ -79,6 +79,7 @@
                     @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", id = "exampleInputEmail1", placeholder = "Enter your email address" })
                     @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
                 </div>
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.Gender, "Gender *", new { @for = "dropdownGender" })
                     @Html.DropDownListFor(model => model.Gender, ViewBag.GenderList as SelectList, "Select Your Gender", new { @class = "form-control", id = "dropdownGender" })
@@ -110,8 +111,6 @@
                     <div class="input-group">
                         <div class="input-group-prepend">
                             @Html.DropDownListFor(model => model.PhoneNumberCountryCode, ViewBag.CountryCodeList as SelectList, new { @class = "form-control" })
-
-                            @*@Html.DropDownListFor(model => model.CountryCodeModel, new SelectList(Model.CountryCodeModel, "CountriesID", "CountryCode"), new { @class = "form-control" })*@
                         </div>
                         @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Enter your phone number", id = "phoneNo" })
                     </div>

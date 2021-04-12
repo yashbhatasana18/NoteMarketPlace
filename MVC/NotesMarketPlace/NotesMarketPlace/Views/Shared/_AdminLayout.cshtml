@@ -18,7 +18,7 @@
     <link href="~/Content/icons-1.4.0/font/bootstrap-icons.css" rel="stylesheet" />
 
     <!-- Custom CSS -->
-    <link href="~/Content/CommonJS/upload.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/CommonCSS/upload.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/AdminPanel/css/style.css" rel="stylesheet" type="text/css" />
 
     <!-- Responsive CSS -->
@@ -82,8 +82,8 @@
                                     </a>
 
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="MyProfile.html">Update Profile</a>
-                                        <a class="dropdown-item" href="ChangePassword.html">Change Password</a>
+                                        <a class="dropdown-item @(ViewBag.Title == "MyProfile"? "active" : "" )" href="@Url.Action("MyProfile", "Admin")">Update Profile</a>
+                                        <a class="dropdown-item @(ViewBag.Title == "ChangePassword" ? "active" : "" )" href="@Url.Action("ChangePassword", "Account")">Change Password</a>
                                         <a class="dropdown-item btn-logout" href="@Url.Action("LogOut", "Account")">LogOut</a>
                                     </div>
                                 </div>
@@ -144,8 +144,8 @@
                                     </a>
 
                                     <div id="collapseExample3" class="collapse">
-                                        <a class="dropdown-item" href="MyProfile.html">Update Profile</a>
-                                        <a class="dropdown-item" href="ChangePassword.html">Change Password</a>
+                                        <a class="dropdown-item @(ViewBag.Title == "MyProfile"? "active" : "" )" href="@Url.Action("MyProfile", "Admin")">Update Profile</a>
+                                        <a class="dropdown-item @(ViewBag.Title == "ChangePassword" ? "active" : "" )" href="@Url.Action("ChangePassword", "Account")">Change Password</a>
                                         <a class="dropdown-item btn-logout" href="@Url.Action("LogOut", "Account")">LogOut</a>
                                     </div>
                                 </li>
@@ -158,7 +158,6 @@
         </nav>
     </header>
     <!-- End Navigation -->
-
     <!-- Content -->
     <section id="content">
         <div class="container">
