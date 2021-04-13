@@ -89,7 +89,7 @@
                                                 </a>
 
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    @Html.ActionLink("Download Notes", "Download", "Home", new { noteId = @item.NoteId, userId = @item.UserID }, new { @class = "dropdown-item" })
+                                                    <a class="dropdown-item" href="/Home/DownloadFile?noteid=@item.NoteId">Download Notes</a>
                                                 </div>
                                             </div>
                                         </td>

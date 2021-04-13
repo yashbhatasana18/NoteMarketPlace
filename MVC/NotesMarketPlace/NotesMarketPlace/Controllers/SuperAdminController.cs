@@ -265,20 +265,119 @@ namespace NotesMarketPlace.Controllers
 
         public void DeleteAdministrator(int id)
         {
-            using (var _Context = new NotesMarketPlaceEntities())
+            using (var context = new NotesMarketPlaceEntities())
             {
-                var CurrentAdmin = _Context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
+                var CurrentAdmin = context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
 
-                var Admin = _Context.Users.Single(m => m.UserID == id);
+                var Admin = context.Users.Single(m => m.UserID == id);
                 Admin.IsActive = false;
                 Admin.ModifiedBy = CurrentAdmin;
                 Admin.ModifiedDate = DateTime.Now;
 
-                _Context.SaveChanges();
+                context.SaveChanges();
             }
         }
 
         #endregion Delete Administrator
+
+        #region System Configurations
+
+        public ActionResult ManageSystemConfiguration()
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var systemConfigurations = context.SystemConfigurations.ToList();
+
+                if (systemConfigurations.Count != 0)
+                {
+                    SystemConfigurationsModel model = new SystemConfigurationsModel
+                    {
+                        SupportEmail = systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value,
+                        SupportContact = systemConfigurations.Single(m => m.Key == "SupportContact").Value,
+                        DefaultNoteImg = systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value,
+                        DefaulProfileImg = systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value,
+                        Emails = systemConfigurations.Single(m => m.Key == "EmailAddresses").Value,
+                        FacebookUrl = systemConfigurations.Single(m => m.Key == "Facebook").Value,
+                        TwitterUrl = systemConfigurations.Single(m => m.Key == "Twitter").Value,
+                        LinkedinUrl = systemConfigurations.Single(m => m.Key == "Linkedin").Value
+                    };
+                    return View(model);
+                }
+                else
+                {
+                    return View();
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageSystemConfiguration(SystemConfigurationsModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var systemConfigurations = context.SystemConfigurations.ToList();
+
+                if (systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value != model.SupportEmail)
+                {
+                    systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value = model.SupportEmail;
+                    systemConfigurations.Single(m => m.Key == "SupportEmailAddress").ModifiedDate = DateTime.Now;
+                }
+
+                if (systemConfigurations.Single(m => m.Key == "SupportContact").Value != model.SupportContact)
+                {
+                    systemConfigurations.Single(m => m.Key == "SupportContact").Value = model.SupportContact;
+                    systemConfigurations.Single(m => m.Key == "SupportContact").ModifiedDate = DateTime.Now;
+                }
+
+                if (systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value != model.DefaultNoteImg)
+                {
+                    systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value = model.DefaultNoteImg;
+                    systemConfigurations.Single(m => m.Key == "DefaultBookImage").ModifiedDate = DateTime.Now;
+                }
+
+                if (systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value != model.DefaulProfileImg)
+                {
+                    systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value = model.DefaulProfileImg;
+                    systemConfigurations.Single(m => m.Key == "DefaultProfileImage").ModifiedDate = DateTime.Now;
+                }
+
+                if (systemConfigurations.Single(m => m.Key == "EmailAddresses").Value != model.Emails)
+                {
+                    systemConfigurations.Single(m => m.Key == "EmailAddresses").Value = model.Emails;
+                    systemConfigurations.Single(m => m.Key == "EmailAddresses").ModifiedDate = DateTime.Now;
+                }
+
+                if (systemConfigurations.Single(m => m.Key == "Facebook").Value != model.FacebookUrl)
+                {
+                    systemConfigurations.Single(m => m.Key == "Facebook").Value = model.FacebookUrl;
+                    systemConfigurations.Single(m => m.Key == "Facebook").ModifiedDate = DateTime.Now;
+                }
+
+                if (systemConfigurations.Single(m => m.Key == "Twitter").Value != model.TwitterUrl)
+                {
+                    systemConfigurations.Single(m => m.Key == "Twitter").Value = model.TwitterUrl;
+                    systemConfigurations.Single(m => m.Key == "Twitter").ModifiedDate = DateTime.Now;
+                }
+
+                if (systemConfigurations.Single(m => m.Key == "Linkedin").Value != model.LinkedinUrl)
+                {
+                    systemConfigurations.Single(m => m.Key == "Linkedin").Value = model.LinkedinUrl;
+                    systemConfigurations.Single(m => m.Key == "Linkedin").ModifiedDate = DateTime.Now;
+                }
+
+                context.SaveChanges();
+
+                return View(model);
+            }
+        }
+
+        #endregion System Configurations
 
         #region Apply Sorting
 

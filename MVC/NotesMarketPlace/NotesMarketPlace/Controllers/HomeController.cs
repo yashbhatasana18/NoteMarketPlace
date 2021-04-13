@@ -152,9 +152,9 @@ namespace NotesMarketPlace.Controllers
 
                 // published notes
                 var PublishedNotes = (from Notes in context.SellerNotes
-                                      join Category in context.NoteCategories on Notes.SellerID equals Category.NoteCategoriesID
+                                      join Category in context.NoteCategories on Notes.Category equals Category.NoteCategoriesID
                                       join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
-                                      where Status.RefCategory == "Notes Status" && Status.Value == "Published" && Notes.SellerID == currentUser.UserID
+                                      where Status.RefCategory == "Notes Status" && Notes.SellerID == currentUser.UserID && Status.Value == "Published"
                                       select new DashboardModel.UserDashboardPublishedNoteModel
                                       {
                                           Id = Notes.SellerNotesID,
@@ -527,7 +527,7 @@ namespace NotesMarketPlace.Controllers
         #region Search Notes
 
         [AllowAnonymous]
-        public ActionResult SearchNotes(int? Type, int? Category, string University, string Course, int? Country, int? Rating, string search)
+        public ActionResult SearchNotes(int? Type, int? Category, string University, string Course, int? Country, int? Rating, string search, int PageNumber = 1)
         {
             using (var context = new NotesMarketPlaceEntities())
             {
@@ -547,7 +547,7 @@ namespace NotesMarketPlace.Controllers
                              join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
                              where Status.Value == "Published" && Notes.IsActive == true
                              let avgRatings = (from Review in context.SellerNotesReviews
-                                               where Review.NoteID == Notes.SellerID
+                                               where Review.NoteID == Notes.SellerNotesID
                                                group Review by Review.NoteID into grp
                                                select new SellerNotesReviewsModel
                                                {
@@ -555,7 +555,7 @@ namespace NotesMarketPlace.Controllers
                                                    Total = grp.Count()
                                                })
                              let spamNote = (from Spam in context.SellerNotesReportedIssues
-                                             where Spam.NoteID == Notes.SellerID
+                                             where Spam.NoteID == Notes.SellerNotesID
                                              group Spam by Spam.ReportedByID into grp
                                              select new SellerNotesReportedIssuesModel
                                              {
@@ -586,6 +586,8 @@ namespace NotesMarketPlace.Controllers
                                  TotalReviews = avgRatings.Select(a => a.Total).FirstOrDefault(),
                                  TotalSpams = spamNote.Select(a => a.Total).FirstOrDefault()
                              }).ToList();
+
+                ViewBag.TotalNotes = notes.Count();
 
                 ViewBag.TypeList = type;
                 ViewBag.CategoryList = category;
@@ -624,6 +626,10 @@ namespace NotesMarketPlace.Controllers
                 {
                     filternotes = filternotes.Where(m => m.Title.ToLower().Contains(search.ToLower())).ToList();
                 }
+
+                //Pagination
+                filternotes = ApplyPagination(filternotes, PageNumber);
+
                 return View(filternotes);
             }
         }
@@ -730,185 +736,93 @@ namespace NotesMarketPlace.Controllers
 
         #endregion Note Details
 
-        #region Purchase Note
+        #region Download Note
 
-        [Route("NoteDetails/Purchase")]
-        public ActionResult PurchaseNote(string noteId)
+        public ActionResult PurchaseNote(int noteId)
         {
-            int noteid = int.Parse(noteId);
-
-            using (var context = new NotesMarketPlaceEntities())
+            using (var _Context = new NotesMarketPlaceEntities())
             {
-
-                var user = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
-                var note = context.SellerNotes.FirstOrDefault(m => m.SellerNotesID == noteid);
-
-
-                if (note != null && !user.Equals(null))
+                if (User.Identity.IsAuthenticated)
                 {
-                    var create = context.Downloads;
+                    var user = _Context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
+                    var note = _Context.SellerNotes.FirstOrDefault(m => m.SellerNotesID == noteId);
+                    var attachment = _Context.SellerNotesAttachements.FirstOrDefault(m => m.NoteID == noteId);
+                    var category = _Context.NoteCategories.FirstOrDefault(m => m.NoteCategoriesID == note.Category);
 
-                    if (note.SellingPrice == 0)
+                    if (note != null && !user.Equals(null))
                     {
-                        create.Add(new Downloads
+                        var create = _Context.Downloads;
+
+                        if (note.SellingPrice == 0)
                         {
-                            Downloader = user.UserID,
-                            NoteID = noteid,
-                            Seller = note.SellerID,
-                            PurchasedPrice = note.SellingPrice,
-                            //CreatedDate = DateTime.Now,
-                            IsSellerHasAllowedDownload = true,
-                            IsAttachmentDownloaded = true,
-                            AttachmentDownloadedDate = DateTime.Now
-                        });
+                            create.Add(new Downloads
+                            {
+                                NoteTitle = note.Title,
+                                Seller = note.SellerID,
+                                Downloader = user.UserID,
+                                NoteID = noteId,
+                                IsAttachmentDownloaded = true,
+                                IsSellerHasAllowedDownload = true,
+                                IsPaid = note.IsPaid,
+                                AttachmentPath = attachment.FilePath,
+                                NoteCategory = category.Name,
+                                PurchasedPrice = note.SellingPrice,
+                                CreatedDate = DateTime.Now,
+                                AttachmentDownloadedDate = DateTime.Now
+                            });
 
-                        context.SaveChanges();
+                            _Context.SaveChanges();
 
-                        var attachment = context.SellerNotesAttachements.FirstOrDefault(m => m.NoteID == noteid);
+                            return DownloadFile(noteId);
+                        }
+                        else
+                        {
+                            // send download request to seller
+                            create.Add(new Downloads
+                            {
+                                NoteTitle = note.Title,
+                                Seller = note.SellerID,
+                                Downloader = user.UserID,
+                                NoteID = noteId,
+                                IsSellerHasAllowedDownload = false,
+                                IsPaid = note.IsPaid,
+                                AttachmentPath = attachment.FilePath,
+                                NoteCategory = category.Name,
+                                PurchasedPrice = note.SellingPrice,
+                                CreatedDate = DateTime.Now,
+                                AttachmentDownloadedDate = DateTime.Now
+                            });
+                            _Context.SaveChanges();
 
-                        // download file direct
-                        string filePath = Server.MapPath("../Content/NotesImages/NotesPDF/" + attachment.FileName);
-                        byte[] filebyte = GetFile(filePath);
+                            // seller email
+                            var seller = _Context.Users.FirstOrDefault(m => m.UserID == note.SellerID);
 
-                        return File(filebyte, System.Net.Mime.MediaTypeNames.Application.Octet, attachment.FileName);
+                            // send mail to seller
+                            string subject = user.FirstName + " wants to purchase your notes";
+                            string body = "Hello " + seller.FirstName + ",\n \n"
+                                + "We would like to inform you that, " + user.FirstName + " wants to purchase your notes. Please see Buyer Requests tab and allow download access to Buyer if you have received the payment from him";
+                            body += "\n \nRegards,\nNotes MarketPlace";
+
+                            bool isSend = SendEmailUser.EmailSend(seller.EmailID, subject, body, false);
+
+                            TempData["UserName"] = user.FirstName;
+
+                            // show modal
+                            TempData["ShowModal"] = 1;
+                            return RedirectToAction("NoteDetails", new { id = noteId });
+                        }
                     }
                     else
                     {
-                        // send download request to seller
-                        create.Add(new Downloads
-                        {
-                            Downloader = user.UserID,
-                            NoteID = noteid,
-                            Seller = note.SellerID,
-                            PurchasedPrice = note.SellingPrice,
-                            CreatedDate = DateTime.Now
-                        });
-                        context.SaveChanges();
-
-                        // seller email
-                        var seller = context.Users.FirstOrDefault(m => m.UserID == note.SellerID);
-
-                        // send mail to seller
-                        string subject = user.FirstName + " wants to purchase your notes";
-                        string body = "Hello " + seller.FirstName + "\\n"
-                            + "We would like to inform you that, " + user.FirstName + " wants to purchase your notes. Please see Buyer Requests tab and allow download access to Buyer if you have received the payment from him";
-                        body += "\\nRegards,\\nNotes MarketPlace";
-
-                        bool isSend = SendEmailUser.EmailSend(seller.EmailID, subject, body, false);
-
-
-                        TempData["UserName"] = user.FirstName;
-
-                        // show modal
-                        TempData["ShowModal"] = 1;
-                        return RedirectToAction("NoteDetails", new { id = noteId });
+                        return View("SearchNotes");
                     }
                 }
                 else
                 {
-                    return View("SearchNotes");
+                    return RedirectToAction("Login", "Account");
                 }
+                //return RedirectToAction("NoteDetails", new { id = noteId });
             }
-        }
-
-        #endregion Purchase Note
-
-        #region Download Note
-
-        public ActionResult Download(int noteId, int userId)
-        {
-            //Download the file                                                
-            var user = db.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
-
-            //check user enter the profile details or not
-            bool temp = db.UserProfile.Any(x => x.UserID == user.UserID);
-            if (!temp)
-            {
-                return RedirectToAction("MyProfile", "Account");
-            }
-
-            //count notes for zip or simple note download
-            var note = db.SellerNotes.Find(noteId);
-            var count = db.SellerNotesAttachements.Where(x => x.NoteID == noteId).Count();
-            string notesattachementpath = "~/Content/NotesImages/NotesPDF/";
-            if (count > 1)
-            {
-                var noteattachement = db.SellerNotesAttachements.Where(x => x.NoteID == note.SellerNotesID).ToList();
-            }
-
-            //full path for download file
-            string filename = db.SellerNotesAttachements.FirstOrDefault(x => x.NoteID == noteId).FileName;
-            string attachmentspath = notesattachementpath + filename;
-            string fullpath = System.IO.Path.Combine(notesattachementpath, filename);
-
-            //when user first time download
-            if (!db.Downloads.Any(x => x.NoteID == noteId && x.Downloader == user.UserID))
-            {
-
-                //Save data in database 
-                SellerNotes obj = new SellerNotes();
-                NoteCategories cat = new NoteCategories();
-                int category = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId).Category;
-                string title = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId).Title;
-
-                Downloads downloadnotedetail = new Downloads();
-
-                downloadnotedetail.NoteID = noteId;
-                downloadnotedetail.Seller = userId;
-                downloadnotedetail.Downloader = user.UserID;
-                downloadnotedetail.AttachmentPath = fullpath;
-                downloadnotedetail.NoteTitle = title;
-                downloadnotedetail.NoteCategory = db.NoteCategories.FirstOrDefault(x => x.NoteCategoriesID == category).Name;
-                downloadnotedetail.CreatedDate = DateTime.Now;
-                downloadnotedetail.CreatedBy = userId;
-                downloadnotedetail.ModifiedDate = DateTime.Now;
-                downloadnotedetail.ModifiedBy = userId;
-                downloadnotedetail.AttachmentDownloadedDate = DateTime.Now;
-                //downloadnotedetail.IsActive = true;
-
-
-                var notes = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId);
-                if (notes.IsPaid)
-                {
-                    downloadnotedetail.IsSellerHasAllowedDownload = false;
-                    downloadnotedetail.IsAttachmentDownloaded = false;
-                    downloadnotedetail.IsPaid = true;
-                    downloadnotedetail.PurchasedPrice = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId).SellingPrice;
-
-                    db.Downloads.Add(downloadnotedetail);
-                    db.SaveChanges();
-
-                    return RedirectToAction("NoteDetails", new { id = noteId });
-                }
-
-                downloadnotedetail.IsSellerHasAllowedDownload = true;
-                downloadnotedetail.IsAttachmentDownloaded = true;
-                downloadnotedetail.PurchasedPrice = 0;
-                downloadnotedetail.IsPaid = false;
-
-                db.Downloads.Add(downloadnotedetail);
-                db.SaveChanges();
-            }
-
-            //check allow download
-            var res = db.Downloads.FirstOrDefault(x => x.NoteID == noteId);
-            if (res.IsSellerHasAllowedDownload == false && res.IsPaid == true)
-            {
-                int userOfNote = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == noteId).SellerID;
-                string name = db.Users.FirstOrDefault(x => x.UserID == userOfNote).FirstName;
-                string fullName = user.FirstName + " " + user.LastName;
-                //forallowdownload(name, fullName);
-
-                return RedirectToAction("NoteDetails", new { id = noteId });
-            }
-
-            Downloads forModifydata = new Downloads();
-            forModifydata.ModifiedDate = DateTime.Now;
-            forModifydata.AttachmentDownloadedDate = DateTime.Now;
-            db.SaveChanges();
-
-            //for only one file
-            return File(fullpath, "text/plain", filename);
         }
 
         #endregion Download Note
@@ -1000,8 +914,8 @@ namespace NotesMarketPlace.Controllers
 
                     // send mail to buyer
                     string subject = seller.FirstName + " Allows you to download a note";
-                    string body = string.Format("Hello " + downloader.FirstName + "<br/><br/>" + "We would like to inform you that, " + seller.FirstName + " Allows you to download a note. Please login and see My Download tabs to download particular note.");
-                    body += string.Format("<br/><br/> Regards,<br/><br/> Notes MarketPlace");
+                    string body = string.Format("Hello " + downloader.FirstName + "\n \n" + "We would like to inform you that, " + seller.FirstName + " Allows you to download a note. Please login and see My Download tabs to download particular note.");
+                    body += string.Format("\n \n Regards,\n Notes MarketPlace");
 
                     bool isSend = SendEmailUser.EmailSend(downloader.EmailID, subject, body, false);
 
@@ -1027,18 +941,16 @@ namespace NotesMarketPlace.Controllers
                 int currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name).UserID;
 
                 var result = (from Purchase in context.Downloads
-                              join Note in context.SellerNotes on Purchase.NoteID equals Note.SellerNotesID
                               join Downloader in context.Users on Purchase.Downloader equals Downloader.UserID
-                              join Seller in context.Users on Purchase.Seller equals Seller.UserID
-                              join UserProfile in context.UserProfile on Note.SellerID equals UserProfile.UserID
-                              join Category in context.NoteCategories on Note.Category equals Category.NoteCategoriesID
+                              join UserProfile in context.UserProfile on Purchase.Downloader equals UserProfile.UserID
+                              join Category in context.NoteCategories on Purchase.NoteCategory equals Category.Name
                               where Purchase.IsSellerHasAllowedDownload == true && Purchase.Downloader == currentUser
                               select new MyDownloadsModel
                               {
                                   NoteId = Purchase.NoteID,
                                   UserID = currentUser,
                                   PurchaseId = Purchase.DownloadsID,
-                                  Title = Note.Title,
+                                  Title = Purchase.NoteTitle,
                                   Category = Category.Name,
                                   Buyer = Downloader.EmailID,
                                   EmailID = Downloader.EmailID,
@@ -1230,6 +1142,7 @@ namespace NotesMarketPlace.Controllers
                               select new MyRejectedNotesModel
                               {
                                   Id = Notes.SellerNotesID,
+                                  NoteId = Notes.SellerNotesID,
                                   UserId = Notes.SellerID,
                                   Title = Notes.Title,
                                   Category = Category.Name,
@@ -1333,6 +1246,46 @@ namespace NotesMarketPlace.Controllers
         }
 
         #endregion ContactUs
+
+        #region Download File
+
+        public FileResult DownloadFile(int noteid)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var file = (from Attachment in context.SellerNotesAttachements
+                            where Attachment.NoteID == noteid
+                            join Note in context.SellerNotes on Attachment.NoteID equals Note.SellerNotesID
+                            select new
+                            {
+                                Note.SellerID,
+                                Attachment.FileName
+                            }).SingleOrDefault();
+
+                string filepath = Server.MapPath("../Content/NotesImages/NotesPDF/" + file.FileName);
+                byte[] filebyte = GetFile(filepath);
+
+                return File(filebyte, System.Net.Mime.MediaTypeNames.Application.Octet, file.FileName);
+            }
+        }
+
+        #endregion Download File
+
+        #region Return File
+
+        byte[] GetFile(string s)
+        {
+            System.IO.FileStream fs = System.IO.File.OpenRead(s);
+            byte[] data = new byte[fs.Length];
+            int br = fs.Read(data, 0, data.Length);
+            if (br != fs.Length)
+            {
+                throw new System.IO.IOException(s);
+            }
+            return data;
+        }
+
+        #endregion Return File
 
         #region Apply Sorting
 
@@ -1719,19 +1672,16 @@ namespace NotesMarketPlace.Controllers
 
             return result;
         }
+        public List<SearchNotesModel> ApplyPagination(List<SearchNotesModel> result, int PageNumber)
+        {
+            ViewBag.TotalPages = Math.Ceiling(result.Count() / 9.0);
+            ViewBag.PageNumber = PageNumber;
+
+            result = result.Skip((PageNumber - 1) * 9).Take(9).ToList();
+
+            return result;
+        }
 
         #endregion Apply Pagination
-
-        byte[] GetFile(string s)
-        {
-            FileStream fs = System.IO.File.OpenRead(s);
-            byte[] data = new byte[fs.Length];
-            int br = fs.Read(data, 0, data.Length);
-            if (br != fs.Length)
-            {
-                throw new IOException(s);
-            }
-            return data;
-        }
     }
 }

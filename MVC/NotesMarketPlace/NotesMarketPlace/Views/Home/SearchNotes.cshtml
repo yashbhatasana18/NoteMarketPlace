@@ -100,7 +100,7 @@
                     <div class="col-md-12">
                         <div class="filter-search">
                             <img src="~/Content/images/search-icon.png" alt="search" class="form-control-feedback">
-                            <input id="search" class="form-control input-search" placeholder="Search notes here..." onkeyup=" SearchNotes()">
+                            <input id="Search" class="form-control input-search" placeholder="Search notes here...">
                         </div>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
         </div>
     </div><div class="row">
         <div class="col-md-12">
-            <h1 class="title">Total @Model.Count() notes</h1>
+            <h1 class="title">Total @ViewBag.TotalNotes notes</h1>
         </div>
     </div><div class="row row-cols-1 row-cols-md-3">
         @foreach (var item in Model)
@@ -149,8 +149,8 @@
                         <div class="card-title">
                             @Html.ActionLink(item.Title, "NoteDetails", new { id = @item.SellerNotesID }, htmlAttributes: new { style = "color: #6655a5; cursor : pointer;", datatoggle = "tooltip", dataplacement = "bottom", dataoriginaltitle = "Title" })
                             @*<a id="noteTitle" href="">
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </a>*@
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </a>*@
                         </div>
                         <div class="card-text">
                             <div class="card-content">
@@ -212,27 +212,67 @@
         }
     </div>
 
-    <div class="row text-center">
-        <div class="col-md-12 num">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <img src="~/Content/images/left-arrow.png" alt="left-arrow">
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <img src="~/Content/images/right-arrow.png" alt="right-arrow">
-                    </a>
-                </li>
-            </ul>
+    @* Pagination *@
+    @{
+        double totalPages = ViewBag.TotalPages;
+
+        <div class="row text-center">
+            <div class="col-md-12 num">
+                <ul class="pagination justify-content-center">
+
+                    @if (ViewBag.PageNumber == 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" aria-label="Previous" href="@Url.Action("SearchNotes", new { PageNumber = ViewBag.PageNumber })">
+                                <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" aria-label="Previous" href="@Url.Action("SearchNotes", new { PageNumber = ViewBag.PageNumber - 1 })">
+                                <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        if (i == ViewBag.PageNumber)
+                        {
+                            <li class="page-item">
+                                @Html.ActionLink(i.ToString(), "SearchNotes", new { PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                @Html.ActionLink(i.ToString(), "SearchNotes", new { PageNumber = i }, htmlAttributes: new { @class = "page-link" })
+                            </li>
+                        }
+                    }
+
+                    @if (ViewBag.PageNumber == totalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" aria-label="Next" href="@Url.Action("SearchNotes", new { PageNumber = ViewBag.PageNumber })">
+                                <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" aria-label="Next" href="@Url.Action("SearchNotes", new { PageNumber = ViewBag.PageNumber + 1 })">
+                                <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
-    </div>
+    }
 
 </section>
 <!-- End Search   -->
@@ -297,6 +337,13 @@
             }
         });
     }
+
+    $('#Search').on('keypress', function (e) {
+        if (e) {
+            location.href = "SearchNotes?search=" + $(this).val();
+        }
+    });
+
 
     $('.card-title > a').click(function () {
         location.href = "NoteDetails/" + $(this).attr('noteId');

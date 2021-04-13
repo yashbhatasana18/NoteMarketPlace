@@ -1480,6 +1480,7 @@
     <Content Include="Content\icons-1.4.0\icons\zoom-out.svg" />
     <Content Include="Content\NotesImages\Images\search421243095.png" />
     <Content Include="Content\NotesImages\Images\search621264417.png" />
+    <Content Include="Members\1\Illustrator 21363121.jpg" />
     <Content Include="Members\2\Illustrator 21363121.jpg" />
     <Content Include="Members\3\Illustrator 21363121.jpg" />
     <Content Include="Views\EmailTemplate\AccountConfirmation.html" />
@@ -3095,6 +3096,7 @@
     <Content Include="Views\Admin\SpamReports.cshtml" />
     <Content Include="Views\Admin\MyProfile.cshtml" />
     <Content Include="Views\SuperAdmin\AddAdministrator.cshtml" />
+    <Content Include="Views\SuperAdmin\ManageSystemConfiguration.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

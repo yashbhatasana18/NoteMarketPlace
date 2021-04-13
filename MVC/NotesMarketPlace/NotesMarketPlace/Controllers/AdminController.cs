@@ -23,7 +23,6 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
-                // set social URL
                 var socialUrl = context.SystemConfigurations.Where(m => m.Key == "Facebook" || m.Key == "Twitter" || m.Key == "Linkedin").ToList();
                 ViewBag.URLs = socialUrl;
             }
@@ -39,10 +38,10 @@ namespace NotesMarketPlace.Controllers
             {
                 using (var context = new NotesMarketPlaceEntities())
                 {
-                    // get current user
+                    //Get Current User
                     var currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
 
-                    //current user profile image
+                    //Current User Profile Image
                     var img = (from Details in context.UserProfile
                                join Users in context.Users on Details.UserID equals Users.UserID
                                where Users.EmailID == requestContext.HttpContext.User.Identity.Name
@@ -54,7 +53,7 @@ namespace NotesMarketPlace.Controllers
 
                     if (img == null)
                     {
-                        // set default image
+                        //Set Default Image
                         var defaultImg = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
                         ViewBag.UserProfile = defaultImg;
                     }

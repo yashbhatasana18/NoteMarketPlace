@@ -80,7 +80,7 @@
     <Compile Include="SellerNotesReportedIssuesModel.cs" />
     <Compile Include="SellerNotesReviewsModel.cs" />
     <Compile Include="SignUpModel.cs" />
-    <Compile Include="SystemConfigurationsModel.cs" />
+    <Compile Include="Admin\SystemConfigurationsModel.cs" />
     <Compile Include="UserProfileModel.cs" />
     <Compile Include="UserRolesModel.cs" />
   </ItemGroup>
