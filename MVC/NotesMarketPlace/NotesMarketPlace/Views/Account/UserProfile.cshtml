@@ -33,6 +33,13 @@
     .input-group-prepend {
         margin-right: 10px;
     }
+
+    .customDropDown {
+        padding-right: 40px !important;
+        background: url(../../Content/images/arrow-down.png) 85% no-repeat;
+        margin-right: 10px;
+        appearance: none;
+    }
 </style>
 
 <!-- Head -->
@@ -110,7 +117,7 @@
                     @Html.LabelFor(model => model.PhoneNumber, "Phone Number", new { @for = "phoneNo" })
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            @Html.DropDownListFor(model => model.PhoneNumberCountryCode, ViewBag.CountryCodeList as SelectList, new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.PhoneNumberCountryCode, ViewBag.CountryCodeList as SelectList, new { @class = "form-control customDropDown" })
                         </div>
                         @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Enter your phone number", id = "phoneNo" })
                     </div>
@@ -124,14 +131,14 @@
                 <div id="file-upload-form" class="uploader form-group">
                     <input id="file-upload" type="file" name="UserProfilePicturePath" accept="image/*" />
                     <label for="file-upload" id="file-drag">
-                        <img id="file-image" src="#" alt="Preview" class="hidden">
-                        <div id="start">
-                            <img src="~/Content/images/upload-file.png" height="46" width="50" />
+                        <img id="file-image" src="@Url.Content(ViewBag.ProfilePicturePreview)" alt="Preview" class="@ViewBag.NonHideClass">
+                        <div id="start" class="@ViewBag.HideClass">
+                            <img src="@Url.Content(ViewBag.ProfilePicture)" height="46" width="50" />
                             <div>Upload a picture</div>
                             <div id="notimage" class="hidden">Please select an image</div>
                         </div>
-                        <div id="response" class="hidden">
-                            <div id="messages"></div>
+                        <div id="response" class="@ViewBag.NonHideClass">
+                            <div id="messages">@ViewBag.ProfilePictureName</div>
                         </div>
                     </label>
                 </div>
@@ -174,9 +181,10 @@
                     @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Country, "Country *", new { @for = "dropdownCountry" })
-                    @Html.DropDownListFor(model => model.Country, ViewBag.CountryList as SelectList, "Select Your Country", new { @class = "form-control", id = "dropdownCountry" })
-
+                    @Html.LabelFor(model => model.Country, "Country *", new { @for = "country" })
+                    @Html.TextBoxFor(model => model.Country, new { @class = "form-control", placeholder = "Enter your Country", id = "country" })
+                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                    @*@Html.DropDownListFor(model => model.Country, ViewBag.CountryList as SelectList, "Select Your Country", new { @class = "form-control", id = "dropdownCountry" })*@
                     @*@Html.DropDownListFor(model => model.Country, new SelectList(Model.countryModel, "CountriesID", "Name"), "Select Your Country", new { @class = "form-control" })*@
                 </div>
             </div>

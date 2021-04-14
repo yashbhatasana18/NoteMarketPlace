@@ -67,6 +67,12 @@
         top: 8px;
         left: 5px;
     }
+
+    .customDropDown-Multiple {
+        padding-right: 40px !important;
+        background: url(../../Content/images/arrow-down.png) 90% no-repeat;
+        margin-right: 10px;
+    }
 </style>
 
 <!-- Head -->
@@ -107,24 +113,24 @@
             }
             <div class="row">
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("Type", new SelectList(ViewBag.TypeList, "NoteTypesID", "Name"), "Select Type", new { @class = "form-control", onchange = "myFunc(this)" })
+                    @Html.DropDownList("Type", new SelectList(ViewBag.TypeList, "NoteTypesID", "Name"), "Select Type", new { @class = "form-control customDropDown-Multiple", onchange = "myFunc(this)" })
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("Category", new SelectList(ViewBag.CategoryList, "NoteCategoriesID", "Name"), "Select Category", new { @class = "form-control", onchange = "myFunc(this)" })
+                    @Html.DropDownList("Category", new SelectList(ViewBag.CategoryList, "NoteCategoriesID", "Name"), "Select Category", new { @class = "form-control customDropDown-Multiple", onchange = "myFunc(this)" })
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("University", new SelectList(ViewBag.University), "Select University", new { @class = "form-control", onchange = "myFunc(this)" })
+                    @Html.DropDownList("University", new SelectList(ViewBag.University), "Select University", new { @class = "form-control customDropDown-Multiple", onchange = "myFunc(this)" })
 
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("Course", new SelectList(ViewBag.Course), "Select Course", new { @class = "form-control", onchange = "myFunc(this)" })
+                    @Html.DropDownList("Course", new SelectList(ViewBag.Course), "Select Course", new { @class = "form-control customDropDown-Multiple", onchange = "myFunc(this)" })
 
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    @Html.DropDownList("Country", new SelectList(ViewBag.Country, "CountriesID", "Name"), "Select Country", new { @class = "form-control", onchange = "myFunc(this)" })
+                    @Html.DropDownList("Country", new SelectList(ViewBag.Country, "CountriesID", "Name"), "Select Country", new { @class = "form-control customDropDown-Multiple", onchange = "myFunc(this)" })
                 </div>
                 <div class="col-md-2 col-sm-6">
-                    <select class="form-control" id="Rating" onchange="myFunc(this)">
+                    <select class="form-control customDropDown-Multiple" id="Rating" onchange="myFunc(this)">
                         <option value="">Select rating</option>
                         <option value="1">1 +</option>
                         <option value="2">2 +</option>

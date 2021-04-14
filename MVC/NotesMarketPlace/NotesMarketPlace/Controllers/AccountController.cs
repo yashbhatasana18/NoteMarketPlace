@@ -304,6 +304,19 @@ namespace NotesMarketPlace.Controllers
                     if (UserProfile.ProfilePicture == null)
                     {
                         UserProfile.ProfilePicture = "~/Content/images/upload-file.png";
+                        ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                        ViewBag.ProfilePicturePreview = "#";
+                        ViewBag.HideClass = "";
+                        ViewBag.NonHideClass = "hidden";
+                        ViewBag.ProfilePictureName = "";
+                    }
+                    else
+                    {
+                        ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                        ViewBag.ProfilePicturePreview = UserProfile.ProfilePicture;
+                        ViewBag.ProfilePictureName = Path.GetFileNameWithoutExtension(UserProfile.ProfilePicture);
+                        ViewBag.HideClass = "hidden";
+                        ViewBag.NonHideClass = "";
                     }
 
                     //UserProfile.genderModel = gender.Select(x => new ReferenceDataModel { ReferenceDataID = x.ReferenceDataID, Value = x.Value }).ToList();
@@ -397,7 +410,7 @@ namespace NotesMarketPlace.Controllers
                         detailsUpdate.Gender = user.Gender;
                         detailsUpdate.PhoneNumberCountryCode = user.PhoneNumberCountryCode;
                         detailsUpdate.PhoneNumber = user.PhoneNumber;
-                        detailsUpdate.ProfilePicture = user.ProfilePicture;
+                        //detailsUpdate.ProfilePicture = user.ProfilePicture;
                         detailsUpdate.AddressLine1 = user.AddressLine1;
                         detailsUpdate.AddressLine2 = user.AddressLine2;
                         detailsUpdate.City = user.City;
@@ -476,6 +489,12 @@ namespace NotesMarketPlace.Controllers
                         }
                     }
                 }
+
+                ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicturePreview = "#";
+                ViewBag.HideClass = "";
+                ViewBag.NonHideClass = "hidden";
+                ViewBag.ProfilePictureName = "";
 
                 //user.ProfilePicture = "~/Content/images/upload-file.png";
 

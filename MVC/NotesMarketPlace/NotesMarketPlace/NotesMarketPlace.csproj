@@ -1478,7 +1478,9 @@
     <Content Include="Content\icons-1.4.0\icons\youtube.svg" />
     <Content Include="Content\icons-1.4.0\icons\zoom-in.svg" />
     <Content Include="Content\icons-1.4.0\icons\zoom-out.svg" />
-    <Content Include="Content\NotesImages\Images\search421243095.png" />
+    <Content Include="Content\NotesImages\Images\banner21413839.png" />
+    <Content Include="Content\NotesImages\Images\computer-science21115170.png" />
+    <Content Include="Content\NotesImages\Images\search321345392.png" />
     <Content Include="Content\NotesImages\Images\search621264417.png" />
     <Content Include="Members\1\Illustrator 21363121.jpg" />
     <Content Include="Members\2\Illustrator 21363121.jpg" />
@@ -2948,9 +2950,15 @@
     <Content Include="Content\icons-1.4.0\README.md" />
     <Content Include="Content\icons-1.4.0\svgo.yml" />
     <Content Include="Content\NotesImages\NotesPDF\sample21243095.pdf" />
-    <Content Include="Content\NotesImages\NotesPDF\sample21264419.pdf" />
     <Content Include="Content\NotesImages\NotesPreview\sample21243095.pdf" />
     <Content Include="Content\NotesImages\NotesPreview\sample21264419.pdf" />
+    <Content Include="Content\NotesImages\NotesPDF\bmc21333473.pdf" />
+    <Content Include="Content\NotesImages\NotesPDF\sample21205992.pdf" />
+    <Content Include="Content\NotesImages\NotesPDF\sample21413839.pdf" />
+    <Content Include="Content\NotesImages\NotesPreview\sample21115170.pdf" />
+    <Content Include="Content\NotesImages\NotesPreview\sample21413840.pdf" />
+    <Content Include="Content\NotesImages\NotesPDF\bmc21345392.pdf" />
+    <Content Include="Content\NotesImages\NotesPreview\BE-SEM7WinterExamination-2020_17054010701421345392.pdf" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -3097,6 +3105,12 @@
     <Content Include="Views\Admin\MyProfile.cshtml" />
     <Content Include="Views\SuperAdmin\AddAdministrator.cshtml" />
     <Content Include="Views\SuperAdmin\ManageSystemConfiguration.cshtml" />
+    <Content Include="Views\Admin\ManageCategory.cshtml" />
+    <Content Include="Views\Admin\AddCategory.cshtml" />
+    <Content Include="Views\Admin\ManageType.cshtml" />
+    <Content Include="Views\Admin\AddType.cshtml" />
+    <Content Include="Views\Admin\ManageCountries.cshtml" />
+    <Content Include="Views\Admin\AddCountry.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

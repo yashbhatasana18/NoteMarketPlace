@@ -920,6 +920,422 @@ namespace NotesMarketPlace.Controllers
 
         #endregion My Profile
 
+        #region Manage Category
+
+        public ActionResult ManageCategory(string txtSearch, string SortOrder, string SortBy, int PageNumber = 1)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var data = (from Category in context.NoteCategories
+                            join User in context.Users on Category.CreatedBy equals User.UserID
+                            select new ManageCategoryModel
+                            {
+                                Id = Category.NoteCategoriesID,
+                                Name = Category.Name,
+                                Description = Category.Description,
+                                CreatedDate = Category.CreatedDate,
+                                CreatedBy = User.UserID,
+                                IsActive = Category.IsActive == true ? "Yes" : "No",
+                            }).OrderByDescending(x => x.CreatedDate).ToList();
+
+                ViewBag.SortOrder = SortOrder;
+                ViewBag.SortBy = SortBy;
+                var ManageCategoryresult = data;
+
+                if (txtSearch != null)
+                {
+                    ManageCategoryresult = ManageCategoryresult.Where(x => x.Name.ToLower().Contains(txtSearch.ToLower())).ToList();
+
+                    //Sorting
+                    ManageCategoryresult = ApplySorting(SortOrder, SortBy, ManageCategoryresult);
+
+                    //Pagination
+                    ManageCategoryresult = ApplyPagination(ManageCategoryresult, PageNumber);
+                }
+                else
+                {
+                    //Sorting
+                    ManageCategoryresult = ApplySorting(SortOrder, SortBy, ManageCategoryresult);
+
+                    //Pagination
+                    ManageCategoryresult = ApplyPagination(ManageCategoryresult, PageNumber);
+                }
+
+                return View(ManageCategoryresult);
+            }
+        }
+
+        #region Add Category
+
+        public ActionResult AddCategory(int? edit)
+        {
+            ViewBag.Edit = false;
+
+            if (edit != null)
+            {
+                using (var context = new NotesMarketPlaceEntities())
+                {
+                    var data = context.NoteCategories.Where(m => m.NoteCategoriesID == edit)
+                    .Select(x => new AddCategoryModel
+                    {
+                        Id = x.NoteCategoriesID,
+                        Name = x.Name,
+                        Description = x.Description
+                    }).Single();
+
+                    ViewBag.Edit = true;
+
+                    return View(data);
+                }
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddCategory(AddCategoryModel model, int? id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                // current admin id
+                var currentAdmin = context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
+
+                // if new category
+                if (id.Equals(null))
+                {
+                    // add new category
+                    var create = context.NoteCategories;
+                    create.Add(new NoteCategories
+                    {
+                        Name = model.Name,
+                        Description = model.Description,
+                        CreatedBy = currentAdmin,
+                        CreatedDate = DateTime.Now,
+                        IsActive = true
+                    });
+
+                    context.SaveChanges();
+                }
+                // update existing category
+                else
+                {
+                    var update = context.NoteCategories.Single(m => m.NoteCategoriesID == id);
+
+                    update.Name = model.Name;
+                    update.Description = model.Description;
+
+                    update.ModifiedBy = currentAdmin;
+                    update.ModifiedDate = DateTime.Now;
+                    update.IsActive = true;
+
+                    context.SaveChanges();
+                }
+
+            }
+            return RedirectToAction("ManageCategory");
+        }
+
+        #endregion Add Category
+
+        #endregion Manage Category
+
+        #region Manage Type
+
+        public ActionResult ManageType(string txtSearch, string SortOrder, string SortBy, int PageNumber = 1)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var data = (from Type in context.NoteTypes
+                            join User in context.Users on Type.CreatedBy equals User.UserID
+                            select new ManageTypeModel
+                            {
+                                Id = Type.NoteTypesID,
+                                Name = Type.Name,
+                                Description = Type.Description,
+                                CreatedDate = Type.CreatedDate,
+                                CreatedBy = User.UserID,
+                                IsActive = Type.IsActive == true ? "Yes" : "No"
+                            }).OrderByDescending(x => x.CreatedDate).ToList();
+
+                ViewBag.SortOrder = SortOrder;
+                ViewBag.SortBy = SortBy;
+                var ManageTyperesult = data;
+
+                if (txtSearch != null)
+                {
+                    ManageTyperesult = ManageTyperesult.Where(x => x.Name.ToLower().Contains(txtSearch.ToLower())).ToList();
+
+                    //Sorting
+                    ManageTyperesult = ApplySorting(SortOrder, SortBy, ManageTyperesult);
+
+                    //Pagination
+                    ManageTyperesult = ApplyPagination(ManageTyperesult, PageNumber);
+                }
+                else
+                {
+                    //Sorting
+                    ManageTyperesult = ApplySorting(SortOrder, SortBy, ManageTyperesult);
+
+                    //Pagination
+                    ManageTyperesult = ApplyPagination(ManageTyperesult, PageNumber);
+                }
+
+                return View(ManageTyperesult);
+            }
+        }
+
+        #region Add Type
+
+        public ActionResult AddType(int? edit)
+        {
+            ViewBag.Edit = false;
+
+            if (edit != null)
+            {
+                using (var context = new NotesMarketPlaceEntities())
+                {
+                    var data = context.NoteTypes.Where(m => m.NoteTypesID == edit)
+                        .Select(x => new AddTypeModel
+                        {
+                            Id = x.NoteTypesID,
+                            Name = x.Name,
+                            Description = x.Description
+                        }).Single();
+
+                    ViewBag.Edit = true;
+
+                    return View(data);
+                }
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddType(AddTypeModel model, int? id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                // current admin id
+                var currentAdmin = context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
+
+                // if new category
+                if (id.Equals(null))
+                {
+                    // add new category
+                    var create = context.NoteTypes;
+                    create.Add(new NoteTypes
+                    {
+                        Name = model.Name,
+                        Description = model.Description,
+                        CreatedBy = currentAdmin,
+                        CreatedDate = DateTime.Now,
+                        IsActive = true
+                    });
+
+                    context.SaveChanges();
+                }
+                // update existing category
+                else
+                {
+                    var update = context.NoteTypes.Single(m => m.NoteTypesID == id);
+
+                    update.Name = model.Name;
+                    update.Description = model.Description;
+
+                    update.ModifiedBy = currentAdmin;
+                    update.ModifiedDate = DateTime.Now;
+                    update.IsActive = true;
+
+                    context.SaveChanges();
+                }
+
+            }
+            return RedirectToAction("ManageType");
+        }
+
+        #endregion Add Type
+
+        #endregion Manage Type
+
+        #region Manage Countries
+
+        public ActionResult ManageCountries(string txtSearch, string SortOrder, string SortBy, int PageNumber = 1)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var data = (from Country in context.Countries
+                            join User in context.Users on Country.CreatedBy equals User.UserID
+                            select new ManageCountryModel
+                            {
+                                Id = Country.CountriesID,
+                                CountryName = Country.Name,
+                                CountryCode = Country.CountryCode,
+                                CreatedDate = Country.CreatedDate,
+                                CreatedBy = User.UserID,
+                                IsActive = Country.IsActive == true ? "Yes" : "No"
+                            }).OrderByDescending(x => x.CreatedDate).ToList();
+
+                ViewBag.SortOrder = SortOrder;
+                ViewBag.SortBy = SortBy;
+                var ManageCountriesresult = data;
+
+                if (txtSearch != null)
+                {
+                    ManageCountriesresult = ManageCountriesresult.Where(x => x.CountryName.ToLower().Contains(txtSearch.ToLower())).ToList();
+
+                    //Sorting
+                    ManageCountriesresult = ApplySorting(SortOrder, SortBy, ManageCountriesresult);
+
+                    //Pagination
+                    ManageCountriesresult = ApplyPagination(ManageCountriesresult, PageNumber);
+                }
+                else
+                {
+                    //Sorting
+                    ManageCountriesresult = ApplySorting(SortOrder, SortBy, ManageCountriesresult);
+
+                    //Pagination
+                    ManageCountriesresult = ApplyPagination(ManageCountriesresult, PageNumber);
+                }
+
+                return View(ManageCountriesresult);
+            }
+        }
+
+        #region Add Country
+
+        public ActionResult AddCountry(int? edit)
+        {
+            ViewBag.Edit = false;
+
+            if (edit != null)
+            {
+                using (var context = new NotesMarketPlaceEntities())
+                {
+                    var data = context.Countries.Where(m => m.CountriesID == edit)
+                        .Select(x => new AddCountryModel
+                        {
+                            Id = x.CountriesID,
+                            CountryName = x.Name,
+                            CountryCode = x.CountryCode
+                        }).Single();
+
+                    ViewBag.Edit = true;
+
+                    return View(data);
+                }
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddCountry(AddCountryModel model, int? id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                // current admin id
+                var currentAdmin = context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
+
+                // if new category
+                if (id.Equals(null))
+                {
+                    // add new category
+                    var create = context.Countries;
+                    create.Add(new Countries
+                    {
+                        Name = model.CountryName,
+                        CountryCode = model.CountryCode,
+                        CreatedBy = currentAdmin,
+                        CreatedDate = DateTime.Now,
+                        IsActive = true
+                    });
+
+                    context.SaveChanges();
+                }
+                // update existing category
+                else
+                {
+                    var update = context.Countries.Single(m => m.CountriesID == id);
+
+                    update.Name = model.CountryName;
+                    update.CountryCode = model.CountryCode;
+
+                    update.ModifiedBy = currentAdmin;
+                    update.ModifiedDate = DateTime.Now;
+                    update.IsActive = true;
+
+                    context.SaveChanges();
+                }
+
+            }
+            return RedirectToAction("ManageCountries");
+        }
+
+        #endregion Add Country
+
+        #endregion Manage Countries
+
+        #region Delete Category, Type, Country
+
+        [HttpPost]
+        public ActionResult DeleteSystemConfigItem(int id, string item)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var currentAdmin = context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
+                var return1 = "";
+                switch (item)
+                {
+                    case "Category":
+                        var category = context.NoteCategories.Single(m => m.NoteCategoriesID == id);
+                        category.IsActive = false;
+                        category.ModifiedBy = currentAdmin;
+                        category.ModifiedDate = DateTime.Now;
+                        context.SaveChanges();
+                        return1 = "ManageCategory";
+
+                        break;
+                    case "Type":
+                        var type = context.NoteTypes.Single(m => m.NoteTypesID == id);
+                        type.IsActive = false;
+                        type.ModifiedBy = currentAdmin;
+                        type.ModifiedDate = DateTime.Now;
+                        context.SaveChanges();
+                        return1 = "ManageType";
+
+                        break;
+                    case "Country":
+                        var country = context.Countries.Single(m => m.CountriesID == id);
+                        country.IsActive = false;
+                        country.ModifiedBy = currentAdmin;
+                        country.ModifiedDate = DateTime.Now;
+                        context.SaveChanges();
+                        return1 = "ManageCountries";
+
+                        break;
+                }
+                return RedirectToAction(return1, "Admin");
+            }
+        }
+
+        #endregion Delete Category, Type, Country
+
         #region Apply Sorting
 
         public List<DashboardModel> ApplySorting(string SortOrder, string SortBy, List<DashboardModel> result)
@@ -1384,6 +1800,171 @@ namespace NotesMarketPlace.Controllers
             return result;
         }
 
+        public List<ManageCategoryModel> ApplySorting(string SortOrder, string SortBy, List<ManageCategoryModel> result)
+        {
+            switch (SortBy)
+            {
+                case "Category":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Name).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Name).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Name).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Description":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Description).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Description).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Description).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                default:
+                    result = result.OrderByDescending(x => x.CreatedDate).ToList();
+                    break;
+            }
+            return result;
+        }
+
+        public List<ManageTypeModel> ApplySorting(string SortOrder, string SortBy, List<ManageTypeModel> result)
+        {
+            switch (SortBy)
+            {
+                case "Type":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Name).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Name).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Name).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Description":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Description).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Description).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Description).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                default:
+                    result = result.OrderByDescending(x => x.CreatedDate).ToList();
+                    break;
+            }
+            return result;
+        }
+
+        public List<ManageCountryModel> ApplySorting(string SortOrder, string SortBy, List<ManageCountryModel> result)
+        {
+            switch (SortBy)
+            {
+                case "CountryName":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.CountryName).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.CountryName).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.CountryName).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "CountryCode":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.CountryCode).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.CountryCode).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.CountryCode).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                default:
+                    result = result.OrderByDescending(x => x.CreatedDate).ToList();
+                    break;
+            }
+            return result;
+        }
+
         #endregion Apply Sorting
 
         #region Apply Pagination
@@ -1459,6 +2040,36 @@ namespace NotesMarketPlace.Controllers
         }
 
         public List<SpamNotesModel> ApplyPagination(List<SpamNotesModel> result, int PageNumber)
+        {
+            ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
+            ViewBag.PageNumber = PageNumber;
+
+            result = result.Skip((PageNumber - 1) * 5).Take(5).ToList();
+
+            return result;
+        }
+
+        public List<ManageCategoryModel> ApplyPagination(List<ManageCategoryModel> result, int PageNumber)
+        {
+            ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
+            ViewBag.PageNumber = PageNumber;
+
+            result = result.Skip((PageNumber - 1) * 5).Take(5).ToList();
+
+            return result;
+        }
+
+        public List<ManageTypeModel> ApplyPagination(List<ManageTypeModel> result, int PageNumber)
+        {
+            ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
+            ViewBag.PageNumber = PageNumber;
+
+            result = result.Skip((PageNumber - 1) * 5).Take(5).ToList();
+
+            return result;
+        }
+
+        public List<ManageCountryModel> ApplyPagination(List<ManageCountryModel> result, int PageNumber)
         {
             ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
             ViewBag.PageNumber = PageNumber;

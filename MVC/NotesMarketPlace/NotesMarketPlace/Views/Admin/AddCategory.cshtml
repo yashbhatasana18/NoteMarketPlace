@@ -1,0 +1,46 @@
+﻿@model NotesMarketPlace.Models.Admin.AddCategoryModel
+
+@{
+    ViewBag.Title = "AddCategory";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .form-group {
+        margin-bottom: 30px !important;
+    }
+</style>
+
+<div class="row heading">
+    <div class="col-md-12 p-0">
+        <h1 class="heading-1">Add Category</h1>
+    </div>
+</div>
+
+@using (Html.BeginForm("AddCategory", "Admin", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="InputCategoryName">Category Name <span>*</span></label>
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", id = "InputCategoryName", placeholder = "Enter category name", required = "required" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mb-0 p-0">
+                <label for="description">Description <span>*</span></label>
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", id = "description", placeholder = "Enter your description", required = "required", rows = "5" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <button class="btn" id="btnSubmit" type="submit" formaction="@(ViewBag.Edit == true ? "AddCategory?id=" + Model.Id : "AddCategory" )" formmethod="post">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+}

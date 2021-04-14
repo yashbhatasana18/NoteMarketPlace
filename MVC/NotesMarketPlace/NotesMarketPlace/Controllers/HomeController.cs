@@ -237,9 +237,9 @@ namespace NotesMarketPlace.Controllers
 
                     //NoteUploadFilePath
                     string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(model.NoteUploadFilePath.FileName);
-                    model.FileName = Path.GetFileNameWithoutExtension(model.NoteUploadFilePath.FileName);
                     string noteUploadFilePathExtension = Path.GetExtension(model.NoteUploadFilePath.FileName);
                     noteUploadFilePathFileName = noteUploadFilePathFileName + DateTime.Now.ToString("yymmssff") + noteUploadFilePathExtension;
+                    model.FileName = noteUploadFilePathFileName;
                     model.FilePath = "~/Content/NotesImages/NotesPDF/" + noteUploadFilePathFileName;
                     noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
                     model.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);

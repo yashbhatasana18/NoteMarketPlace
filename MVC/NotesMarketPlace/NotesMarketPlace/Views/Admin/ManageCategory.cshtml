@@ -1,0 +1,148 @@
+﻿@model List<NotesMarketPlace.Models.Admin.ManageCategoryModel>
+
+@{
+    ViewBag.Title = "ManageCategory";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row heading">
+    <div class="col-md-12 p-0">
+        <h3 class="heading-1">Manage Category</h3>
+    </div>
+</div>
+
+<div class="row heading">
+    <div class="col-md-6 col-sm-6 p-0">
+        <button class="btn btn-general" onclick="location.href='AddCategory'">Add Category</button>
+    </div>
+    @using (Html.BeginForm("ManageCategory", "Admin", FormMethod.Post, new { @class = "col-md-6 col-sm-6 text-right search-1 p-0 has-search" }))
+    {
+        <img src="~/Content/images/search-icon.png" class="form-control-feedback" alt="search-icon">
+        @Html.TextBox("txtSearch", null, new { @class = "form-control input-search", @placeholder = "Search" })
+        <button class="btn btn-general" type="submit">Search</button>
+    }
+</div>
+
+<div class="row">
+    <div class="table-top table-responsive">
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">Sr No.</th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Category", "ManageCategory", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Description", "ManageCategory", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Description", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">Date Added</th>
+                    <th scope="col" class="text-center">Added By</th>
+                    <th scope="col" class="text-center">Active</th>
+                    <th scope="col" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="7" style="text-align:center;">No record found</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int count = 0;
+                        foreach (var item in Model)
+                        {
+                            using (Html.BeginForm("DeleteSystemConfigItem", "Admin", new { id = @item.Id, item = "Category" }))
+                            {
+                                count++;
+                                <tr>
+                                    <td scope="row" class="text-center">@count</td>
+                                    <td class="text-center">@item.Name</td>
+                                    <td class="text-center">@item.Description</td>
+                                    <td class="text-center">@item.CreatedDate.Value.ToString("dd-MM-yyyy, HH:mm")</td>
+                                    <td class="text-center">@item.CreatedBy</td>
+                                    <td class="text-center">@item.IsActive</td>
+                                    <td class="text-center">
+                                        <img src="~/Content/images/edit.png" alt="edit-image" onclick="Edit(@item.Id)">
+                                        <button type="submit" class="customButton" onclick="return confirm('Are you sure you want to make this category inactive?')">
+                                            <img src="~/Content/images/delete.png" alt="delete">
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* Pagination *@
+@{
+    double totalPages = ViewBag.TotalPages;
+
+    <div class="row text-center">
+        <div class="col-md-12 num">
+            <ul class="pagination justify-content-center">
+
+                @if (ViewBag.PageNumber == 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("ManageCategory", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" href="@Url.Action("ManageCategory", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber - 1 })">
+                            <img src="~/Content/images/left-arrow.png" alt="left-arrow">
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    if (i == ViewBag.PageNumber)
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "ManageCategory", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link active" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            @Html.ActionLink(i.ToString(), "ManageCategory", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = i }, htmlAttributes: new { @class = "page-link" })
+                        </li>
+                    }
+                }
+
+                @if (ViewBag.PageNumber == totalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("ManageCategory", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" href="@Url.Action("ManageCategory", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder, SortBy = ViewBag.SortBy == null ? "Title" : ViewBag.SortBy, PageNumber = ViewBag.PageNumber + 1 })">
+                            <img src="~/Content/images/right-arrow.png" alt="right-arrow">
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+<script>
+    function Edit(id) {
+        location.href = "AddCategory?edit=" + id;
+    }
+</script>

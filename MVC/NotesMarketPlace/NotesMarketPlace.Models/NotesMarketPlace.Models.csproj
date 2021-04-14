@@ -48,9 +48,15 @@
   <ItemGroup>
     <Compile Include="AddNotesModel.cs" />
     <Compile Include="Admin\AddAdministratorModel.cs" />
+    <Compile Include="Admin\AddCategoryModel.cs" />
+    <Compile Include="Admin\AddCountryModel.cs" />
+    <Compile Include="Admin\AddTypeModel.cs" />
     <Compile Include="Admin\DashboardModel.cs" />
     <Compile Include="Admin\DownloadedNotesModel.cs" />
     <Compile Include="Admin\ManageAdministratorModel.cs" />
+    <Compile Include="Admin\ManageCategoryModel.cs" />
+    <Compile Include="Admin\ManageCountryModel.cs" />
+    <Compile Include="Admin\ManageTypeModel.cs" />
     <Compile Include="Admin\MembersModel.cs" />
     <Compile Include="Admin\MyProfile.cs" />
     <Compile Include="Admin\NotesUnderReviewModel.cs" />

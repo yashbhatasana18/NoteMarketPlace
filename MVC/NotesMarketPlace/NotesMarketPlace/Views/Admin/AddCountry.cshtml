@@ -1,0 +1,46 @@
+﻿@model NotesMarketPlace.Models.Admin.AddCountryModel
+
+@{
+    ViewBag.Title = "AddCountry";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .form-group {
+        margin-bottom: 30px !important;
+    }
+</style>
+
+<div class="row heading">
+    <div class="col-md-12 p-0">
+        <h1 class="heading-1">Add Country</h1>
+    </div>
+</div>
+
+@using (Html.BeginForm("AddCountry", "Admin", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="InputCountryName">Country Name <span>*</span></label>
+                @Html.TextBoxFor(model => model.CountryName, new { @class = "form-control", id = "InputCountryName", placeholder = "Enter Country Name", required = "required" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="InputCountryCode">Country Code <span>*</span></label>
+                @Html.TextBoxFor(model => model.CountryCode, new { @class = "form-control", id = "InputCountryCode", placeholder = "Enter Country Code", required = "required" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <button class="btn" id="btnSubmit" type="submit" formaction="@(ViewBag.Edit == true ? "AddCountry?id=" + Model.Id : "AddCountry" )" formmethod="post">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+}
