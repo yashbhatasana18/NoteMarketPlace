@@ -39,8 +39,13 @@ namespace NotesMarketPlace.Models
         [DataType(DataType.EmailAddress, ErrorMessage = "Use valid email address")]
         [EmailAddress]
         public string SecondaryEmailAddress { get; set; }
+
         public string PhoneNumberCountryCode { get; set; }
+
+        [MaxLength(10, ErrorMessage = "Length should be <10")]
+        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public string PhoneNumber { get; set; }
+
         public string ProfilePicture { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }

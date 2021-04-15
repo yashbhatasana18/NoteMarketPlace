@@ -958,7 +958,7 @@ namespace NotesMarketPlace.Controllers
                                   Price = Purchase.PurchasedPrice,
                                   SellType = Purchase.PurchasedPrice == 0 ? "Free" : "Paid",
                                   DownloadDate = Purchase.AttachmentDownloadedDate
-                              }).ToList();
+                              }).OrderByDescending(x => x.DownloadDate).ToList();
 
                 ViewBag.SortOrder = SortOrder;
                 ViewBag.SortBy = SortBy;
@@ -1094,7 +1094,7 @@ namespace NotesMarketPlace.Controllers
                                   SellType = Purchase.PurchasedPrice == 0 ? "Free" : "Paid",
                                   Price = Purchase.PurchasedPrice,
                                   DownloadDate = Purchase.AttachmentDownloadedDate
-                              }).ToList();
+                              }).OrderByDescending(x => x.DownloadDate).ToList();
 
                 ViewBag.SortOrder = SortOrder;
                 ViewBag.SortBy = SortBy;
@@ -1147,8 +1147,9 @@ namespace NotesMarketPlace.Controllers
                                   Title = Notes.Title,
                                   Category = Category.Name,
                                   Remark = Notes.AdminRemarks,
+                                  ModifiedDate = Notes.ModifiedDate,
                                   DownloadNote = Attachment.FilePath
-                              }).ToList();
+                              }).OrderByDescending(x => x.ModifiedDate).ToList();
 
                 ViewBag.SortOrder = SortOrder;
                 ViewBag.SortBy = SortBy;
@@ -1338,11 +1339,12 @@ namespace NotesMarketPlace.Controllers
                         break;
                     }
                 default:
-                    result = result.OrderBy(x => x.AddedDate).ToList();
+                    result = result.OrderByDescending(x => x.AddedDate).ToList();
                     break;
             }
             return result;
         }
+
         public List<DashboardModel.UserDashboardPublishedNoteModel> ApplySorting2(string SortOrder2, string SortBy2, List<DashboardModel.UserDashboardPublishedNoteModel> result)
         {
             switch (SortBy2)
@@ -1392,11 +1394,12 @@ namespace NotesMarketPlace.Controllers
                         break;
                     }
                 default:
-                    result = result.OrderBy(x => x.AddedDate).ToList();
+                    result = result.OrderByDescending(x => x.AddedDate).ToList();
                     break;
             }
             return result;
         }
+
         public List<MyRejectedNotesModel> ApplySorting(string SortOrder, string SortBy, List<MyRejectedNotesModel> result)
         {
             switch (SortBy)
@@ -1451,6 +1454,7 @@ namespace NotesMarketPlace.Controllers
             }
             return result;
         }
+
         public List<BuyerRequestModel> ApplySorting(string SortOrder, string SortBy, List<BuyerRequestModel> result)
         {
             switch (SortBy)
@@ -1505,6 +1509,7 @@ namespace NotesMarketPlace.Controllers
             }
             return result;
         }
+
         public List<MySoldNotesModel> ApplySorting(string SortOrder, string SortBy, List<MySoldNotesModel> result)
         {
             switch (SortBy)
@@ -1559,6 +1564,7 @@ namespace NotesMarketPlace.Controllers
             }
             return result;
         }
+
         public List<MyDownloadsModel> ApplySorting(string SortOrder, string SortBy, List<MyDownloadsModel> result)
         {
             switch (SortBy)

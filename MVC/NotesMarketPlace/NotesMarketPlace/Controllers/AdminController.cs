@@ -223,6 +223,8 @@ namespace NotesMarketPlace.Controllers
                 note.AdminRemarks = Remarks;
                 note.ActionedBy = currentAdmin;
                 note.PublishedDate = DateTime.Now;
+                note.ModifiedBy = currentAdmin;
+                note.ModifiedDate = DateTime.Now;
 
                 context.SaveChanges();
 
@@ -335,6 +337,8 @@ namespace NotesMarketPlace.Controllers
 
                 note.ActionedBy = currentAdmin;
                 note.PublishedDate = DateTime.Now;
+                note.ModifiedBy = currentAdmin;
+                note.ModifiedDate = DateTime.Now;
 
                 context.SaveChanges();
             }
@@ -356,6 +360,8 @@ namespace NotesMarketPlace.Controllers
                 note.ActionedBy = currentAdmin;
                 note.AdminRemarks = Reject;
                 note.PublishedDate = DateTime.Now;
+                note.ModifiedBy = currentAdmin;
+                note.ModifiedDate = DateTime.Now;
 
                 context.SaveChanges();
 
@@ -590,7 +596,7 @@ namespace NotesMarketPlace.Controllers
                                  RejectedBy = Admin.FirstName + " " + Admin.LastName,
                                  Remarks = Note.AdminRemarks,
                                  PublishedDate = (DateTime)Note.PublishedDate
-                             }).ToList();
+                             }).OrderByDescending(x => x.PublishedDate).ToList();
 
                 // if filter applied
                 if (!sellerId.Equals(null))
@@ -757,7 +763,7 @@ namespace NotesMarketPlace.Controllers
                                  Earning = earning,
                                  DateAdded = Note.CreatedDate,
                                  PublishedDate = Note.PublishedDate
-                             }).ToList();
+                             }).OrderByDescending(x => x.DateAdded).ToList();
 
                 ViewBag.SortOrder = SortOrder;
                 ViewBag.SortBy = SortBy;
@@ -1015,6 +1021,8 @@ namespace NotesMarketPlace.Controllers
                         Description = model.Description,
                         CreatedBy = currentAdmin,
                         CreatedDate = DateTime.Now,
+                        ModifiedBy = currentAdmin,
+                        ModifiedDate = DateTime.Now,
                         IsActive = true
                     });
 
@@ -1139,6 +1147,8 @@ namespace NotesMarketPlace.Controllers
                         Description = model.Description,
                         CreatedBy = currentAdmin,
                         CreatedDate = DateTime.Now,
+                        ModifiedBy = currentAdmin,
+                        ModifiedDate = DateTime.Now,
                         IsActive = true
                     });
 
@@ -1263,6 +1273,8 @@ namespace NotesMarketPlace.Controllers
                         CountryCode = model.CountryCode,
                         CreatedBy = currentAdmin,
                         CreatedDate = DateTime.Now,
+                        ModifiedBy = currentAdmin,
+                        ModifiedDate = DateTime.Now,
                         IsActive = true
                     });
 

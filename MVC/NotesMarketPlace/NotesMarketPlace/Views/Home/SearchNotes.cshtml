@@ -106,7 +106,7 @@
                     <div class="col-md-12">
                         <div class="filter-search">
                             <img src="~/Content/images/search-icon.png" alt="search" class="form-control-feedback">
-                            <input id="Search" class="form-control input-search" placeholder="Search notes here...">
+                            @Html.TextBox("Search", "", new { @id = "Search", @class = "form-control input-search", @placeholder = "Search notes here...",onkeyup= "searchNotes(this)" })
                         </div>
                     </div>
                 </div>
@@ -344,12 +344,30 @@
         });
     }
 
-    $('#Search').on('keypress', function (e) {
-        if (e) {
-            location.href = "SearchNotes?search=" + $(this).val();
-        }
-    });
+    //$('#Search').on('keypress', function (e) {
+    //    if (e) {
+    //        location.href = "SearchNotes?search=" + $(this).val();
+    //    }
+    //});
 
+    //document.onkeydown = function (e) {
+    //    var re = e.keyCode;
+
+    //    console.log("key " + e.keyCode);
+    //    console.log("test");
+
+    //    if (re == 32) {
+    //        location.href = "SearchNotes?search=" + $(this).val();
+    //    }
+    //}
+
+    function searchNotes(e) {
+        clearTimeout($.data(this, 'timer'));
+        if (e.keyCode == 32)
+            location.href = "SearchNotes?search=" + $(this).val();
+        else
+            $(this).data('timer', setTimeout(search, 500));
+    }
 
     $('.card-title > a').click(function () {
         location.href = "NoteDetails/" + $(this).attr('noteId');

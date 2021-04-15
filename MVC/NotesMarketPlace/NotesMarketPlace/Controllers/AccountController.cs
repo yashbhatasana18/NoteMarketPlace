@@ -219,7 +219,7 @@ namespace NotesMarketPlace.Controllers
                         if (firsttime == null)
                         {
                             //Session["emailID"] = model.EmailID;
-                            return RedirectToAction("MyProfile", "Account");
+                            return RedirectToAction("UserProfile", "Account");
                         }
                         else
                         {
@@ -341,11 +341,11 @@ namespace NotesMarketPlace.Controllers
                     var CountryCodeList = country;
                     ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
 
-                    if (UserProfile.ProfilePicture == null)
-                    {
-                        UserProfile.ProfilePicture = "~/Content/images/upload-file.png";
-                    }
-
+                    ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                    ViewBag.ProfilePicturePreview = "#";
+                    ViewBag.HideClass = "";
+                    ViewBag.NonHideClass = "hidden";
+                    ViewBag.ProfilePictureName = "";
                     //UserProfile.genderModel = gender.Select(x => new ReferenceDataModel { ReferenceDataID = x.ReferenceDataID, Value = x.Value }).ToList();
                     //UserProfile.countryModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, Name = x.Name }).ToList();
                     //UserProfile.CountryCodeModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, CountryCode = x.CountryCode }).ToList();
@@ -372,6 +372,8 @@ namespace NotesMarketPlace.Controllers
 
                     // get user details
                     var isDetailsAvailable = context.UserProfile.FirstOrDefault(m => m.UserID == currentuser);
+
+                    var systemConfiguration = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
 
                     // check user details available or not
                     if (isDetailsAvailable != null && user != null)
@@ -403,14 +405,14 @@ namespace NotesMarketPlace.Controllers
 
                         if (user.ProfilePicture == null || user.ProfilePicture == "~/Content/images/upload-file.png")
                         {
-                            user.ProfilePicture = null;
+                            user.ProfilePicture = systemConfiguration.ToString();
                         }
 
                         detailsUpdate.DOB = user.DOB;
                         detailsUpdate.Gender = user.Gender;
                         detailsUpdate.PhoneNumberCountryCode = user.PhoneNumberCountryCode;
                         detailsUpdate.PhoneNumber = user.PhoneNumber;
-                        //detailsUpdate.ProfilePicture = user.ProfilePicture;
+                        detailsUpdate.ProfilePicture = user.ProfilePicture;
                         detailsUpdate.AddressLine1 = user.AddressLine1;
                         detailsUpdate.AddressLine2 = user.AddressLine2;
                         detailsUpdate.City = user.City;
@@ -450,7 +452,7 @@ namespace NotesMarketPlace.Controllers
 
                         if (user.ProfilePicture == null || user.ProfilePicture == "~/Content/images/upload-file.png")
                         {
-                            user.ProfilePicture = null;
+                            user.ProfilePicture = systemConfiguration;
                         }
 
                         // create new details
@@ -508,7 +510,7 @@ namespace NotesMarketPlace.Controllers
                 ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
             }
 
-            return View();
+            return RedirectToAction("SearchNotes", "Home");
         }
 
         #endregion User Profile
