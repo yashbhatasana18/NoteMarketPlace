@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -9,13 +10,21 @@ namespace NotesMarketPlace.Models
 {
     public class ChangePasswordModel
     {
-        [Required]
+        [DisplayName("Old Password")]
+        [Required(ErrorMessage = "Old Password is required")]
+        [DataType(DataType.Password)]
         public string OldPassword { get; set; }
 
-        [Required]
+        [DisplayName("New Password")]
+        [Required(ErrorMessage = "New Password is required")]
+        [DataType(DataType.Password)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,24}$", ErrorMessage = "Password must be between 8 and 24 characters and contain one uppercase letter, one lowercase letter, one digit and one special character.")]
         public string NewPassword { get; set; }
 
-        [Required]
+        [DisplayName("Confirm Password")]
+        [Required(ErrorMessage = "Confirm password is required")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Password and Confirm password is not match")]
         public string ConfirmPassword { get; set; }
     }
 }

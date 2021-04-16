@@ -679,7 +679,6 @@ namespace NotesMarketPlace.Controllers
                     notes[i].ApproveDate = notes[i].ApprovedDate.HasValue ? notes[i].ApprovedDate.GetValueOrDefault().ToString("MMMM dd yyyy") : "N/A";
                 }
 
-
                 // average ratings
                 var avg = context.SellerNotesReviews.Where(m => m.NoteID == id).ToList();
                 if (avg.Count() > 0)
@@ -694,7 +693,6 @@ namespace NotesMarketPlace.Controllers
                     ViewBag.TotalReview = 0;
                     ViewBag.AverageReview = 0;
                 }
-
 
                 // Spam count
                 var spam = context.SellerNotesReportedIssues.Where(m => m.NoteID == id).Count();
@@ -716,22 +714,25 @@ namespace NotesMarketPlace.Controllers
 
                 ViewBag.Reviews = reviews;
 
+                var isDownloadAllow = context.Downloads.FirstOrDefault(m => m.NoteID == id);
+
+                if (isDownloadAllow.IsSellerHasAllowedDownload == false)
+                {
+                    ReadOnly = true;
+                }
+
                 if (ReadOnly == null || ReadOnly == true)
                 {
                     ViewBag.NoteDetails = notes;
-
                     TempData["ReadOnly"] = "true";
                     return View();
                 }
                 else
                 {
-                    ViewBag.NoteDetails = notes.Where(m => m.Status == 6).ToList();
+                    ViewBag.NoteDetails = notes.Where(m => m.Status == 9).ToList();
                     return View();
                 }
-
-
             }
-
         }
 
         #endregion Note Details
@@ -740,20 +741,22 @@ namespace NotesMarketPlace.Controllers
 
         public ActionResult PurchaseNote(int noteId)
         {
-            using (var _Context = new NotesMarketPlaceEntities())
+            using (var context = new NotesMarketPlaceEntities())
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    var user = _Context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
-                    var note = _Context.SellerNotes.FirstOrDefault(m => m.SellerNotesID == noteId);
-                    var attachment = _Context.SellerNotesAttachements.FirstOrDefault(m => m.NoteID == noteId);
-                    var category = _Context.NoteCategories.FirstOrDefault(m => m.NoteCategoriesID == note.Category);
+                    var user = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
+                    var note = context.SellerNotes.FirstOrDefault(m => m.SellerNotesID == noteId);
+                    var attachment = context.SellerNotesAttachements.FirstOrDefault(m => m.NoteID == noteId);
+                    var category = context.NoteCategories.FirstOrDefault(m => m.NoteCategoriesID == note.Category);
+                    var download = context.Downloads.FirstOrDefault(m => m.NoteID == noteId);
+
 
                     if (note != null && !user.Equals(null))
                     {
-                        var create = _Context.Downloads;
+                        var create = context.Downloads;
 
-                        if (note.SellingPrice == 0)
+                        if (note.IsPaid == false)
                         {
                             create.Add(new Downloads
                             {
@@ -768,49 +771,69 @@ namespace NotesMarketPlace.Controllers
                                 NoteCategory = category.Name,
                                 PurchasedPrice = note.SellingPrice,
                                 CreatedDate = DateTime.Now,
+                                CreatedBy = user.UserID,
+                                ModifiedDate = DateTime.Now,
+                                ModifiedBy = user.UserID,
                                 AttachmentDownloadedDate = DateTime.Now
                             });
 
-                            _Context.SaveChanges();
+                            context.SaveChanges();
 
                             return DownloadFile(noteId);
                         }
-                        else
+                        else if (note.IsPaid == true)
                         {
-                            // send download request to seller
-                            create.Add(new Downloads
+                            if (download == null)
                             {
-                                NoteTitle = note.Title,
-                                Seller = note.SellerID,
-                                Downloader = user.UserID,
-                                NoteID = noteId,
-                                IsSellerHasAllowedDownload = false,
-                                IsPaid = note.IsPaid,
-                                AttachmentPath = attachment.FilePath,
-                                NoteCategory = category.Name,
-                                PurchasedPrice = note.SellingPrice,
-                                CreatedDate = DateTime.Now,
-                                AttachmentDownloadedDate = DateTime.Now
-                            });
-                            _Context.SaveChanges();
+                                // send download request to seller
+                                create.Add(new Downloads
+                                {
+                                    NoteTitle = note.Title,
+                                    Seller = note.SellerID,
+                                    Downloader = user.UserID,
+                                    NoteID = noteId,
+                                    IsPaid = note.IsPaid,
+                                    AttachmentPath = attachment.FilePath,
+                                    NoteCategory = category.Name,
+                                    PurchasedPrice = note.SellingPrice,
+                                    CreatedDate = DateTime.Now,
+                                    CreatedBy = user.UserID,
+                                    ModifiedDate = DateTime.Now,
+                                    ModifiedBy = user.UserID,
+                                    IsSellerHasAllowedDownload = false,
+                                    IsAttachmentDownloaded = false,
+                                    AttachmentDownloadedDate = DateTime.Now
+                                });
+                                context.SaveChanges();
 
-                            // seller email
-                            var seller = _Context.Users.FirstOrDefault(m => m.UserID == note.SellerID);
+                                // seller email
+                                var seller = context.Users.FirstOrDefault(m => m.UserID == note.SellerID);
 
-                            // send mail to seller
-                            string subject = user.FirstName + " wants to purchase your notes";
-                            string body = "Hello " + seller.FirstName + ",\n \n"
-                                + "We would like to inform you that, " + user.FirstName + " wants to purchase your notes. Please see Buyer Requests tab and allow download access to Buyer if you have received the payment from him";
-                            body += "\n \nRegards,\nNotes MarketPlace";
+                                // send mail to seller
+                                string subject = user.FirstName + " wants to purchase your notes";
+                                string body = "Hello " + seller.FirstName + ",\n \n"
+                                    + "We would like to inform you that, " + user.FirstName + " wants to purchase your notes. Please see Buyer Requests tab and allow download access to Buyer if you have received the payment from him";
+                                body += "\n \nRegards,\nNotes MarketPlace";
 
-                            bool isSend = SendEmailUser.EmailSend(seller.EmailID, subject, body, false);
+                                bool isSend = SendEmailUser.EmailSend(seller.EmailID, subject, body, false);
 
-                            TempData["UserName"] = user.FirstName;
+                                TempData["UserName"] = user.FirstName;
 
-                            // show modal
-                            TempData["ShowModal"] = 1;
-                            return RedirectToAction("NoteDetails", new { id = noteId });
+                                // show modal
+                                TempData["ShowModal"] = 1;
+                                return RedirectToAction("NoteDetails", new { id = noteId });
+                            }
+                            else
+                            {
+                                download.ModifiedDate = DateTime.Now;
+                                download.ModifiedBy = user.UserID;
+                                download.IsAttachmentDownloaded = true;
+                                download.AttachmentDownloadedDate = DateTime.Now;
+                                context.SaveChanges();
+                                return DownloadFile(noteId);
+                            }
                         }
+                        return View();
                     }
                     else
                     {
@@ -1180,6 +1203,82 @@ namespace NotesMarketPlace.Controllers
 
         #endregion My Rejected Notes
 
+        #region Clone Rejected Notes
+
+        public ActionResult CloneNote(int noteId)
+        {
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var currentuser = context.Users.SingleOrDefault(m => m.EmailID == User.Identity.Name).UserID;
+
+                var oldnote = (from Note in context.SellerNotes
+                               join Attachment in context.SellerNotesAttachements on Note.SellerNotesID equals Attachment.NoteID
+                               where Note.SellerNotesID == noteId && Note.Status == 10 && Note.SellerID == currentuser
+                               select new { Note, Attachment }).SingleOrDefault();
+
+                oldnote.Note.Status = 11;
+                oldnote.Note.IsActive = false;
+                oldnote.Attachment.IsActive = false;
+                oldnote.Note.PublishedDate = DateTime.Now;
+                oldnote.Attachment.ModifiedDate = DateTime.Now;
+
+                var clonenote = context.SellerNotes;
+                clonenote.Add(new SellerNotes
+                {
+                    Title = oldnote.Note.Title,
+                    Category = oldnote.Note.Category,
+                    DisplayPicture = oldnote.Note.DisplayPicture,
+                    NoteType = oldnote.Note.NoteType,
+                    NumberOfPages = oldnote.Note.NumberOfPages,
+                    Description = oldnote.Note.Description,
+                    UniversityName = oldnote.Note.UniversityName,
+                    Country = oldnote.Note.Country,
+                    Course = oldnote.Note.Course,
+                    CourseCode = oldnote.Note.CourseCode,
+                    Professor = oldnote.Note.Professor,
+                    SellingPrice = oldnote.Note.SellingPrice,
+                    NotesPreview = oldnote.Note.NotesPreview,
+                    Status = 6,
+                    IsPaid = oldnote.Note.IsPaid,
+                    PublishedDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = currentuser,
+                    ModifiedDate = DateTime.Now,
+                    ModifiedBy = currentuser,
+                    SellerID = currentuser,
+                    IsActive = true
+                });
+
+                context.SaveChanges();
+
+                var newnote = context.SellerNotes.FirstOrDefault(m => m.Status == 6 && m.Title == oldnote.Note.Title && m.SellerID == currentuser);
+
+                if (oldnote.Note.NotesPreview != null)
+                {
+                    newnote.NotesPreview = oldnote.Note.NotesPreview;
+                }
+
+                var cloneattachment = context.SellerNotesAttachements;
+                cloneattachment.Add(new SellerNotesAttachements
+                {
+                    NoteID = newnote.SellerNotesID,
+                    FileName = oldnote.Attachment.FileName,
+                    FilePath = oldnote.Attachment.FilePath,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = currentuser,
+                    ModifiedDate = DateTime.Now,
+                    ModifiedBy = currentuser,
+                    IsActive = true
+                });
+
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("SellYourNotes");
+        }
+
+        #endregion Clone Rejected Notes
+
         #region ContactUs
 
         [AllowAnonymous]
@@ -1338,6 +1437,50 @@ namespace NotesMarketPlace.Controllers
                         }
                         break;
                     }
+                case "Category":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Category).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Status":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Status).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Status).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Status).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
                 default:
                     result = result.OrderByDescending(x => x.AddedDate).ToList();
                     break;
@@ -1388,6 +1531,72 @@ namespace NotesMarketPlace.Controllers
                             default:
                                 {
                                     result = result.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Category":
+                    {
+                        switch (SortOrder2)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Category).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Category).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "SellType":
+                    {
+                        switch (SortOrder2)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.SellType).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.SellType).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.SellType).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Price":
+                    {
+                        switch (SortOrder2)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Price).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Price).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Price).ToList();
                                     break;
                                 }
                         }

@@ -59,7 +59,7 @@
                                         <td class="td-blue">@item.Title</td>
                                         <td>@item.Category</td>
                                         <td>@item.Remark</td>
-                                        <td class="td-blue" onclick="Clone(@item.Id)">Clone</td>
+                                        <td class="td-blue" onclick="Clone(@item.NoteId)">Clone</td>
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
@@ -145,3 +145,11 @@
 
     </div>
 </section>
+
+<script>
+
+    function Clone(id) {
+        location.href = "CloneNote?noteId=" + id;
+    }
+
+</script>

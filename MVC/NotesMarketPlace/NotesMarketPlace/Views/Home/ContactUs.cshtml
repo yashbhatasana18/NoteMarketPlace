@@ -36,27 +36,25 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="exampleInputFullName1">Full Name <span>*</span></label>
-
                     @Html.TextBoxFor(model => model.FullName, new { @class = "form-control", placeholder = "Enter your full name" })
-
+                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email address <span>*</span></label>
-
                     @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", type = "email", placeholder = "Enter your email address" })
-
+                    @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
                     <label for="exampleInputSubject1">Subject <span>*</span></label>
-
-                    @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", placeholder = "Enter your subject"})
+                    @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", placeholder = "Enter your subject" })
+                    @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="exampleInputComment1">Comments / Questions <span>*</span></label>
-
-                    @Html.TextAreaFor(model => model.Comments, new { @class = "form-control", placeholder = "Comments..."})
+                    @Html.TextAreaFor(model => model.Comments, new { @class = "form-control", placeholder = "Comments..." })
+                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>

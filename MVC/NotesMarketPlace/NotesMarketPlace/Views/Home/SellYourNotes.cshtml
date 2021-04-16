@@ -37,6 +37,11 @@
         line-height: 22px;
         color: #333333;
     }
+
+    .count_link {
+        text-decoration: none !important;
+        color: #6255a5 !important;
+    }
 </style>
 
 <!-- Content -->
@@ -67,7 +72,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="text-center card-count">
-                                @ViewBag.SoldNotes
+                                <a href="/Home/MySoldNotes" class="count_link">@ViewBag.SoldNotes</a>
                             </h4>
                             <p class="text-center count-text">Number of Notes Sold</p>
                         </div>
@@ -75,7 +80,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="text-center card-count">
-                                $ @ViewBag.Earning
+                                <a href="/Home/MySoldNotes" class="count_link">$ @ViewBag.Earning</a>
                             </h4>
                             <p class="text-center count-text">Money Earned</p>
                         </div>
@@ -88,7 +93,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="text-center card-count">
-                                    @ViewBag.DownloadNotes
+                                    <a href="/Home/MyDownloads" class="count_link">@ViewBag.DownloadNotes</a>
                                 </h4>
                                 <p class="text-center count-text">My Download</p>
                             </div>
@@ -98,7 +103,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="text-center card-count">
-                                    @ViewBag.RejectedNotes
+                                    <a href="/Home/MyRejectedNotes" class="count_link">@ViewBag.RejectedNotes</a>
                                 </h4>
                                 <p class="text-center count-text">My Rejected Notes</p>
                             </div>
@@ -108,7 +113,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="text-center card-count">
-                                    @ViewBag.BuyerRequest
+                                    <a href="/Home/BuyerRequest" class="count_link">@ViewBag.BuyerRequest</a>
                                 </h4>
                                 <p class="text-center count-text">Buyer Requests</p>
                             </div>
@@ -145,8 +150,12 @@
                             <th scope="col">
                                 @Html.ActionLink("Title", "SellYourNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">
+                                @Html.ActionLink("Category", "SellYourNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
+                            <th scope="col">
+                                @Html.ActionLink("Status", "SellYourNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Status", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
                             <th class="text-center" scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -168,7 +177,7 @@
                                         {
                                             <tr>
                                                 <td scope="row">@item.AddedDate</td>
-                                                <td class="td-blue">@item.Title</td>
+                                                <td class="td-blue cursor_pointer" onclick="NoteDetailDraft('@item.Id')">@item.Title</td>
                                                 <td>@item.Category</td>
                                                 <td>@item.Status</td>
                                                 <td class="text-center">
@@ -201,7 +210,7 @@
             </div>
         </div>
 
-        @* Pagination *@
+        @* Pagination For ProgressNotes *@
         @{
             double totalPages = ViewBag.TotalPages;
 
@@ -291,9 +300,15 @@
                             <th scope="col">
                                 @Html.ActionLink("Title", "SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Title", PageNumber2 = ViewBag.PageNumber2 == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Sell Type</th>
-                            <th scope="col">Price</th>
+                            <th scope="col">
+                                @Html.ActionLink("Category", "SellYourNotes", new { SortOrder = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Category", PageNumber2 = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
+                            <th scope="col">
+                                @Html.ActionLink("Sell Type", "SellYourNotes", new { SortOrder = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "SellType", PageNumber2 = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
+                            <th scope="col">
+                                @Html.ActionLink("Price", "SellYourNotes", new { SortOrder = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Price", PageNumber2 = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
                             <th class="text-center" scope="col">Actions</th>
                         </tr>
                     </thead>
@@ -311,12 +326,16 @@
                                 {
                                     <tr>
                                         <td scope="row">@item.AddedDate</td>
-                                        <td class="td-blue">@item.Title</td>
+                                        <td class="td-blue cursor_pointer" onclick="NoteDetail('@item.Id')">@item.Title</td>
                                         <td>@item.Category</td>
                                         <td>@item.SellType</td>
                                         <td>$@item.Price</td>
                                         <td class="text-center">
-                                            <a href="@Url.Action("NoteDetails", "Home" , new { id=@item.Id })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
+                                            @if (true)
+                                            {
+
+                                            }
+                                            <a href="@Url.Action("NoteDetails", "Home" , new { id=@item.Id,ReadOnly=false })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
                                         </td>
                                     </tr>
                                 }
@@ -328,7 +347,7 @@
             </div>
         </div>
 
-        @* Pagination *@
+        @* Pagination For PublishedNotes *@
         @{
             double totalPages2 = ViewBag.TotalPages2;
 
@@ -392,3 +411,12 @@
 
     </div>
 </section>
+
+<script>
+    function NoteDetail(id) {
+        location.href = "../Home/NoteDetails/" + id + "?ReadOnly=false";
+    }
+    function NoteDetailDraft(id) {
+        location.href = "../Home/NoteDetails/" + id + "?ReadOnly=true";
+    }
+</script>
