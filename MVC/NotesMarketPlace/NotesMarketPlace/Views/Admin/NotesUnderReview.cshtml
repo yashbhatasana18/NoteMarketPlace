@@ -28,6 +28,10 @@
         justify-content: flex-start;
         padding: 15px 20px;
     }
+
+    .cursor_pointer {
+        cursor: pointer;
+    }
 </style>
 
 <div class="row heading">
@@ -65,10 +69,16 @@
                     <th scope="col">
                         @Html.ActionLink("Category", "NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
-                    <th scope="col">Seller</th>
+                    <th scope="col">
+                        @Html.ActionLink("Seller", "NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Seller", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col"></th>
-                    <th scope="col">Date Added</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">
+                        @Html.ActionLink("Date Added", "NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "DateAdded", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Status", "NotesUnderReview", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Status", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th class="text-center" scope="col">Action</th>
                     <th scope="col"></th>
                 </tr>

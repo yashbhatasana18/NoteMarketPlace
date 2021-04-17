@@ -31,6 +31,8 @@ namespace NotesMarketPlace.Models.Admin
 
         public string filename { get; set; }
 
+        public bool IsPaid { get; set; }
+
     }
 
     public class MonthModel

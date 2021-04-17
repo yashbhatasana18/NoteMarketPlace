@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .cursor_pointer {
+        cursor: pointer;
+    }
+</style>
+
 <div class="row heading">
     <div class="col-md-12 p-0">
         <h3 class="heading-1">Manage Type</h3>
@@ -35,9 +41,15 @@
                     <th scope="col" class="text-center">
                         @Html.ActionLink("Description", "ManageType", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Description", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
-                    <th scope="col" class="text-center">Date Added</th>
-                    <th scope="col" class="text-center">Added By</th>
-                    <th scope="col" class="text-center">Active</th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Date Added", "ManageType", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "DateAdded", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Added By", "ManageType", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "AddedBy", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Active", "ManageType", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Active", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col" class="text-center">Action</th>
                 </tr>
             </thead>
@@ -64,8 +76,8 @@
                                     <td class="text-center">@item.CreatedBy</td>
                                     <td class="text-center">@item.IsActive</td>
                                     <td class="text-center">
-                                        <img src="~/Content/images/edit.png" alt="edit-image" onclick="Edit(@item.Id)">
-                                        <button type="submit" class="customButton" onclick="return confirm('Are you sure you want to make this type inactive?')">
+                                        <img class="cursor_pointer" src="~/Content/images/edit.png" alt="edit-image" onclick="Edit(@item.Id)">
+                                        <button type="submit" class="customButton cursor_pointer" onclick="return confirm('Are you sure you want to make this type inactive?')">
                                             <img src="~/Content/images/delete.png" alt="delete">
                                         </button>
                                     </td>

@@ -24,6 +24,16 @@
         justify-content: flex-start;
         padding: 15px 20px;
     }
+
+    .count_link {
+        text-decoration: none !important;
+        color: #6255a5 !important;
+        cursor: pointer;
+    }
+
+    .cursor_pointer {
+        cursor: pointer;
+    }
 </style>
 
 <div class="row heading">
@@ -42,7 +52,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <p class="text-center card-count">@ViewBag.InReview</p>
+                        <p class="text-center card-count count_link" onclick="NotesUnderReview()">@ViewBag.InReview</p>
                         <p class="text-center count-text">Numbers of Notes in Review for Publish</p>
                     </div>
                 </div>
@@ -50,7 +60,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <p class="text-center card-count">@ViewBag.Downloads</p>
+                        <p class="text-center card-count count_link" onclick="DownloadedNotes()">@ViewBag.Downloads</p>
                         <p class="text-center count-text">Numbers of New Notes Downloaded (Last 7 days)</p>
                     </div>
                 </div>
@@ -58,7 +68,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <p class="text-center card-count">@ViewBag.Registration</p>
+                        <p class="text-center card-count count_link" onclick="Members()">@ViewBag.Registration</p>
                         <p class="text-center count-text">Numbers of New Registrations (Last 7 days)</p>
                     </div>
                 </div>
@@ -99,12 +109,24 @@
                     <th scope="col">
                         @Html.ActionLink("Category", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
-                    <th scope="col" class="text-center">Attachment Size</th>
-                    <th scope="col" class="text-center">Sell Type</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Publisher</th>
-                    <th scope="col" class="text-center">Published Date</th>
-                    <th scope="col" class="text-center">Number of Downloads</th>
+                    <th scope="col">
+                        @Html.ActionLink("Attachment Size", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "AttachmentSize", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Sell Type", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "SellType", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Price", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Price", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Publisher", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Publisher", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Published Date", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "PublishedDate", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Number of Downloads", "Dashboard", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "NumberofDownloads", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -124,14 +146,14 @@
                             count++;
                             <tr>
                                 <td scope="row" class="text-center">@count</td>
-                                <td class="td-blue">@item.Title</td>
+                                <td class="td-blue cursor_pointer" onclick="NoteDetail('@item.Id')">@item.Title</td>
                                 <td>@item.Category</td>
                                 <td class="text-center">@item.AttachmentSize KB</td>
                                 <td class="text-center">@(item.Price == 0 ? "Free" : "Paid" )</td>
                                 <td>$@item.Price</td>
                                 <td>@item.Publisher</td>
                                 <td class="text-center">@item.PublishDate.ToString("dd-MM-yyyy, HH:mm")</td>
-                                <td class="text-center td-blue">@item.TotalDownloads</td>
+                                <td class="text-center td-blue cursor_pointer" onclick="DownloadedNotesWithID('@item.Id')">@item.TotalDownloads</td>
                                 <td class="text-center">
                                     <div class="dropdown">
                                         <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
@@ -255,6 +277,18 @@
     }
     function NoteDetail(id) {
         location.href = '../Home/NoteDetails/' + id;
+    }
+    function NotesUnderReview() {
+        location.href = '../Admin/NotesUnderReview';
+    }
+    function DownloadedNotes() {
+        location.href = '../Admin/DownloadedNotes';
+    }
+    function DownloadedNotesWithID(id) {
+        location.href = '../Admin/DownloadedNotes?noteid=' + id;
+    }
+    function Members() {
+        location.href = '../Admin/Members';
     }
     function setNoteId(id, title) {
         $("#rejectModal input[type='hidden']").attr('value', id);

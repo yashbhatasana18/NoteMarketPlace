@@ -2967,6 +2967,8 @@
     <Content Include="Content\NotesImages\NotesPDF\bmc21345392.pdf" />
     <Content Include="Content\NotesImages\NotesPreview\BE-SEM7WinterExamination-2020_17054010701421345392.pdf" />
     <Content Include="libman.json" />
+    <Content Include="Content\NotesImages\NotesPDF\bmc21164448.pdf" />
+    <Content Include="Content\NotesImages\NotesPDF\Report21195719.pdf" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />

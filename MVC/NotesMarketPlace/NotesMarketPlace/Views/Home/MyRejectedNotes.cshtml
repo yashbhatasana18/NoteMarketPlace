@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
+<style>
+    .cursor_pointer {
+        cursor: pointer;
+    }
+</style>
+
 <section id="content">
     <div class="container">
 
@@ -35,7 +41,9 @@
                             <th scope="col">
                                 @Html.ActionLink("Category", "MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
-                            <th scope="col">Remarks</th>
+                            <th scope="col">
+                                @Html.ActionLink("Remarks", "MyRejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Remarks", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
                             <th scope="col">Clone</th>
                             <th scope="col"></th>
                         </tr>
@@ -56,10 +64,10 @@
                                     count++;
                                     <tr>
                                         <td class="text-center" scope="row">@count</td>
-                                        <td class="td-blue">@item.Title</td>
+                                        <td class="td-blue cursor_pointer" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
                                         <td>@item.Category</td>
                                         <td>@item.Remark</td>
-                                        <td class="td-blue" onclick="Clone(@item.NoteId)">Clone</td>
+                                        <td class="td-blue cursor_pointer" onclick="Clone(@item.NoteId)">Clone</td>
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
@@ -147,9 +155,10 @@
 </section>
 
 <script>
-
     function Clone(id) {
         location.href = "CloneNote?noteId=" + id;
     }
-
+    function NoteDetail(id) {
+        location.href = "../Home/NoteDetails/" + id + "?ReadOnly=false";
+    }
 </script>

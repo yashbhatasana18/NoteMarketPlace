@@ -24,15 +24,21 @@
             <thead>
                 <tr>
                     <th class="text-center" scope="col">Sr No.</th>
-                    <th scope="col">Reported By</th>
+                    <th scope="col">
+                        @Html.ActionLink("Reported By", "SpamReports", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "ReportedBy", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col">
                         @Html.ActionLink("Note Title", "SpamReports", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Title", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
                     <th scope="col">
                         @Html.ActionLink("Category", "SpamReports", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
-                    <th scope="col">Date Edited</th>
-                    <th scope="col">Remark</th>
+                    <th scope="col">
+                        @Html.ActionLink("Date Edited", "SpamReports", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "DateEdited", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Remark", "SpamReports", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Remark", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th class="text-center" scope="col">Action</th>
                     <th></th>
                 </tr>

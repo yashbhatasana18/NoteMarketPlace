@@ -16,6 +16,8 @@ namespace NotesMarketPlace.Models
 
         public string Title { get; set; }
 
+        public string SellType { get; set; }
+
         public string Category { get; set; }
 
         public string EmailID { get; set; }
@@ -23,8 +25,6 @@ namespace NotesMarketPlace.Models
         public string Phone { get; set; }
 
         public string Buyer { get; set; }
-
-        public string SellType { get; set; }
 
         public decimal? Price { get; set; }
 

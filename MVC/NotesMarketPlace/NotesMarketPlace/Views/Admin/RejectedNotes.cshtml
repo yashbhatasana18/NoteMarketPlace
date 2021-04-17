@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .cursor_pointer {
+        cursor: pointer;
+    }
+</style>
+
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
         <h3 class="heading-1">Rejected Notes</h3>
@@ -40,11 +46,19 @@
                     <th scope="col">
                         @Html.ActionLink("Category", "RejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
-                    <th scope="col">Seller</th>
+                    <th scope="col">
+                        @Html.ActionLink("Seller", "RejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Seller", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col"></th>
-                    <th scope="col">Date Edited</th>
-                    <th scope="col">Rejected By</th>
-                    <th scope="col">Remarks</th>
+                    <th scope="col">
+                        @Html.ActionLink("Date Edited", "RejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "DateEdited", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Rejected By", "RejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "RejectedBy", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Remarks", "RejectedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Remarks", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -63,10 +77,10 @@
                             count++;
                             <tr>
                                 <td class="text-center" scope="row">@count</td>
-                                <td class="td-blue" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
+                                <td class="td-blue cursor_pointer" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
                                 <td>@item.Category</td>
                                 <td>@item.SellerName</td>
-                                <td>
+                                <td class="cursor_pointer">
                                     <img src="../Content/images/eye.png" alt="eye-image" onclick="Member('@item.SellerId')">
                                 </td>
                                 <td>@item.PublishedDate.Value.ToString("dd-MM-yyyy, HH:mm")</td>
@@ -80,9 +94,9 @@
                                         </a>
 
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" onclick="Approve('@item.NoteId')">Approve</a>
-                                            <a class="dropdown-item" href="/Admin/DownloadFile?noteid=@item.NoteId">Download Notes</a>
-                                            <a class="dropdown-item" onclick="NoteDetail('@item.NoteId')">View More Details</a>
+                                            <a class="dropdown-item cursor_pointer" onclick="Approve('@item.NoteId')">Approve</a>
+                                            <a class="dropdown-item cursor_pointer" href="/Admin/DownloadFile?noteid=@item.NoteId">Download Notes</a>
+                                            <a class="dropdown-item cursor_pointer" onclick="NoteDetail('@item.NoteId')">View More Details</a>
                                         </div>
                                     </div>
                                 </td>

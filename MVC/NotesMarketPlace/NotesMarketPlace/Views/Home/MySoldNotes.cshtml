@@ -6,6 +6,12 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
+<style>
+    .cursor_pointer {
+        cursor: pointer;
+    }
+</style>
+
 <!-- Content -->
 <section id="content">
     <div class="container">
@@ -38,11 +44,21 @@
                             <th scope="col">
                                 @Html.ActionLink("Category", "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
-                            <th scope="col">Buyer</th>
-                            <th scope="col">Phone no.</th>
-                            <th scope="col">Sell Type</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Download Date/Time</th>
+                            <th scope="col">
+                                @Html.ActionLink("Buyer", "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Buyer", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
+                            <th scope="col">
+                                @Html.ActionLink("Phone no.", "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Phoneno", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
+                            <th scope="col">
+                                @Html.ActionLink("Sell Type", "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "SellType", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
+                            <th scope="col">
+                                @Html.ActionLink("Price", "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Price", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
+                            <th scope="col">
+                                @Html.ActionLink("Download Date/Time", "MySoldNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "DownloadDate", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                            </th>
                             <th class="text-center" scope="col"></th>
                             <th scope="col"></th>
                         </tr>
@@ -63,7 +79,7 @@
                                     count++;
                                     <tr>
                                         <td class="text-center" scope="row">@count</td>
-                                        <td class="td-blue">@item.Title</td>
+                                        <td class="td-blue cursor_pointer" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
                                         <td>@item.Category</td>
                                         <td>@item.EmailID</td>
                                         <td>@item.Phone</td>
@@ -79,7 +95,7 @@
                                         }
                                         <td>@item.DownloadDate.Value.ToString("dd MMMM, yyyy HH:mm:ss")</td>
                                         <td class="text-center">
-                                            <a href="@Url.Action("NoteDetails", "Home" , new { id=@item.NoteId })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
+                                            <a href="@Url.Action("NoteDetails", "Home" , new { id=@item.NoteId,ReadOnly=false })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
                                         </td>
                                         <td class="text-center">
                                             <div class="dropdown">
@@ -167,3 +183,9 @@
 
     </div>
 </section>
+
+<script>
+    function NoteDetail(id) {
+        location.href = "../Home/NoteDetails/" + id + "?ReadOnly=false";
+    }
+</script>

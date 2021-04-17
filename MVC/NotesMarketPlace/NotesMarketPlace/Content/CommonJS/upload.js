@@ -6,15 +6,19 @@ function DisplayPictureUpload() {
         var fileSelect = document.getElementById("file-upload"),
             fileDrag = document.getElementById("file-drag");
 
-        fileSelect.addEventListener("change", fileSelectHandler, false);
+        if (fileSelect) {
+            fileSelect.addEventListener("change", fileSelectHandler, false);
+        }
 
         // Is XHR2 available?
         var xhr = new XMLHttpRequest();
         if (xhr.upload) {
             // File Drop
-            fileDrag.addEventListener("dragover", fileDragHover, false);
-            fileDrag.addEventListener("dragleave", fileDragHover, false);
-            fileDrag.addEventListener("drop", fileSelectHandler, false);
+            if (fileDrag) {
+                fileDrag.addEventListener("dragover", fileDragHover, false);
+                fileDrag.addEventListener("dragleave", fileDragHover, false);
+                fileDrag.addEventListener("drop", fileSelectHandler, false);
+            }
         }
     }
 
@@ -122,15 +126,19 @@ function UploadNotes() {
         var fileSelect2 = document.getElementById("pdf-upload"),
             fileDrag2 = document.getElementById("pdf-drag");
 
-        fileSelect2.addEventListener("change", fileSelectHandler2, false);
+        if (fileSelect2) {
+            fileSelect2.addEventListener("change", fileSelectHandler2, false);
+        }
 
         // Is XHR2 available?
         var xhr2 = new XMLHttpRequest();
         if (xhr2.upload) {
             // File Drop
-            fileDrag2.addEventListener("dragover", fileDragHover2, false);
-            fileDrag2.addEventListener("dragleave", fileDragHover2, false);
-            fileDrag2.addEventListener("drop", fileSelectHandler2, false);
+            if (fileDrag2) {
+                fileDrag2.addEventListener("dragover", fileDragHover2, false);
+                fileDrag2.addEventListener("dragleave", fileDragHover2, false);
+                fileDrag2.addEventListener("drop", fileSelectHandler2, false);
+            }
         }
     }
 
@@ -238,15 +246,19 @@ function PreviewUploadNotes() {
         var fileSelect3 = document.getElementById("preview-upload"),
             fileDrag3 = document.getElementById("preview-drag");
 
-        fileSelect3.addEventListener("change", fileSelectHandler3, false);
+        if (fileSelect3) {
+            fileSelect3.addEventListener("change", fileSelectHandler3, false);
+        }
 
         // Is XHR3 available?
         var xhr3 = new XMLHttpRequest();
         if (xhr3.upload) {
             // File Drop
-            fileDrag3.addEventListener("dragover", fileDragHover3, false);
-            fileDrag3.addEventListener("dragleave", fileDragHover3, false);
-            fileDrag3.addEventListener("drop", fileSelectHandler3, false);
+            if (fileDrag3) {
+                fileDrag3.addEventListener("dragover", fileDragHover3, false);
+                fileDrag3.addEventListener("dragleave", fileDragHover3, false);
+                fileDrag3.addEventListener("drop", fileSelectHandler3, false);
+            }
         }
     }
 

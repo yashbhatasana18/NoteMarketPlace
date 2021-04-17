@@ -24,6 +24,8 @@ namespace NotesMarketPlace.Models.Admin
 
         public decimal? Price { get; set; }
 
+        public bool IsPaid { get; set; }
+
         public DateTime DownloadedDate { get; set; }
     }
     public class BuyerModel

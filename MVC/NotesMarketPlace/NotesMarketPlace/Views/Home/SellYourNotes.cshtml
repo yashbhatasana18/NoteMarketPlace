@@ -42,6 +42,10 @@
         text-decoration: none !important;
         color: #6255a5 !important;
     }
+
+    .cursor_pointer {
+        cursor: pointer;
+    }
 </style>
 
 <!-- Content -->
@@ -301,13 +305,13 @@
                                 @Html.ActionLink("Title", "SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Title", PageNumber2 = ViewBag.PageNumber2 == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
                             <th scope="col">
-                                @Html.ActionLink("Category", "SellYourNotes", new { SortOrder = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Category", PageNumber2 = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                                @Html.ActionLink("Category", "SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Category", PageNumber2 = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
                             <th scope="col">
-                                @Html.ActionLink("Sell Type", "SellYourNotes", new { SortOrder = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "SellType", PageNumber2 = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                                @Html.ActionLink("Sell Type", "SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "SellType", PageNumber2 = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
                             <th scope="col">
-                                @Html.ActionLink("Price", "SellYourNotes", new { SortOrder = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Price", PageNumber2 = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                                @Html.ActionLink("Price", "SellYourNotes", new { SortOrder2 = ViewBag.SortOrder2 == null ? "Asc" : (ViewBag.SortOrder2 == "Asc" ? "Desc" : "Asc"), SortBy2 = "Price", PageNumber2 = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber2 }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                             </th>
                             <th class="text-center" scope="col">Actions</th>
                         </tr>

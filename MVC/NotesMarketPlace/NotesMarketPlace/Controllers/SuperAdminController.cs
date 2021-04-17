@@ -451,6 +451,72 @@ namespace NotesMarketPlace.Controllers
                         }
                         break;
                     }
+                case "DateAdded":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.DateAdded).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.DateAdded).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.DateAdded).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "PhoneNo":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Phone).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Phone).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Phone).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Active":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Active).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Active).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Active).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
                 default:
                     result = result.OrderByDescending(x => x.DateAdded).ToList();
                     break;

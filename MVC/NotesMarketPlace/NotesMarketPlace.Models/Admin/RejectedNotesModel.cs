@@ -23,5 +23,7 @@ namespace NotesMarketPlace.Models.Admin
         public string RejectedBy { get; set; }
 
         public string Remarks { get; set; }
-    }
+
+        public bool IsPaid { get; set; }
+}
 }

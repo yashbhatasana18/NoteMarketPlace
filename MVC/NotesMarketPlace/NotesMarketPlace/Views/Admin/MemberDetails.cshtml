@@ -5,7 +5,11 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
+<style>
+    .cursor_pointer {
+        cursor: pointer;
+    }
+</style>
 
 <div class="row heading">
     <div class="col-md-12 p-0">
@@ -120,11 +124,21 @@
                     <th scope="col">
                         @Html.ActionLink("Category", "MemberDetails", new { id = ViewBag.UserID, SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
-                    <th scope="col">Status</th>
-                    <th scope="col" class="text-center">Downloaded Notes</th>
-                    <th scope="col" class="text-center">Total Earnings</th>
-                    <th scope="col">Date Added</th>
-                    <th scope="col">Published Date</th>
+                    <th scope="col">
+                        @Html.ActionLink("Status", "MemberDetails", new { id = ViewBag.UserID, SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Status", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Downloaded Notes", "MemberDetails", new { id = ViewBag.UserID, SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "DownloadedNotes", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Total Earnings", "MemberDetails", new { id = ViewBag.UserID, SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "TotalEarnings", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Date Added", "MemberDetails", new { id = ViewBag.UserID, SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "DateAdded", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Published Date", "MemberDetails", new { id = ViewBag.UserID, SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "PublishedDate", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col" class="text-center"></th>
                 </tr>
             </thead>
@@ -144,11 +158,11 @@
                             count++;
                             <tr>
                                 <td scope="row" class="text-center">@count</td>
-                                <td class="td-blue" style="cursor:pointer;" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
+                                <td class="td-blue cursor_pointer" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
                                 <td>@item.Category</td>
                                 <td>@item.Status</td>
-                                <td class="text-center td-text">@item.DownloadedNote</td>
-                                <td class="text-center">$@(item.Earning ?? 0)</td>
+                                <td class="text-center td-text cursor_pointer" onclick="DownloadedNotesWithID('@item.NoteId')">@item.DownloadedNote</td>
+                                <td>$@(item.Earning ?? 0)</td>
                                 <td>@item.DateAdded.Value.ToString("dd-MM-yyyy, HH:mm")</td>
                                 <td>@(item.PublishedDate == null ? "N/A" : @item.PublishedDate.GetValueOrDefault().ToString("dd-MM-yyyy, HH:mm"))</td>
                                 <td class="text-center">
@@ -159,7 +173,7 @@
                                         </a>
 
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="/Admin/DownloadFile?noteid=@item.NoteId">Download Notes</a>
+                                            <a class="dropdown-item cursor_pointer" href="/Admin/DownloadFile?noteid=@item.NoteId">Download Notes</a>
                                         </div>
                                     </div>
                                 </td>
@@ -241,5 +255,8 @@
 
     function NoteDetail(id) {
         location.href = "../Home/NoteDetails/" + id;
+    }
+    function DownloadedNotesWithID(id) {
+        location.href = '../Admin/DownloadedNotes?noteid=' + id;
     }
 </script>

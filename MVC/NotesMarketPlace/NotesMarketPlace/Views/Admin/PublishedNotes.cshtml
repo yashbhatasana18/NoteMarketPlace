@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .cursor_pointer {
+        cursor: pointer;
+    }
+</style>
+
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
         <h3 class="heading-1">Published Notes</h3>
@@ -40,13 +46,25 @@
                     <th scope="col">
                         @Html.ActionLink("Category", "PublishedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
-                    <th scope="col">Sell Type</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Seller</th>
+                    <th scope="col">
+                        @Html.ActionLink("Sell Type", "PublishedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "SellType", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Price", "PublishedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Price", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Seller", "PublishedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Seller", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col"></th>
-                    <th scope="col">Published Date</th>
-                    <th scope="col">Approved By</th>
-                    <th class="text-center" scope="col">Number of<br>Downloads</th>
+                    <th scope="col">
+                        @Html.ActionLink("Published Date", "PublishedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "PublishedDate", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Approved By", "PublishedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "ApprovedBy", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Number of Downloads", "PublishedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "NumberofDownloads", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -65,7 +83,7 @@
                             count++;
                             <tr>
                                 <td class="text-center" scope="row">@count</td>
-                                <td class="td-blue" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
+                                <td class="td-blue cursor_pointer" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
                                 <td>@item.Category</td>
                                 <td>@(item.Price == 0 ? "Free" : "Paid" )</td>
                                 <td>$@item.Price</td>

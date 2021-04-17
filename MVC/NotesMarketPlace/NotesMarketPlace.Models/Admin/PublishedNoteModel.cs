@@ -29,5 +29,7 @@ namespace NotesMarketPlace.Models.Admin
         public int Userid { get; set; }
 
         public string Filename { get; set; }
+
+        public bool IsPaid { get; set; }
     }
 }

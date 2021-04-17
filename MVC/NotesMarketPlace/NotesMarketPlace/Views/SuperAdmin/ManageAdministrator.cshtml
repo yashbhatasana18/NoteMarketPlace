@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .cursor_pointer {
+        cursor: pointer;
+    }
+</style>
+
 <div class="row heading">
     <div class="col-md-12 p-0">
         <h3 class="heading-1">Manage Administrator</h3>
@@ -39,9 +45,15 @@
                     <th scope="col" class="text-center">
                         @Html.ActionLink("Email", "ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Email", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
-                    <th scope="col" class="text-center">Phone No.</th>
-                    <th scope="col" class="text-center">Date Added</th>
-                    <th scope="col" class="text-center">Active</th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Phone No.", "ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "PhoneNo", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Date Added", "ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "DateAdded", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col" class="text-center">
+                        @Html.ActionLink("Active", "ManageAdministrator", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Active", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col" class="text-center">Action</th>
                 </tr>
             </thead>
@@ -68,8 +80,8 @@
                                 <td class="text-center">@item.DateAdded.Value.ToString("dd-MM-yyyy, HH:mm")</td>
                                 <td class="text-center">@item.Active</td>
                                 <td class="text-center">
-                                    <img src="~/Content/images/edit.png" alt="edit-image" onclick="Edit('@item.Id')">
-                                    <img src="~/Content/images/delete.png" alt="delete-image" onclick="Delete('@item.Id')">
+                                    <img class="cursor_pointer" src="~/Content/images/edit.png" alt="edit-image" onclick="Edit('@item.Id')">
+                                    <img class="cursor_pointer" src="~/Content/images/delete.png" alt="delete-image" onclick="Delete('@item.Id')">
                                 </td>
                             </tr>
                         }

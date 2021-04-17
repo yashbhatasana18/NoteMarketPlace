@@ -639,7 +639,6 @@ namespace NotesMarketPlace.Controllers
         #region Note Details
 
         [AllowAnonymous]
-        [Route("NoteDetails/{id}")]
         public ActionResult NoteDetails(int id, bool? ReadOnly)
         {
             using (var context = new NotesMarketPlaceEntities())
@@ -716,7 +715,7 @@ namespace NotesMarketPlace.Controllers
 
                 var isDownloadAllow = context.Downloads.FirstOrDefault(m => m.NoteID == id);
 
-                if (isDownloadAllow.IsSellerHasAllowedDownload == false)
+                if (isDownloadAllow == null)
                 {
                     ReadOnly = true;
                 }
@@ -1657,6 +1656,28 @@ namespace NotesMarketPlace.Controllers
                         }
                         break;
                     }
+                case "Remarks":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Remark).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Remark).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Remark).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
                 default:
                     result = result.OrderByDescending(x => x.CreatedDate).ToList();
                     break;
@@ -1707,6 +1728,116 @@ namespace NotesMarketPlace.Controllers
                             default:
                                 {
                                     result = result.OrderBy(x => x.NoteTitle).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Buyer":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Downloader).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Downloader).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Downloader).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Phoneno":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Phone).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Phone).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Phone).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "SellType":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.IsPaid).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.IsPaid).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.IsPaid).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Price":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.PurchasedPrice).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.PurchasedPrice).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.PurchasedPrice).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "DownloadDate":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.AttachmentDownloadedDate).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.AttachmentDownloadedDate).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.AttachmentDownloadedDate).ToList();
                                     break;
                                 }
                         }
@@ -1767,6 +1898,116 @@ namespace NotesMarketPlace.Controllers
                         }
                         break;
                     }
+                case "Buyer":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Buyer).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Buyer).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Buyer).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Phoneno":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Phone).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Phone).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Phone).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "SellType":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.SellType).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.SellType).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.SellType).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "DownloadDate":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.DownloadDate).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.DownloadDate).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.DownloadDate).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Price":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Price).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Price).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Price).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
                 default:
                     result = result.OrderByDescending(x => x.DownloadDate).ToList();
                     break;
@@ -1817,6 +2058,116 @@ namespace NotesMarketPlace.Controllers
                             default:
                                 {
                                     result = result.OrderBy(x => x.Title).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Buyer":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Buyer).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Buyer).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Buyer).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Phoneno":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Phone).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Phone).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Phone).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "SellType":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.SellType).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.SellType).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.SellType).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "DownloadDate":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.DownloadDate).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.DownloadDate).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.DownloadDate).ToList();
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Price":
+                    {
+                        switch (SortOrder)
+                        {
+                            case "Asc":
+                                {
+                                    result = result.OrderBy(x => x.Price).ToList();
+                                    break;
+                                }
+                            case "Desc":
+                                {
+                                    result = result.OrderByDescending(x => x.Price).ToList();
+                                    break;
+                                }
+                            default:
+                                {
+                                    result = result.OrderBy(x => x.Price).ToList();
                                     break;
                                 }
                         }

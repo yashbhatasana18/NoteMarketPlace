@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .cursor_pointer {
+        cursor: pointer;
+    }
+</style>
+
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
         <h3 class="heading-1">Downloaded Notes</h3>
@@ -48,13 +54,23 @@
                     <th scope="col">
                         @Html.ActionLink("Category", "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Category", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
                     </th>
-                    <th scope="col">Buyer</th>
+                    <th scope="col">
+                        @Html.ActionLink("Buyer", "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Buyer", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col"></th>
-                    <th scope="col">Seller</th>
+                    <th scope="col">
+                        @Html.ActionLink("Seller", "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Seller", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col"></th>
-                    <th scope="col">Sell Type</th>
-                    <th scope="col">Price</th>
-                    <th class="text-center" scope="col">Downloaded<br>Date/Time</th>
+                    <th scope="col">
+                        @Html.ActionLink("Sell Type", "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "SellType", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Price", "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "Price", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
+                    <th scope="col">
+                        @Html.ActionLink("Downloaded Date/Time", "DownloadedNotes", new { SortOrder = ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc"), SortBy = "DownloadedDate", PageNumber = ViewBag.PageNumber == 0 ? 1 : ViewBag.PageNumber }, htmlAttributes: new { @style = "color:#6255a5 !important;" })
+                    </th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -62,7 +78,7 @@
                 @{ if (Model.Count == 0)
                     {
                         <tr>
-                            <td colspan="9" style="text-align:center;">No Records found</td>
+                            <td colspan="11" style="text-align:center;">No Records found</td>
                         </tr>
                     }
                     else
@@ -74,14 +90,14 @@
                             count++;
                             <tr>
                                 <td class="text-center" scope="row">@count</td>
-                                <td class="td-blue" style="cursor:pointer" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
+                                <td class="td-blue cursor_pointer" onclick="NoteDetail('@item.NoteId')">@item.Title</td>
                                 <td>@item.Category</td>
                                 <td>@item.BuyerName</td>
-                                <td>
+                                <td class="cursor_pointer">
                                     <img src="../Content/images/eye.png" alt="eye-image" onclick="Member('@item.SellerId')">
                                 </td>
                                 <td>@item.SellerName</td>
-                                <td>
+                                <td class="cursor_pointer">
                                     <img src="../Content/images/eye.png" alt="eye-image" onclick="Member('@item.SellerId')">
                                 </td>
                                 <td>@(item.Price == 0 ? "Free" : "Paid")</td>
@@ -96,7 +112,7 @@
 
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                             <a class="dropdown-item" href="/Admin/DownloadFile?noteid=@item.NoteId">Download Notes</a>
-                                            <a class="dropdown-item" onclick="NoteDetail('@item.NoteId')">View More Details</a>
+                                            <a class="dropdown-item cursor_pointer" onclick="NoteDetail('@item.NoteId')">View More Details</a>
                                         </div>
                                     </div>
                                 </td>
