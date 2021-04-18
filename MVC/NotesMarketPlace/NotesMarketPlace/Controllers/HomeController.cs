@@ -12,6 +12,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Security;
 
 namespace NotesMarketPlace.Controllers
 {
@@ -36,6 +37,7 @@ namespace NotesMarketPlace.Controllers
         }
 
         #region Default Constructor
+
         public HomeController()
         {
             addNoteRepository = new AddNotesRepository();
@@ -44,11 +46,11 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
-                // set social URL
                 var socialUrl = context.SystemConfigurations.Where(m => m.Key == "Facebook" || m.Key == "Twitter" || m.Key == "Linkedin").ToList();
                 ViewBag.URLs = socialUrl;
             }
         }
+        
         #endregion Default Constructor
 
         #region Initialize User Information
@@ -60,10 +62,8 @@ namespace NotesMarketPlace.Controllers
             {
                 using (var context = new NotesMarketPlaceEntities())
                 {
-                    // get current user
                     var currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
 
-                    //current user profile image
                     var img = (from Details in context.UserProfile
                                join Users in context.Users on Details.UserID equals Users.UserID
                                where Users.EmailID == requestContext.HttpContext.User.Identity.Name
@@ -75,7 +75,6 @@ namespace NotesMarketPlace.Controllers
 
                     if (img == null)
                     {
-                        // set default image
                         var defaultImg = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
                         ViewBag.UserProfile = defaultImg;
                     }
@@ -96,31 +95,30 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // get current user
                 var currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
 
-                // total earning
+                //Total Earning
                 var Earning = (from Purchase in context.Downloads
                                where Purchase.Seller == currentUser.UserID && Purchase.IsSellerHasAllowedDownload == true
                                group Purchase by Purchase.Seller into grp
                                select grp.Sum(m => m.PurchasedPrice)).ToList();
                 ViewBag.Earning = Earning.Count() == 0 ? 0 : Earning[0];
 
-                // total notes sold
+                //Total Notes Sold
                 var SoldNotes = (from Purchase in context.Downloads
                                  where Purchase.Seller == currentUser.UserID && Purchase.IsSellerHasAllowedDownload == true
                                  group Purchase by Purchase.Seller into grp
                                  select grp.Count()).ToList();
                 ViewBag.SoldNotes = SoldNotes.Count() == 0 ? 0 : SoldNotes[0];
 
-                // My download notes
+                //My Download Notes
                 var DownloadedNotes = (from Purchase in context.Downloads
                                        where Purchase.Downloader == currentUser.UserID && Purchase.IsSellerHasAllowedDownload == true
                                        group Purchase by Purchase.Downloader into grp
                                        select grp.Count()).ToList();
                 ViewBag.DownloadNotes = DownloadedNotes.Count() == 0 ? 0 : DownloadedNotes[0];
 
-                // My Rejected Notes
+                //My Rejected Notes
                 var RejectedNotes = (from Notes in context.SellerNotes
                                      join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
                                      where Status.RefCategory == "Notes Status" && Status.Value == "Rejected" && Notes.SellerID == currentUser.UserID
@@ -128,14 +126,14 @@ namespace NotesMarketPlace.Controllers
                                      select grp.Count()).ToList();
                 ViewBag.RejectedNotes = RejectedNotes.Count() == 0 ? 0 : RejectedNotes[0];
 
-                // Buyer Requests
+                //Buyer Requests
                 var BuyerRequests = (from Purchase in context.Downloads
                                      where Purchase.IsSellerHasAllowedDownload == false && Purchase.Seller == currentUser.UserID
                                      group Purchase by Purchase.Seller into grp
                                      select grp.Count()).ToList();
                 ViewBag.BuyerRequest = BuyerRequests.Count() == 0 ? 0 : BuyerRequests[0];
 
-                // in progress notes
+                //In Progress Notes
                 var ProgressNotes = (from Notes in context.SellerNotes
                                      join Category in context.NoteCategories on Notes.Category equals Category.NoteCategoriesID
                                      join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
@@ -150,7 +148,7 @@ namespace NotesMarketPlace.Controllers
                                          AddedDate = Notes.PublishedDate
                                      }).OrderByDescending(m => m.AddedDate).ToList();
 
-                // published notes
+                //Published Notes
                 var PublishedNotes = (from Notes in context.SellerNotes
                                       join Category in context.NoteCategories on Notes.Category equals Category.NoteCategoriesID
                                       join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
@@ -501,27 +499,6 @@ namespace NotesMarketPlace.Controllers
             return RedirectToAction("SellYourNotes");
         }
 
-        ////Delete all file and folder in directory
-        //private void EmptyFolder(DirectoryInfo directory)
-        //{
-        //    if (directory.GetFiles() != null)
-        //    {
-        //        foreach (FileInfo file in directory.GetFiles())
-        //        {
-        //            file.Delete();
-        //        }
-        //    }
-
-        //    if (directory.GetDirectories() != null)
-        //    {
-        //        foreach (DirectoryInfo subdirectory in directory.GetDirectories())
-        //        {
-        //            EmptyFolder(subdirectory);
-        //            subdirectory.Delete();
-        //        }
-        //    }
-        //}
-
         #endregion Delete Note
 
         #region Search Notes
@@ -531,18 +508,12 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // get all types
                 var type = context.NoteTypes.Where(m => m.IsActive == true).ToList();
-                // get all category
                 var category = context.NoteCategories.Where(m => m.IsActive == true).ToList();
-                // get distinct university
                 var university = context.SellerNotes.Where(m => m.UniversityName != null).Select(x => x.UniversityName).Distinct().ToList();
-                // get distinct courses
                 var course = context.SellerNotes.Where(m => m.Course != null).Select(x => x.Course).Distinct().ToList();
-                // get all countries
                 var country = context.SellerNotes.Where(m => m.Countries != null).Select(x => x.Countries).Distinct().ToList();
 
-                // get all book details
                 var notes = (from Notes in context.SellerNotes
                              join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
                              where Status.Value == "Published" && Notes.IsActive == true
@@ -597,7 +568,7 @@ namespace NotesMarketPlace.Controllers
 
                 var filternotes = notes;
 
-                // if filter value is available
+                //If Filter Value Is Available
                 if (!Type.Equals(null))
                 {
                     filternotes = filternotes.Where(m => m.NoteType == Type).ToList();
@@ -643,10 +614,8 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // default user image
                 var defaultuserImg = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
 
-                // get note details
                 var notes = (from Notes in context.SellerNotes
                              join Category in context.NoteCategories on Notes.Category equals Category.NoteCategoriesID
                              let Country = context.Countries.FirstOrDefault(m => m.CountriesID == Notes.Country)
@@ -678,7 +647,7 @@ namespace NotesMarketPlace.Controllers
                     notes[i].ApproveDate = notes[i].ApprovedDate.HasValue ? notes[i].ApprovedDate.GetValueOrDefault().ToString("MMMM dd yyyy") : "N/A";
                 }
 
-                // average ratings
+                //Average Ratings
                 var avg = context.SellerNotesReviews.Where(m => m.NoteID == id).ToList();
                 if (avg.Count() > 0)
                 {
@@ -693,11 +662,11 @@ namespace NotesMarketPlace.Controllers
                     ViewBag.AverageReview = 0;
                 }
 
-                // Spam count
+                //Spam Count
                 var spam = context.SellerNotesReportedIssues.Where(m => m.NoteID == id).Count();
                 ViewBag.Spam = spam;
 
-                // customer Review List
+                //Customer Review List
                 var reviews = (from Review in context.SellerNotesReviews
                                join User in context.Users on Review.ReviewedByID equals User.UserID
                                join UserDetail in context.UserProfile on User.UserID equals UserDetail.UserID
@@ -784,7 +753,7 @@ namespace NotesMarketPlace.Controllers
                         {
                             if (download == null)
                             {
-                                // send download request to seller
+                                //Send Download Request To Seller
                                 create.Add(new Downloads
                                 {
                                     NoteTitle = note.Title,
@@ -805,10 +774,8 @@ namespace NotesMarketPlace.Controllers
                                 });
                                 context.SaveChanges();
 
-                                // seller email
                                 var seller = context.Users.FirstOrDefault(m => m.UserID == note.SellerID);
 
-                                // send mail to seller
                                 string subject = user.FirstName + " wants to purchase your notes";
                                 string body = "Hello " + seller.FirstName + ",\n \n"
                                     + "We would like to inform you that, " + user.FirstName + " wants to purchase your notes. Please see Buyer Requests tab and allow download access to Buyer if you have received the payment from him";
@@ -818,8 +785,8 @@ namespace NotesMarketPlace.Controllers
 
                                 TempData["UserName"] = user.FirstName;
 
-                                // show modal
                                 TempData["ShowModal"] = 1;
+
                                 return RedirectToAction("NoteDetails", new { id = noteId });
                             }
                             else
@@ -910,9 +877,7 @@ namespace NotesMarketPlace.Controllers
 
         #region AllowDownload
 
-        // allow buyer to download note
         [HttpPost]
-        [Route("User/AllowDownload")]
         public HttpStatusCodeResult AllowDownload(int id)
         {
             if (id.Equals(null))
@@ -922,19 +887,15 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
-                // search purchase details by id
                 var result = context.Downloads.FirstOrDefault(m => m.DownloadsID == id);
                 var seller = context.Users.FirstOrDefault(m => m.UserID == result.Seller);
                 var downloader = context.Users.FirstOrDefault(m => m.UserID == result.Downloader);
 
-                // if result not available
                 if (result != null)
                 {
-                    // set allowDownload true
                     result.IsSellerHasAllowedDownload = true;
                     context.SaveChanges();
 
-                    // send mail to buyer
                     string subject = seller.FirstName + " Allows you to download a note";
                     string body = string.Format("Hello " + downloader.FirstName + "\n \n" + "We would like to inform you that, " + seller.FirstName + " Allows you to download a note. Please login and see My Download tabs to download particular note.");
                     body += string.Format("\n \n Regards,\n Notes MarketPlace");
@@ -959,7 +920,6 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // current login userId
                 int currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name).UserID;
 
                 var result = (from Purchase in context.Downloads
@@ -1009,7 +969,7 @@ namespace NotesMarketPlace.Controllers
             }
         }
 
-        // user review
+        //User Review
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UserReview(FormCollection form)
@@ -1048,7 +1008,7 @@ namespace NotesMarketPlace.Controllers
 
         }
 
-        // user report spam
+        //User Report Spam
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UserReport(FormCollection form)
@@ -1092,14 +1052,11 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // current login userId
                 int currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name).UserID;
 
                 var result = (from Purchase in context.Downloads
                               join Note in context.SellerNotes on Purchase.NoteID equals Note.SellerNotesID
                               join Downloader in context.Users on Purchase.Downloader equals Downloader.UserID
-                              //join Seller in context.Users on Purchase.Seller equals Seller.UserID
-                              //join Users in context.Users on Note.SellerID equals Users.UserID
                               join UserProfile in context.UserProfile on Note.SellerID equals UserProfile.UserID
                               join Category in context.NoteCategories on Note.Category equals Category.NoteCategoriesID
                               where Purchase.IsSellerHasAllowedDownload == true && Purchase.Seller == currentUser
@@ -1290,7 +1247,7 @@ namespace NotesMarketPlace.Controllers
         [HttpPost]
         public ActionResult ContactUs(ContactUsModel model)
         {
-            string Body = "Hello, <br/><br/>" + model.Comments + "<br/><br/>" + "Regards,<br/>" + model.FullName;
+            string Body = "Hello, \n \n" + model.Comments + "\n \n" + "Regards,\n" + model.FullName;
 
             BuildEmailTemplate(model.EmailID, model.Subject, Body);
 
@@ -2193,6 +2150,7 @@ namespace NotesMarketPlace.Controllers
 
             return result;
         }
+
         public List<DashboardModel.UserDashboardPublishedNoteModel> ApplyPagination2(List<DashboardModel.UserDashboardPublishedNoteModel> result, int PageNumber2)
         {
             ViewBag.TotalPages2 = Math.Ceiling(result.Count() / 5.0);
@@ -2202,6 +2160,7 @@ namespace NotesMarketPlace.Controllers
 
             return result;
         }
+
         public List<MyRejectedNotesModel> ApplyPagination(List<MyRejectedNotesModel> result, int PageNumber)
         {
             ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
@@ -2211,6 +2170,7 @@ namespace NotesMarketPlace.Controllers
 
             return result;
         }
+
         public List<BuyerRequestModel> ApplyPagination(List<BuyerRequestModel> result, int PageNumber)
         {
             ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
@@ -2220,6 +2180,7 @@ namespace NotesMarketPlace.Controllers
 
             return result;
         }
+
         public List<MySoldNotesModel> ApplyPagination(List<MySoldNotesModel> result, int PageNumber)
         {
             ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
@@ -2229,6 +2190,7 @@ namespace NotesMarketPlace.Controllers
 
             return result;
         }
+
         public List<MyDownloadsModel> ApplyPagination(List<MyDownloadsModel> result, int PageNumber)
         {
             ViewBag.TotalPages = Math.Ceiling(result.Count() / 5.0);
@@ -2238,6 +2200,7 @@ namespace NotesMarketPlace.Controllers
 
             return result;
         }
+
         public List<SearchNotesModel> ApplyPagination(List<SearchNotesModel> result, int PageNumber)
         {
             ViewBag.TotalPages = Math.Ceiling(result.Count() / 9.0);
@@ -2249,5 +2212,15 @@ namespace NotesMarketPlace.Controllers
         }
 
         #endregion Apply Pagination
+
+        #region LogOut
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Account");
+        }
+
+        #endregion LogOut
     }
 }

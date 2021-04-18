@@ -27,7 +27,7 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
-                // set social URL
+                // social URL
                 var socialUrl = context.SystemConfigurations.Where(m => m.Key == "Facebook" || m.Key == "Twitter" || m.Key == "Linkedin").ToList();
                 ViewBag.URLs = socialUrl;
             }
@@ -43,10 +43,8 @@ namespace NotesMarketPlace.Controllers
             {
                 using (var context = new NotesMarketPlaceEntities())
                 {
-                    // get current user
                     var currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
 
-                    //current user profile image
                     var img = (from Details in context.UserProfile
                                join Users in context.Users on Details.UserID equals Users.UserID
                                where Users.EmailID == requestContext.HttpContext.User.Identity.Name
@@ -58,7 +56,6 @@ namespace NotesMarketPlace.Controllers
 
                     if (img == null)
                     {
-                        // set default image
                         var defaultImg = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
                         ViewBag.UserProfile = defaultImg;
                     }
@@ -73,6 +70,7 @@ namespace NotesMarketPlace.Controllers
         #endregion Initialize User Information
 
         #region User CRUD
+
         public ActionResult GetAllUsers()
         {
             var result = signUpRepository.GetAllUser();
@@ -108,9 +106,11 @@ namespace NotesMarketPlace.Controllers
             signUpRepository.DeleteUsers(id);
             return RedirectToAction("GetAllUsers");
         }
+
         #endregion User CRUD
 
         #region SignUp
+
         [AllowAnonymous]
         public ActionResult SignUp()
         {
@@ -135,9 +135,11 @@ namespace NotesMarketPlace.Controllers
             }
             return View();
         }
+
         #endregion SignUp
 
         #region Login
+
         [AllowAnonymous]
         public ActionResult Login()
         {
@@ -174,20 +176,17 @@ namespace NotesMarketPlace.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                // user is not active
                 if (isValid.IsActive == false)
                 {
                     return RedirectToAction("Login", "Account");
                 }
 
-                // email not verified
                 if (isValid.IsEmailVerified == false)
                 {
                     return RedirectToAction("Login", "Account");
                 }
 
                 //HttpCookie cookie = new HttpCookie("LoginModel");
-                // if Remember me is checked
                 if (model.RememberMe == true)
                 {
                     //cookie["emailID"] = model.EmailID;
@@ -207,7 +206,6 @@ namespace NotesMarketPlace.Controllers
                     FormsAuthentication.SetAuthCookie(isValid.EmailID, false);
                 }
 
-                // check password
                 if (isValid.Password.Equals(model.Password))
                 {
                     // user is Member
@@ -242,6 +240,7 @@ namespace NotesMarketPlace.Controllers
                 }
             }
         }
+
         #endregion Login
 
         #region User Profile
@@ -250,22 +249,13 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // get gender for dropdown
                 var gender = context.ReferenceData.Where(m => m.RefCategory == "Gender").ToList();
-
-                // get country
                 var country = context.Countries.ToList();
-
-                // get current userId
                 var currentuser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
-
-                // get user details
                 var isDetailsAvailable = context.UserProfile.FirstOrDefault(m => m.UserID == currentuser.UserID);
-
-
                 var UserProfile = new UserProfileModel();
 
-                // check user details available or not
+                //If User Details Are Availabel
                 if (isDetailsAvailable != null)
                 {
                     UserProfile = (from Detail in context.UserProfile
@@ -318,14 +308,9 @@ namespace NotesMarketPlace.Controllers
                         ViewBag.HideClass = "hidden";
                         ViewBag.NonHideClass = "";
                     }
-
-                    //UserProfile.genderModel = gender.Select(x => new ReferenceDataModel { ReferenceDataID = x.ReferenceDataID, Value = x.Value }).ToList();
-                    //UserProfile.countryModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, Name = x.Name }).ToList();
-                    //UserProfile.CountryCodeModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, CountryCode = x.CountryCode }).ToList();
-
                     return View(UserProfile);
                 }
-                // if user is first time login
+                //If User Is First Time Login
                 else
                 {
                     UserProfile.FirstName = currentuser.FirstName;
@@ -346,9 +331,6 @@ namespace NotesMarketPlace.Controllers
                     ViewBag.HideClass = "";
                     ViewBag.NonHideClass = "hidden";
                     ViewBag.ProfilePictureName = "";
-                    //UserProfile.genderModel = gender.Select(x => new ReferenceDataModel { ReferenceDataID = x.ReferenceDataID, Value = x.Value }).ToList();
-                    //UserProfile.countryModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, Name = x.Name }).ToList();
-                    //UserProfile.CountryCodeModel = country.Select(x => new CountriesModel { CountriesID = x.CountriesID, CountryCode = x.CountryCode }).ToList();
 
                     return View(UserProfile);
                 }
@@ -360,25 +342,19 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // get gender for dropdown
                 var gender = context.ReferenceData.Where(m => m.RefCategory == "Gender").ToList();
-                // get country
                 var country = context.Countries.ToList();
 
                 if (ModelState.IsValid)
                 {
-                    // get current userId
                     int currentuser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name).UserID;
-
-                    // get user details
                     var isDetailsAvailable = context.UserProfile.FirstOrDefault(m => m.UserID == currentuser);
-
                     var systemConfiguration = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
 
-                    // check user details available or not
+                    //Check User Details Available Or Not
                     if (isDetailsAvailable != null && user != null)
                     {
-                        // update details
+                        //Update Details
                         var userUpdate = context.Users.FirstOrDefault(m => m.UserID == currentuser);
                         var detailsUpdate = context.UserProfile.FirstOrDefault(m => m.UserID == currentuser);
 
@@ -455,7 +431,7 @@ namespace NotesMarketPlace.Controllers
                             user.ProfilePicture = systemConfiguration;
                         }
 
-                        // create new details
+                        //Create New Details
                         UserProfile userProfile = new UserProfile()
                         {
                             UserID = currentuser,
@@ -539,6 +515,7 @@ namespace NotesMarketPlace.Controllers
         #endregion Mail Send
 
         #region Random Password
+
         public string RandomPassword()
         {
             string numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()-=";
@@ -554,6 +531,7 @@ namespace NotesMarketPlace.Controllers
             var strongpwd = strrandom;
             return strongpwd;
         }
+
         #endregion Random Password
 
         #region Account Activation
@@ -695,6 +673,7 @@ namespace NotesMarketPlace.Controllers
         #endregion ForgotPassword
 
         #region Change Password
+
         public ActionResult ChangePassword()
         {
             return View();
@@ -708,30 +687,29 @@ namespace NotesMarketPlace.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // get current user
                     var currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
 
-                    // old password not match
+                    //Old Password Not Match
                     if (!currentUser.Password.Equals(model.OldPassword))
                     {
                         TempData["Oldpwd"] = "1";
                         return View();
                     }
 
-                    // new pwd & conf-pwd not match
+                    //New Password & Confirm-Password Not Match
                     if (!model.NewPassword.Equals(model.ConfirmPassword))
                     {
                         return View();
                     }
 
-                    // old pwd & new pwd same
+                    //Old Password & New Password Same
                     if (currentUser.Password == model.ConfirmPassword)
                     {
                         TempData["OldpwdSame"] = "1";
                         return View();
                     }
 
-                    // update password
+                    //Update Password
                     currentUser.Password = model.ConfirmPassword;
                     currentUser.ModifiedDate = DateTime.Now;
                     context.SaveChanges();
@@ -743,6 +721,7 @@ namespace NotesMarketPlace.Controllers
             }
             return View();
         }
+
         #endregion Change Password
 
         #region Create Directory
@@ -764,10 +743,14 @@ namespace NotesMarketPlace.Controllers
 
         #endregion Create Directory
 
+        #region LogOut
+
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account");
         }
+
+        #endregion LogOut
     }
 }

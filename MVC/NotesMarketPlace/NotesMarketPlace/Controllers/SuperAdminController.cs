@@ -14,15 +14,16 @@ namespace NotesMarketPlace.Controllers
     public class SuperAdminController : Controller
     {
         #region Default Constructor
+
         public SuperAdminController()
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // set social URL
                 var socialUrl = context.SystemConfigurations.Where(m => m.Key == "Facebook" || m.Key == "Twitter" || m.Key == "Linkedin").ToList();
                 ViewBag.URLs = socialUrl;
             }
         }
+
         #endregion Default Constructor
 
         #region Initialize User Information
@@ -34,10 +35,8 @@ namespace NotesMarketPlace.Controllers
             {
                 using (var context = new NotesMarketPlaceEntities())
                 {
-                    // get current user
                     var currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
 
-                    //current user profile image
                     var img = (from Details in context.UserProfile
                                join Users in context.Users on Details.UserID equals Users.UserID
                                where Users.EmailID == requestContext.HttpContext.User.Identity.Name
@@ -49,7 +48,6 @@ namespace NotesMarketPlace.Controllers
 
                     if (img == null)
                     {
-                        // set default image
                         var defaultImg = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
                         ViewBag.UserProfile = defaultImg;
                     }
@@ -133,10 +131,10 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // Get Country List
+                //Get Country List
                 var country = context.Countries.ToList();
-
                 var CountryCodeList = country;
+
                 ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
 
                 if (!id.Equals(null))
@@ -192,14 +190,12 @@ namespace NotesMarketPlace.Controllers
             using (var context = new NotesMarketPlaceEntities())
             {
                 var CurrentUser = context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
-
-                // Get Country List
                 var country = context.Countries.ToList();
-
                 var CountryCodeList = country;
+
                 ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
 
-                //for edit details
+                //For Edit Details
                 if (!id.Equals(null))
                 {
                     var data = context.Users.Single(m => m.UserID == id);
@@ -219,7 +215,7 @@ namespace NotesMarketPlace.Controllers
 
                     return RedirectToAction("ManageAdministrator");
                 }
-                //add new Admin
+                //Add New Admin
                 else
                 {
                     var create = context.Users;
@@ -540,6 +536,8 @@ namespace NotesMarketPlace.Controllers
 
         #endregion Apply Pagination
 
+        #region LogOut
+
         public ActionResult LogOut()
         {
             //if (Session["emailID"] != null)
@@ -550,5 +548,7 @@ namespace NotesMarketPlace.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account");
         }
+
+        #endregion LogOut
     }
 }

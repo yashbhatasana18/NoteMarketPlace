@@ -17,6 +17,7 @@ namespace NotesMarketPlace.Controllers
         AdminRepository adminRepository = null;
 
         #region Default Constructor
+
         public AdminController()
         {
             adminRepository = new AdminRepository();
@@ -27,6 +28,7 @@ namespace NotesMarketPlace.Controllers
                 ViewBag.URLs = socialUrl;
             }
         }
+        
         #endregion Default Constructor
 
         #region Initialize User Information
@@ -38,10 +40,8 @@ namespace NotesMarketPlace.Controllers
             {
                 using (var context = new NotesMarketPlaceEntities())
                 {
-                    //Get Current User
                     var currentUser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
 
-                    //Current User Profile Image
                     var img = (from Details in context.UserProfile
                                join Users in context.Users on Details.UserID equals Users.UserID
                                where Users.EmailID == requestContext.HttpContext.User.Identity.Name
@@ -53,7 +53,6 @@ namespace NotesMarketPlace.Controllers
 
                     if (img == null)
                     {
-                        //Set Default Image
                         var defaultImg = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
                         ViewBag.UserProfile = defaultImg;
                     }
@@ -116,19 +115,19 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
-                // total notes in review
+                //Total Notes In Review
                 var inReviewNote = context.SellerNotes.Where(m => (m.Status == 7 || m.Status == 8) && m.IsActive == true).Count();
-                // total notes downloaded (last 7 days)
+                //Total Notes Downloaded (last 7 days)
                 var condition = DateTime.Now.Date.AddDays(-7);
                 var downloads = context.Downloads.Where(m => m.IsSellerHasAllowedDownload == true && m.IsAttachmentDownloaded == true && m.AttachmentDownloadedDate >= condition).Count();
-                // total new Registration (last 7 days)
+                //Total New Registration (last 7 days)
                 var registration = context.Users.Where(m => m.CreatedDate >= condition).Count();
 
                 ViewBag.InReview = inReviewNote;
                 ViewBag.Downloads = downloads;
                 ViewBag.Registration = registration;
 
-                // last 6 month from today
+                //Last 6 Month From Today
                 var monthList = new List<MonthModel>();
                 for (int i = 0; i <= 6; i++)
                 {
@@ -140,7 +139,7 @@ namespace NotesMarketPlace.Controllers
                 }
                 ViewBag.MonthList = monthList;
 
-                // published note
+                //Published Note Data
                 var note = (from Note in context.SellerNotes
                             join Attachment in context.SellerNotesAttachements on Note.SellerNotesID equals Attachment.NoteID
                             join Category in context.NoteCategories on Note.Category equals Category.NoteCategoriesID
@@ -185,7 +184,7 @@ namespace NotesMarketPlace.Controllers
                     Dashboardresult = ApplyPagination(Dashboardresult, PageNumber);
                 }
 
-                // append attachment size
+                //Attachment Size
                 foreach (var data in Dashboardresult)
                 {
                     data.AttachmentSize = GetSize(data.userid, data.Id, data.filename);
@@ -229,7 +228,6 @@ namespace NotesMarketPlace.Controllers
 
                 context.SaveChanges();
 
-                // send mail to admins
                 string subject = "Sorry! We need to remove your notes from our portal.";
                 string body = "Hello " + seller.FirstName + " " + seller.LastName + ",\n \n"
                     + "We want to inform you that, your note " + note.Title + " has been removed from the portal. Please find our remarks as below -\n";
@@ -250,7 +248,7 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // seller names
+                //Seller Names
                 var seller = (from Notes in context.SellerNotes
                               join User in context.Users on Notes.SellerID equals User.UserID
                               where Notes.Status == 6 || Notes.Status == 7 || Notes.Status == 8
@@ -263,7 +261,7 @@ namespace NotesMarketPlace.Controllers
 
                 ViewBag.SellerList = seller;
 
-                // model data
+                //Set Model Data
                 var model = (from Notes in context.SellerNotes
                              join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
                              join Category in context.NoteCategories on Notes.Category equals Category.NoteCategoriesID
@@ -380,7 +378,7 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // Seller Names
+                //Seller Names
                 var seller = (from Notes in context.SellerNotes
                               join User in context.Users on Notes.SellerID equals User.UserID
                               where Notes.Status == 9
@@ -393,7 +391,7 @@ namespace NotesMarketPlace.Controllers
 
                 ViewBag.SellerList = seller;
 
-                // set model value
+                //Set Model Data
                 var model = (from Notes in context.SellerNotes
                              join User in context.Users on Notes.SellerID equals User.UserID
                              join Admin in context.Users on Notes.ActionedBy equals Admin.UserID
@@ -460,7 +458,7 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // seller names
+                //Seller Names
                 var seller = (from Notes in context.SellerNotes
                               join User in context.Users on Notes.SellerID equals User.UserID
                               where Notes.Status == 9
@@ -473,7 +471,7 @@ namespace NotesMarketPlace.Controllers
 
                 ViewBag.SellerList = seller;
 
-                // buyer names
+                //Buyer Names
                 var buyer = (from Purchase in context.Downloads
                              join User in context.Users on Purchase.Downloader equals User.UserID
                              where Purchase.IsSellerHasAllowedDownload == true && Purchase.IsAttachmentDownloaded == true
@@ -486,7 +484,7 @@ namespace NotesMarketPlace.Controllers
 
                 ViewBag.BuyerList = buyer;
 
-                // notes title
+                //Notes Title
                 var note = (from Purchase in context.Downloads
                             join Note in context.SellerNotes on Purchase.NoteID equals Note.SellerNotesID
                             where Purchase.IsSellerHasAllowedDownload == true && Purchase.IsAttachmentDownloaded == true
@@ -499,7 +497,7 @@ namespace NotesMarketPlace.Controllers
 
                 ViewBag.NoteList = note;
 
-                // set model data
+                //Set Model Data
                 var model = (from Purchase in context.Downloads
                              join Note in context.SellerNotes on Purchase.NoteID equals Note.SellerNotesID
                              join Downloader in context.Users on Purchase.Downloader equals Downloader.UserID
@@ -570,7 +568,7 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // seller names
+                //Seller Names
                 var seller = (from Notes in context.SellerNotes
                               join User in context.Users on Notes.SellerID equals User.UserID
                               where Notes.Status == 10
@@ -583,7 +581,7 @@ namespace NotesMarketPlace.Controllers
 
                 ViewBag.SellerList = seller;
 
-                // set model data
+                //Set Notes
                 var notes = (from Note in context.SellerNotes
                              join Category in context.NoteCategories on Note.Category equals Category.NoteCategoriesID
                              join Seller in context.Users on Note.SellerID equals Seller.UserID
@@ -602,7 +600,6 @@ namespace NotesMarketPlace.Controllers
                                  PublishedDate = (DateTime)Note.PublishedDate
                              }).OrderByDescending(x => x.PublishedDate).ToList();
 
-                // if filter applied
                 if (!sellerId.Equals(null))
                 {
                     notes = notes.Where(x => x.SellerId == sellerId).ToList();
@@ -723,10 +720,9 @@ namespace NotesMarketPlace.Controllers
             using (var context = new NotesMarketPlaceEntities())
             {
                 ViewBag.UserID = id;
-                // default img
                 var DefaultImg = context.SystemConfigurations.SingleOrDefault(m => m.Key == "DefaultProfileImage").Value;
 
-                // member details
+                //Member Details
                 var details = (from User in context.Users
                                where User.UserID == id
                                join Details in context.UserProfile on User.UserID equals Details.UserID
@@ -750,7 +746,7 @@ namespace NotesMarketPlace.Controllers
 
                 ViewBag.Details = details;
 
-                // member notes
+                //Member Notes List
                 var notes = (from Note in context.SellerNotes
                              where Note.SellerID == id
                              join Status in context.ReferenceData on Note.Status equals Status.ReferenceDataID
@@ -856,7 +852,6 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                // Get Country List
                 var country = context.Countries.ToList();
 
                 var CountryCodeList = country;
@@ -918,7 +913,6 @@ namespace NotesMarketPlace.Controllers
 
                 context.SaveChanges();
 
-                // Get Country List
                 var country = context.Countries.ToList();
 
                 var CountryCodeList = country;
@@ -1011,13 +1005,11 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
-                // current admin id
                 var currentAdmin = context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
 
-                // if new category
                 if (id.Equals(null))
                 {
-                    // add new category
+                    //Add New Category
                     var create = context.NoteCategories;
                     create.Add(new NoteCategories
                     {
@@ -1032,7 +1024,7 @@ namespace NotesMarketPlace.Controllers
 
                     context.SaveChanges();
                 }
-                // update existing category
+                //Update Existing Category
                 else
                 {
                     var update = context.NoteCategories.Single(m => m.NoteCategoriesID == id);
@@ -1137,13 +1129,11 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
-                // current admin id
                 var currentAdmin = context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
 
-                // if new category
                 if (id.Equals(null))
                 {
-                    // add new category
+                    //Add New Category
                     var create = context.NoteTypes;
                     create.Add(new NoteTypes
                     {
@@ -1158,7 +1148,7 @@ namespace NotesMarketPlace.Controllers
 
                     context.SaveChanges();
                 }
-                // update existing category
+                //Update Existing Category
                 else
                 {
                     var update = context.NoteTypes.Single(m => m.NoteTypesID == id);
@@ -1263,13 +1253,11 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
-                // current admin id
                 var currentAdmin = context.Users.Single(m => m.EmailID == User.Identity.Name).UserID;
 
-                // if new category
                 if (id.Equals(null))
                 {
-                    // add new category
+                    //Add New Category
                     var create = context.Countries;
                     create.Add(new Countries
                     {
@@ -1284,7 +1272,7 @@ namespace NotesMarketPlace.Controllers
 
                     context.SaveChanges();
                 }
-                // update existing category
+                //Update Existing Category
                 else
                 {
                     var update = context.Countries.Single(m => m.CountriesID == id);
@@ -3182,6 +3170,8 @@ namespace NotesMarketPlace.Controllers
 
         #endregion Return File
 
+        #region LogOut
+
         public ActionResult LogOut()
         {
             //if (Session["emailID"] != null)
@@ -3192,5 +3182,7 @@ namespace NotesMarketPlace.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account");
         }
+
+        #endregion LogOut
     }
 }
