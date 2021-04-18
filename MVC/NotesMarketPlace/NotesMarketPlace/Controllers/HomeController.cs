@@ -50,7 +50,7 @@ namespace NotesMarketPlace.Controllers
                 ViewBag.URLs = socialUrl;
             }
         }
-        
+
         #endregion Default Constructor
 
         #region Initialize User Information
@@ -218,20 +218,31 @@ namespace NotesMarketPlace.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult AddNotes(AddNotesModel model, string Command)
         {
+            ViewBag.Show = false;
             using (var context = new NotesMarketPlaceEntities())
             {
                 var user = context.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
+                var defaultProfileImage = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultProfileImage").Value;
+                var defaultBookImage = context.SystemConfigurations.FirstOrDefault(m => m.Key == "DefaultBookImage").Value;
+
                 model.SellerID = user.UserID;
 
                 if (user != null && ModelState.IsValid)
                 {
-                    //NoteDisplayPicturePath
-                    string displayPictureFileName = Path.GetFileNameWithoutExtension(model.NoteDisplayPicturePath.FileName);
-                    string displayPictureExtension = Path.GetExtension(model.NoteDisplayPicturePath.FileName);
-                    displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
-                    model.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
-                    displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
-                    model.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
+                    if (model.NoteDisplayPicturePath != null)
+                    {
+                        //NoteDisplayPicturePath
+                        string displayPictureFileName = Path.GetFileNameWithoutExtension(model.NoteDisplayPicturePath.FileName);
+                        string displayPictureExtension = Path.GetExtension(model.NoteDisplayPicturePath.FileName);
+                        displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
+                        model.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
+                        displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
+                        model.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
+                    }
+                    else
+                    {
+                        model.DisplayPicture = defaultProfileImage;
+                    }
 
                     //NoteUploadFilePath
                     string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(model.NoteUploadFilePath.FileName);
@@ -242,13 +253,20 @@ namespace NotesMarketPlace.Controllers
                     noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
                     model.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
 
-                    //NotePreviewFilePath
-                    string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(model.NotePreviewFilePath.FileName);
-                    string notePreviewFilePathExtension = Path.GetExtension(model.NotePreviewFilePath.FileName);
-                    notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
-                    model.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
-                    notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
-                    model.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
+                    if (model.NotePreviewFilePath != null)
+                    {
+                        //NotePreviewFilePath
+                        string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(model.NotePreviewFilePath.FileName);
+                        string notePreviewFilePathExtension = Path.GetExtension(model.NotePreviewFilePath.FileName);
+                        notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
+                        model.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
+                        notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
+                        model.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
+                    }
+                    else
+                    {
+                        model.NotesPreview = defaultBookImage;
+                    }
 
                     if (model.IsPaid)
                     {
@@ -274,6 +292,7 @@ namespace NotesMarketPlace.Controllers
                     if (id > 0)
                     {
                         ModelState.Clear();
+                        ViewBag.Show = true;
                         ViewBag.message = "Your note has been successfully added";
                     }
                 }
@@ -296,7 +315,7 @@ namespace NotesMarketPlace.Controllers
                     var CountryList2 = context.Countries.ToList();
                     ViewBag.NotesCountry = new SelectList(CountryList2, "CountriesID", "Name");
 
-                    return View("AddNotes");
+                    return View();
                 }
 
                 var NoteCategoryList = context.NoteCategories.ToList();
@@ -308,7 +327,7 @@ namespace NotesMarketPlace.Controllers
                 var CountryList = context.Countries.ToList();
                 ViewBag.NotesCountry = new SelectList(CountryList, "CountriesID", "Name");
 
-                return View("AddNotes");
+                return View();
             }
         }
 

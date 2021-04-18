@@ -24,7 +24,7 @@ namespace NotesMarketPlace.Models
         [DisplayName("Confirm Password")]
         [Required(ErrorMessage = "Confirm password is required")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Password and Confirm password is not match")]
+        [Compare("NewPassword", ErrorMessage = "Password and Confirm password is not match")]
         public string ConfirmPassword { get; set; }
     }
 }

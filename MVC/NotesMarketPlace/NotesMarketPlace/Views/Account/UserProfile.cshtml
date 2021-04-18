@@ -5,42 +5,45 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-<style>
-    label {
-        margin-bottom: 10px !important;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 20px;
-        color: #333333;
-    }
+@section CustomStyle
+{
+    <style>
+        label {
+            margin-bottom: 10px !important;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 20px;
+            color: #333333;
+        }
 
-    .form-group {
-        margin-bottom: 30px !important;
-    }
+        .form-group {
+            margin-bottom: 30px !important;
+        }
 
-    textarea {
-        border: 1px solid #d1d1d1;
-        width: 1440px;
-        height: 153px !important;
-        border-radius: 3px;
-    }
+        textarea {
+            border: 1px solid #d1d1d1;
+            width: 1440px;
+            height: 153px !important;
+            border-radius: 3px;
+        }
 
-    #btnSubmit {
-        margin-left: 15px;
-    }
+        #btnSubmit {
+            margin-left: 15px;
+        }
 
-    .input-group-prepend {
-        margin-right: 10px;
-    }
+        .input-group-prepend {
+            margin-right: 10px;
+        }
 
-    .customDropDown {
-        padding-right: 40px !important;
-        background: url(../../Content/images/arrow-down.png) 85% no-repeat;
-        margin-right: 10px;
-        appearance: none;
-    }
-</style>
+        .customDropDown {
+            padding-right: 40px !important;
+            background: url(../../Content/images/arrow-down.png) 85% no-repeat;
+            margin-right: 10px;
+            appearance: none;
+        }
+    </style>
+}
 
 <!-- Head -->
 <section class="head">
@@ -112,6 +115,7 @@
                         onfocus = "(this.type='date')",
                         onblur = "(this.type='text')"
                     })
+                    @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
                 </div>
                 <div class="mb-3">
                     @Html.LabelFor(model => model.PhoneNumber, "Phone Number", new { @for = "phoneNo" })
@@ -121,6 +125,7 @@
                         </div>
                         @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Enter your phone number", id = "phoneNo" })
                     </div>
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -129,7 +134,7 @@
             <div class="col-md-6">
                 <label for="file-image">Profile Picture</label>
                 <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="UserProfilePicturePath" accept="image/*" />
+                    <input id="file-upload" type="file" name="UserProfilePicturePath" />
                     <label for="file-upload" id="file-drag">
                         <img id="file-image" src="@Url.Content(ViewBag.ProfilePicturePreview)" alt="Preview" class="@ViewBag.NonHideClass">
                         <div id="start" class="@ViewBag.HideClass">
@@ -141,6 +146,7 @@
                             <div id="messages">@ViewBag.ProfilePictureName</div>
                         </div>
                     </label>
+                    @*@Html.ValidationMessageFor(model => model.UserProfilePicturePath, "", new { @class = "text-danger" })*@
                 </div>
             </div>
         </div>

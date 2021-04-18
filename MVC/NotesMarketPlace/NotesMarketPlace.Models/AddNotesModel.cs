@@ -9,7 +9,6 @@ namespace NotesMarketPlace.Models
 {
     public class AddNotesModel
     {
-        [Key]
         public int SellerNotesID { get; set; }
         public int SellerID { get; set; }
         public int Status { get; set; }
@@ -18,6 +17,8 @@ namespace NotesMarketPlace.Models
         public DateTime? PublishedDate { get; set; }
 
         [Required(ErrorMessage = "Title is required")]
+        [MaxLength(100, ErrorMessage = "<100 char")]
+        [RegularExpression(@"^[a-zA-Z][a-zA-Z\s]*$", ErrorMessage = "Use letters only")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Select Category")]
@@ -32,6 +33,8 @@ namespace NotesMarketPlace.Models
 
         public string FileName { get; set; }
         public int? NoteType { get; set; }
+
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "Only digits allowed")]
         public int? NumberOfPages { get; set; }
 
         [Required(ErrorMessage = "Description is required")]
@@ -41,12 +44,19 @@ namespace NotesMarketPlace.Models
         public int? Country { get; set; }
 
         public string Course { get; set; }
+
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "Only digits allowed")]
         public string CourseCode { get; set; }
+
+        [RegularExpression(@"^[a-zA-Z][a-zA-Z\s]*$", ErrorMessage = "Use letters only")]
         public string Professor { get; set; }
 
         [Required(ErrorMessage = "Please Select Any One")]
         public bool IsPaid { get; set; }
+
+        [RegularExpression(@"((\d+)((\. \d{1,2})?))$", ErrorMessage = "Valid Decimal number with maximum 2 decimal places")]
         public decimal? SellingPrice { get; set; }
+
         public string NotesPreview { get; set; }
 
         public DateTime? CreatedDate { get; set; }

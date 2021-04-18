@@ -61,8 +61,9 @@ function DisplayPictureUpload() {
         console.log(file.name);
         output("<strong>" + encodeURI(file.name) + "</strong>");
 
-        // var fileType = file.type;
-        // console.log(fileType);
+        //var fileType = file.type;
+        //console.log(fileType);
+
         var imageName = file.name;
 
         var isGood = /\.(?=jpg|png|jpeg)/gi.test(imageName);
