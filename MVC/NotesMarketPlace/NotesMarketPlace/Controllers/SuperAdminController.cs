@@ -282,6 +282,8 @@ namespace NotesMarketPlace.Controllers
         {
             using (var context = new NotesMarketPlaceEntities())
             {
+                ViewBag.Show = false;
+
                 var systemConfigurations = context.SystemConfigurations.ToList();
 
                 if (systemConfigurations.Count != 0)
@@ -291,7 +293,7 @@ namespace NotesMarketPlace.Controllers
                         SupportEmail = systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value,
                         SupportContact = systemConfigurations.Single(m => m.Key == "SupportContact").Value,
                         DefaultNoteImg = systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value,
-                        DefaulProfileImg = systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value,
+                        DefaultProfileImg = systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value,
                         Emails = systemConfigurations.Single(m => m.Key == "EmailAddresses").Value,
                         FacebookUrl = systemConfigurations.Single(m => m.Key == "Facebook").Value,
                         TwitterUrl = systemConfigurations.Single(m => m.Key == "Twitter").Value,
@@ -310,6 +312,8 @@ namespace NotesMarketPlace.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ManageSystemConfiguration(SystemConfigurationsModel model)
         {
+            ViewBag.Show = false;
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -319,56 +323,68 @@ namespace NotesMarketPlace.Controllers
             {
                 var systemConfigurations = context.SystemConfigurations.ToList();
 
-                if (systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value != model.SupportEmail)
+                try
                 {
-                    systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value = model.SupportEmail;
-                    systemConfigurations.Single(m => m.Key == "SupportEmailAddress").ModifiedDate = DateTime.Now;
-                }
+                    if (systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value != model.SupportEmail)
+                    {
+                        systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value = model.SupportEmail;
+                        systemConfigurations.Single(m => m.Key == "SupportEmailAddress").ModifiedDate = DateTime.Now;
+                    }
 
-                if (systemConfigurations.Single(m => m.Key == "SupportContact").Value != model.SupportContact)
+                    if (systemConfigurations.Single(m => m.Key == "SupportContact").Value != model.SupportContact)
+                    {
+                        systemConfigurations.Single(m => m.Key == "SupportContact").Value = model.SupportContact;
+                        systemConfigurations.Single(m => m.Key == "SupportContact").ModifiedDate = DateTime.Now;
+                    }
+
+                    if (systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value != model.DefaultNoteImg)
+                    {
+                        systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value = model.DefaultNoteImg;
+                        systemConfigurations.Single(m => m.Key == "DefaultBookImage").ModifiedDate = DateTime.Now;
+                    }
+
+                    if (systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value != model.DefaultProfileImg)
+                    {
+                        systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value = model.DefaultProfileImg;
+                        systemConfigurations.Single(m => m.Key == "DefaultProfileImage").ModifiedDate = DateTime.Now;
+                    }
+
+                    if (systemConfigurations.Single(m => m.Key == "EmailAddresses").Value != model.Emails)
+                    {
+                        systemConfigurations.Single(m => m.Key == "EmailAddresses").Value = model.Emails;
+                        systemConfigurations.Single(m => m.Key == "EmailAddresses").ModifiedDate = DateTime.Now;
+                    }
+
+                    if (systemConfigurations.Single(m => m.Key == "Facebook").Value != model.FacebookUrl)
+                    {
+                        systemConfigurations.Single(m => m.Key == "Facebook").Value = model.FacebookUrl;
+                        systemConfigurations.Single(m => m.Key == "Facebook").ModifiedDate = DateTime.Now;
+                    }
+
+                    if (systemConfigurations.Single(m => m.Key == "Twitter").Value != model.TwitterUrl)
+                    {
+                        systemConfigurations.Single(m => m.Key == "Twitter").Value = model.TwitterUrl;
+                        systemConfigurations.Single(m => m.Key == "Twitter").ModifiedDate = DateTime.Now;
+                    }
+
+                    if (systemConfigurations.Single(m => m.Key == "Linkedin").Value != model.LinkedinUrl)
+                    {
+                        systemConfigurations.Single(m => m.Key == "Linkedin").Value = model.LinkedinUrl;
+                        systemConfigurations.Single(m => m.Key == "Linkedin").ModifiedDate = DateTime.Now;
+                    }
+
+                    context.SaveChanges();
+
+                    ViewBag.Show = true;
+                    ViewBag.AlertClass = "alert-success";
+                    ViewBag.message = "Manage Syatem Configuration Has Been Successfully Updated.";
+                }
+                catch (Exception ex)
                 {
-                    systemConfigurations.Single(m => m.Key == "SupportContact").Value = model.SupportContact;
-                    systemConfigurations.Single(m => m.Key == "SupportContact").ModifiedDate = DateTime.Now;
+                    ViewBag.Show = true;
+                    ViewBag.AlertClass = "alert-danger";
+                    ViewBag.message = ex.Message;
                 }
-
-                if (systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value != model.DefaultNoteImg)
-                {
-                    systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value = model.DefaultNoteImg;
-                    systemConfigurations.Single(m => m.Key == "DefaultBookImage").ModifiedDate = DateTime.Now;
-                }
-
-                if (systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value != model.DefaulProfileImg)
-                {
-                    systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value = model.DefaulProfileImg;
-                    systemConfigurations.Single(m => m.Key == "DefaultProfileImage").ModifiedDate = DateTime.Now;
-                }
-
-                if (systemConfigurations.Single(m => m.Key == "EmailAddresses").Value != model.Emails)
-                {
-                    systemConfigurations.Single(m => m.Key == "EmailAddresses").Value = model.Emails;
-                    systemConfigurations.Single(m => m.Key == "EmailAddresses").ModifiedDate = DateTime.Now;
-                }
-
-                if (systemConfigurations.Single(m => m.Key == "Facebook").Value != model.FacebookUrl)
-                {
-                    systemConfigurations.Single(m => m.Key == "Facebook").Value = model.FacebookUrl;
-                    systemConfigurations.Single(m => m.Key == "Facebook").ModifiedDate = DateTime.Now;
-                }
-
-                if (systemConfigurations.Single(m => m.Key == "Twitter").Value != model.TwitterUrl)
-                {
-                    systemConfigurations.Single(m => m.Key == "Twitter").Value = model.TwitterUrl;
-                    systemConfigurations.Single(m => m.Key == "Twitter").ModifiedDate = DateTime.Now;
-                }
-
-                if (systemConfigurations.Single(m => m.Key == "Linkedin").Value != model.LinkedinUrl)
-                {
-                    systemConfigurations.Single(m => m.Key == "Linkedin").Value = model.LinkedinUrl;
-                    systemConfigurations.Single(m => m.Key == "Linkedin").ModifiedDate = DateTime.Now;
-                }
-
-                context.SaveChanges();
-
                 return View(model);
             }
         }

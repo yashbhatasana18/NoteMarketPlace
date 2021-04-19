@@ -5,11 +5,14 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
+@section CustomStyle
+{
+    <style>
+        .cursor_pointer {
+            cursor: pointer;
+        }
+    </style>
+}
 
 <div class="row heading">
     <div class="col-md-12 p-0">
@@ -154,21 +157,24 @@
     </div>
 }
 
-<script>
-    function Edit(id) {
-        location.href = "AddAdministrator?id=" + id;
-    }
-    function Delete(id) {
-        $.ajax({
-            method: 'POST',
-            url: 'DeleteAdministrator',
-            data: { id: id },
-            success: function () {
-                location.reload();
-            },
-            error: function () {
-                alert("Try Again");
-            }
-        });
-    }
-</script>
+@section CustomScript
+{
+    <script>
+        function Edit(id) {
+            location.href = "AddAdministrator?id=" + id;
+        }
+        function Delete(id) {
+            $.ajax({
+                method: 'POST',
+                url: 'DeleteAdministrator',
+                data: { id: id },
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
+    </script>
+}

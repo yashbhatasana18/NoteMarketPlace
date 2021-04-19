@@ -16,9 +16,9 @@ namespace NotesMarketPlace.Models
         public string AdminRemarks { get; set; }
         public DateTime? PublishedDate { get; set; }
 
-        [Required(ErrorMessage = "Title is required")]
         [MaxLength(100, ErrorMessage = "<100 char")]
         [RegularExpression(@"^[a-zA-Z][a-zA-Z\s]*$", ErrorMessage = "Use letters only")]
+        [Required(ErrorMessage = "Title is required.")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Select Category")]
@@ -54,7 +54,6 @@ namespace NotesMarketPlace.Models
         [Required(ErrorMessage = "Please Select Any One")]
         public bool IsPaid { get; set; }
 
-        [RegularExpression(@"((\d+)((\. \d{1,2})?))$", ErrorMessage = "Valid Decimal number with maximum 2 decimal places")]
         public decimal? SellingPrice { get; set; }
 
         public string NotesPreview { get; set; }
@@ -75,7 +74,7 @@ namespace NotesMarketPlace.Models
 
         public HttpPostedFileBase NoteDisplayPicturePath { get; set; }
 
-        [Required(ErrorMessage = "Please select file.")]
+        [Required(ErrorMessage = "Please Select File.")]
         public HttpPostedFileBase NoteUploadFilePath { get; set; }
 
         public HttpPostedFileBase NotePreviewFilePath { get; set; }

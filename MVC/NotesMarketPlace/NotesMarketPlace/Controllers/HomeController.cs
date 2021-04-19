@@ -215,7 +215,26 @@ namespace NotesMarketPlace.Controllers
 
         #region AddNote
 
-        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        [HttpGet]
+        public ActionResult AddNotes()
+        {
+            ViewBag.Show = false;
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var NoteCategoryList = context.NoteCategories.ToList();
+                ViewBag.NotesCategory = new SelectList(NoteCategoryList, "NoteCategoriesID", "Name");
+
+                var NotesTypeList = context.NoteTypes.ToList();
+                ViewBag.NotesType = new SelectList(NotesTypeList, "NoteTypesID", "Name");
+
+                var CountryList = context.Countries.ToList();
+                ViewBag.NotesCountry = new SelectList(CountryList, "CountriesID", "Name");
+
+                return View("AddNotes");
+            }
+        }
+
+        [HttpPost]
         public ActionResult AddNotes(AddNotesModel model, string Command)
         {
             ViewBag.Show = false;
@@ -227,95 +246,105 @@ namespace NotesMarketPlace.Controllers
 
                 model.SellerID = user.UserID;
 
-                if (user != null && ModelState.IsValid)
+                try
                 {
-                    if (model.NoteDisplayPicturePath != null)
+                    if (user != null && ModelState.IsValid)
                     {
-                        //NoteDisplayPicturePath
-                        string displayPictureFileName = Path.GetFileNameWithoutExtension(model.NoteDisplayPicturePath.FileName);
-                        string displayPictureExtension = Path.GetExtension(model.NoteDisplayPicturePath.FileName);
-                        displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
-                        model.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
-                        displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
-                        model.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
-                    }
-                    else
-                    {
-                        model.DisplayPicture = defaultProfileImage;
-                    }
-
-                    //NoteUploadFilePath
-                    string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(model.NoteUploadFilePath.FileName);
-                    string noteUploadFilePathExtension = Path.GetExtension(model.NoteUploadFilePath.FileName);
-                    noteUploadFilePathFileName = noteUploadFilePathFileName + DateTime.Now.ToString("yymmssff") + noteUploadFilePathExtension;
-                    model.FileName = noteUploadFilePathFileName;
-                    model.FilePath = "~/Content/NotesImages/NotesPDF/" + noteUploadFilePathFileName;
-                    noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
-                    model.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
-
-                    if (model.NotePreviewFilePath != null)
-                    {
-                        //NotePreviewFilePath
-                        string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(model.NotePreviewFilePath.FileName);
-                        string notePreviewFilePathExtension = Path.GetExtension(model.NotePreviewFilePath.FileName);
-                        notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
-                        model.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
-                        notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
-                        model.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
-                    }
-                    else
-                    {
-                        model.NotesPreview = defaultBookImage;
-                    }
-
-                    if (model.IsPaid)
-                    {
-                        if (model.SellingPrice == null || model.SellingPrice < 1)
+                        if (model.NoteDisplayPicturePath != null)
                         {
-                            ModelState.AddModelError("SellingPrice", "Enter valid Selling price");
+                            //NoteDisplayPicturePath
+                            string displayPictureFileName = Path.GetFileNameWithoutExtension(model.NoteDisplayPicturePath.FileName);
+                            string displayPictureExtension = Path.GetExtension(model.NoteDisplayPicturePath.FileName);
+                            displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
+                            model.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
+                            displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
+                            model.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
+                        }
+                        else
+                        {
+                            model.DisplayPicture = defaultProfileImage;
+                        }
 
-                            var NoteCategoryList1 = context.NoteCategories.ToList();
-                            ViewBag.NotesCategory = new SelectList(NoteCategoryList1, "NoteCategoriesID", "Name");
+                        //NoteUploadFilePath
+                        string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(model.NoteUploadFilePath.FileName);
+                        string noteUploadFilePathExtension = Path.GetExtension(model.NoteUploadFilePath.FileName);
+                        noteUploadFilePathFileName = noteUploadFilePathFileName + DateTime.Now.ToString("yymmssff") + noteUploadFilePathExtension;
+                        model.FileName = noteUploadFilePathFileName;
+                        model.FilePath = "~/Content/NotesImages/NotesPDF/" + noteUploadFilePathFileName;
+                        noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
+                        model.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
 
-                            var NotesTypeList1 = context.NoteTypes.ToList();
-                            ViewBag.NotesType = new SelectList(NotesTypeList1, "NoteTypesID", "Name");
+                        if (model.NotePreviewFilePath != null)
+                        {
+                            //NotePreviewFilePath
+                            string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(model.NotePreviewFilePath.FileName);
+                            string notePreviewFilePathExtension = Path.GetExtension(model.NotePreviewFilePath.FileName);
+                            notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
+                            model.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
+                            notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
+                            model.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
+                        }
+                        else
+                        {
+                            model.NotesPreview = defaultBookImage;
+                        }
 
-                            var CountryList1 = context.Countries.ToList();
-                            ViewBag.NotesCountry = new SelectList(CountryList1, "CountriesID", "Name");
+                        if (model.IsPaid)
+                        {
+                            if (model.SellingPrice == null || model.SellingPrice < 1)
+                            {
+                                ModelState.AddModelError("SellingPrice", "Enter valid Selling price");
 
-                            return View("AddNotes");
+                                var NoteCategoryList1 = context.NoteCategories.ToList();
+                                ViewBag.NotesCategory = new SelectList(NoteCategoryList1, "NoteCategoriesID", "Name");
+
+                                var NotesTypeList1 = context.NoteTypes.ToList();
+                                ViewBag.NotesType = new SelectList(NotesTypeList1, "NoteTypesID", "Name");
+
+                                var CountryList1 = context.Countries.ToList();
+                                ViewBag.NotesCountry = new SelectList(CountryList1, "CountriesID", "Name");
+
+                                return View("AddNotes");
+                            }
+                        }
+
+                        int id = addNoteRepository.AddNotes(model, Command);
+
+                        if (id > 0)
+                        {
+                            ModelState.Clear();
+                            ViewBag.Show = true;
+                            ViewBag.AlertClass = "alert-success";
+                            ViewBag.message = "Your note has been successfully added";
                         }
                     }
-
-                    int id = addNoteRepository.AddNotes(model, Command);
-
-                    if (id > 0)
+                    else
                     {
-                        ModelState.Clear();
-                        ViewBag.Show = true;
-                        ViewBag.message = "Your note has been successfully added";
+                        if (model.IsPaid)
+                        {
+                            if (model.SellingPrice == null)
+                            {
+                                ModelState.AddModelError("SellingPrice", "Selling price is required");
+                            }
+                        }
+
+                        var NoteCategoryList2 = context.NoteCategories.ToList();
+                        ViewBag.NotesCategory = new SelectList(NoteCategoryList2, "NoteCategoriesID", "Name");
+
+                        var NotesTypeList2 = context.NoteTypes.ToList();
+                        ViewBag.NotesType = new SelectList(NotesTypeList2, "NoteTypesID", "Name");
+
+                        var CountryList2 = context.Countries.ToList();
+                        ViewBag.NotesCountry = new SelectList(CountryList2, "CountriesID", "Name");
+
+                        return View("AddNotes");
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    if (model.IsPaid)
-                    {
-                        if (model.SellingPrice == null)
-                        {
-                            ModelState.AddModelError("SellingPrice", "Selling price is required");
-                        }
-                    }
-
-                    var NoteCategoryList2 = context.NoteCategories.ToList();
-                    ViewBag.NotesCategory = new SelectList(NoteCategoryList2, "NoteCategoriesID", "Name");
-
-                    var NotesTypeList2 = context.NoteTypes.ToList();
-                    ViewBag.NotesType = new SelectList(NotesTypeList2, "NoteTypesID", "Name");
-
-                    var CountryList2 = context.Countries.ToList();
-                    ViewBag.NotesCountry = new SelectList(CountryList2, "CountriesID", "Name");
-
-                    return View();
+                    ViewBag.Show = true;
+                    ViewBag.AlertClass = "alert-danger";
+                    ViewBag.message = ex.Message;
                 }
 
                 var NoteCategoryList = context.NoteCategories.ToList();
@@ -327,7 +356,7 @@ namespace NotesMarketPlace.Controllers
                 var CountryList = context.Countries.ToList();
                 ViewBag.NotesCountry = new SelectList(CountryList, "CountriesID", "Name");
 
-                return View();
+                return View("AddNotes");
             }
         }
 
@@ -338,11 +367,16 @@ namespace NotesMarketPlace.Controllers
         [HttpGet]
         public ActionResult EditNote(int id)
         {
+            ViewBag.Show = false;
+
             var user = db.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
 
             var note = db.SellerNotes.Where(x => x.SellerNotesID == id && x.SellerID == user.UserID && x.Status == 6).FirstOrDefault();
 
             var FileNote = db.SellerNotesAttachements.Where(x => x.NoteID == note.SellerNotesID).ToList();
+
+            var notesAttachements = db.SellerNotesAttachements.FirstOrDefault(x => x.NoteID == id);
+
 
             var NoteCategoryList = db.NoteCategories.ToList();
             ViewBag.NotesCategory = new SelectList(NoteCategoryList, "NoteCategoriesID", "Name");
@@ -372,6 +406,7 @@ namespace NotesMarketPlace.Controllers
 
             editnote.DisplayPicture = note.DisplayPicture;
             editnote.NotesPreview = note.NotesPreview;
+            editnote.FilePath = notesAttachements.FilePath;
 
             ViewBag.ImagePath = note.DisplayPicture;
             ViewBag.PreviewPath = note.NotesPreview;
@@ -386,96 +421,172 @@ namespace NotesMarketPlace.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditNote(AddNotesModel editnote, string Command)
         {
+            ViewBag.Show = false;
+
             Users user = db.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
 
             SellerNotes note = db.SellerNotes.FirstOrDefault(x => x.SellerNotesID == editnote.SellerNotesID && x.Status == 6 && x.SellerID == user.UserID && x.IsActive == true);
 
             SellerNotesAttachements AttachFile = db.SellerNotesAttachements.FirstOrDefault(x => x.NoteID == note.SellerNotesID && x.IsActive == true);
 
-            if (user != null && ModelState.IsValid)
+            try
             {
-                if (editnote.DisplayPicture != null)
+                if (user != null && ModelState.IsValid)
                 {
-                    string FileNameDelete = System.IO.Path.GetFileName(note.DisplayPicture);
-                    string PathImage = Request.MapPath("~/Content/NotesImages/Images/" + FileNameDelete);
-                    FileInfo file = new FileInfo(PathImage);
-                    if (file.Exists)
+                    if (editnote.DisplayPicture != null)
                     {
-                        file.Delete();
+                        //string FileNameDelete = System.IO.Path.GetFileName(note.DisplayPicture);
+                        //string PathImage = Request.MapPath("~/Content/NotesImages/Images/" + FileNameDelete);
+                        //FileInfo file = new FileInfo(PathImage);
+                        //if (file.Exists)
+                        //{
+                        //    file.Delete();
+                        //}
+                        //string displayPictureFileName = Path.GetFileNameWithoutExtension(editnote.NoteDisplayPicturePath.FileName);
+                        //string displayPictureExtension = Path.GetExtension(editnote.NoteDisplayPicturePath.FileName);
+                        //displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
+                        //note.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
+                        //displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
+                        //editnote.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
+                        note.DisplayPicture = editnote.DisplayPicture;
+
+                        db.Configuration.ValidateOnSaveEnabled = false;
+                        db.SaveChanges();
                     }
-                    string displayPictureFileName = Path.GetFileNameWithoutExtension(editnote.NoteDisplayPicturePath.FileName);
-                    string displayPictureExtension = Path.GetExtension(editnote.NoteDisplayPicturePath.FileName);
-                    displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
-                    note.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
-                    displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
-                    editnote.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
+
+                    if (editnote.NoteDisplayPicturePath != null)
+                    {
+                        string FileNameDelete = System.IO.Path.GetFileName(note.DisplayPicture);
+                        string PathImage = Request.MapPath("~/Content/NotesImages/Images/" + FileNameDelete);
+                        FileInfo file = new FileInfo(PathImage);
+                        if (file.Exists)
+                        {
+                            file.Delete();
+                        }
+                        string displayPictureFileName = Path.GetFileNameWithoutExtension(editnote.NoteDisplayPicturePath.FileName);
+                        string displayPictureExtension = Path.GetExtension(editnote.NoteDisplayPicturePath.FileName);
+                        displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
+                        note.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
+                        displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
+                        editnote.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
+
+                        db.Configuration.ValidateOnSaveEnabled = false;
+                        db.SaveChanges();
+                    }
+
+                    if (editnote.NotesPreview != null)
+                    {
+                        //string FileNameDelete = System.IO.Path.GetFileName(note.NotesPreview);
+                        //string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
+                        //FileInfo file = new FileInfo(PathPreview);
+                        //if (file.Exists)
+                        //{
+                        //    file.Delete();
+                        //}
+                        //string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NotePreviewFilePath.FileName);
+                        //string notePreviewFilePathExtension = Path.GetExtension(editnote.NotePreviewFilePath.FileName);
+                        //notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
+                        //note.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
+                        //notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
+                        //editnote.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
+
+                        note.NotesPreview = editnote.NotesPreview;
+
+                        db.Configuration.ValidateOnSaveEnabled = false;
+                        db.SaveChanges();
+                    }
+
+                    if (editnote.NotePreviewFilePath != null)
+                    {
+                        string FileNameDelete = System.IO.Path.GetFileName(note.NotesPreview);
+                        string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
+                        FileInfo file = new FileInfo(PathPreview);
+                        if (file.Exists)
+                        {
+                            file.Delete();
+                        }
+                        string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NotePreviewFilePath.FileName);
+                        string notePreviewFilePathExtension = Path.GetExtension(editnote.NotePreviewFilePath.FileName);
+                        notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
+                        note.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
+                        notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
+                        editnote.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
+
+                        db.Configuration.ValidateOnSaveEnabled = false;
+                        db.SaveChanges();
+                    }
+
+                    if (editnote.FilePath != null)
+                    {
+                        //string FileNameDelete = System.IO.Path.GetFileName(editnote.FilePath);
+                        //string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
+                        //FileInfo file = new FileInfo(PathPreview);
+                        //if (file.Exists)
+                        //{
+                        //    file.Delete();
+                        //}
+                        //string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
+                        //editnote.FileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
+                        //string noteUploadFilePathExtension = Path.GetExtension(editnote.NoteUploadFilePath.FileName);
+                        //noteUploadFilePathFileName = noteUploadFilePathFileName + DateTime.Now.ToString("yymmssff") + noteUploadFilePathExtension;
+                        //editnote.FilePath = "~/Content/NotesImages/NotesPDF/" + noteUploadFilePathFileName;
+                        //noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
+                        //editnote.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
+
+                        AttachFile.FilePath = editnote.FilePath;
+
+                        db.Configuration.ValidateOnSaveEnabled = false;
+                        db.SaveChanges();
+                    }
+
+                    if (editnote.NoteUploadFilePath != null)
+                    {
+                        string FileNameDelete = System.IO.Path.GetFileName(editnote.FilePath);
+                        string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
+                        FileInfo file = new FileInfo(PathPreview);
+                        if (file.Exists)
+                        {
+                            file.Delete();
+                        }
+                        string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
+                        editnote.FileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
+                        string noteUploadFilePathExtension = Path.GetExtension(editnote.NoteUploadFilePath.FileName);
+                        noteUploadFilePathFileName = noteUploadFilePathFileName + DateTime.Now.ToString("yymmssff") + noteUploadFilePathExtension;
+                        editnote.FilePath = "~/Content/NotesImages/NotesPDF/" + noteUploadFilePathFileName;
+                        noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
+                        editnote.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
+
+                        db.Configuration.ValidateOnSaveEnabled = false;
+                        db.SaveChanges();
+                    }
+
+                    note.Title = editnote.Title;
+                    note.Status = Command == "Save" ? 6 : 7;
+                    note.Category = editnote.Category;
+                    note.NoteType = editnote.NoteType;
+                    note.NumberOfPages = editnote.NumberOfPages;
+                    note.Description = editnote.Description;
+                    note.UniversityName = editnote.UniversityName;
+                    note.Country = editnote.Country;
+                    note.Course = editnote.Course;
+                    note.CourseCode = editnote.CourseCode;
+                    note.Professor = editnote.Professor;
+                    note.IsPaid = editnote.IsPaid;
+                    note.SellingPrice = editnote.IsPaid == false ? 0 : note.SellingPrice;
+                    note.ModifiedDate = DateTime.Now;
 
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.SaveChanges();
+
+                    return RedirectToAction("SellYourNotes", "Home");
                 }
-
-                if (editnote.NotesPreview != null)
-                {
-                    string FileNameDelete = System.IO.Path.GetFileName(note.NotesPreview);
-                    string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
-                    FileInfo file = new FileInfo(PathPreview);
-                    if (file.Exists)
-                    {
-                        file.Delete();
-                    }
-                    string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NotePreviewFilePath.FileName);
-                    string notePreviewFilePathExtension = Path.GetExtension(editnote.NotePreviewFilePath.FileName);
-                    notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
-                    note.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
-                    notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
-                    editnote.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
-
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.SaveChanges();
-                }
-
-                if (editnote.NoteUploadFilePath != null)
-                {
-                    string FileNameDelete = System.IO.Path.GetFileName(editnote.FilePath);
-                    string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
-                    FileInfo file = new FileInfo(PathPreview);
-                    if (file.Exists)
-                    {
-                        file.Delete();
-                    }
-                    string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
-                    editnote.FileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
-                    string noteUploadFilePathExtension = Path.GetExtension(editnote.NoteUploadFilePath.FileName);
-                    noteUploadFilePathFileName = noteUploadFilePathFileName + DateTime.Now.ToString("yymmssff") + noteUploadFilePathExtension;
-                    editnote.FilePath = "~/Content/NotesImages/NotesPDF/" + noteUploadFilePathFileName;
-                    noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
-                    editnote.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
-
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.SaveChanges();
-                }
-
-                note.Title = editnote.Title;
-                note.Status = Command == "Save" ? 6 : 7;
-                note.Category = editnote.Category;
-                note.NoteType = editnote.NoteType;
-                note.NumberOfPages = editnote.NumberOfPages;
-                note.Description = editnote.Description;
-                note.UniversityName = editnote.UniversityName;
-                note.Country = editnote.Country;
-                note.Course = editnote.Course;
-                note.CourseCode = editnote.CourseCode;
-                note.Professor = editnote.Professor;
-                note.IsPaid = editnote.IsPaid;
-                note.SellingPrice = editnote.IsPaid == false ? 0 : note.SellingPrice;
-                note.ModifiedDate = DateTime.Now;
-
-                db.Configuration.ValidateOnSaveEnabled = false;
-                db.SaveChanges();
-
-                return RedirectToAction("SellYourNotes", "Home");
             }
-
+            catch (Exception ex)
+            {
+                ViewBag.Show = true;
+                ViewBag.AlertClass = "alert-danger";
+                ViewBag.message = ex.Message;
+            }
             return View(editnote);
         }
 
@@ -577,8 +688,6 @@ namespace NotesMarketPlace.Controllers
                                  TotalSpams = spamNote.Select(a => a.Total).FirstOrDefault()
                              }).ToList();
 
-                ViewBag.TotalNotes = notes.Count();
-
                 ViewBag.TypeList = type;
                 ViewBag.CategoryList = category;
                 ViewBag.University = university;
@@ -616,6 +725,8 @@ namespace NotesMarketPlace.Controllers
                 {
                     filternotes = filternotes.Where(m => m.Title.ToLower().Contains(search.ToLower())).ToList();
                 }
+
+                ViewBag.TotalNotes = filternotes.Count();
 
                 //Pagination
                 filternotes = ApplyPagination(filternotes, PageNumber);

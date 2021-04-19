@@ -5,35 +5,46 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+@if (ViewBag.Show)
+{
+    <div class="alert @ViewBag.AlertClass alert-dismissible fade show m-2" role="alert">
+        <strong>@ViewBag.message</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
 <div class="row heading">
     <div class="col-md-12">
         <h1 class="heading-1">Manage Syatem Configuration</h1>
     </div>
 </div>
 
-@using (Html.BeginForm("ManageSystemConfiguration", "SuperAdmin", FormMethod.Post))
+@using (Html.BeginForm("ManageSystemConfiguration", "SuperAdmin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
-    @Html.AntiForgeryToken();
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <div class="row heading">
         <div class="col-md-6">
 
             <div class="form-group">
-                @Html.LabelFor(model => model.SupportEmail, "Support email address *", new { @for = "InputFirstName" })
-                @Html.TextBoxFor(model => model.SupportEmail, new { @class = "form-control", placeholder = "Enter support email address", id = "InputFirstName" })
+                @Html.LabelFor(model => model.SupportEmail, "Support email address *", new { @for = "InputSupportEmail" })
+                @Html.TextBoxFor(model => model.SupportEmail, new { @class = "form-control", placeholder = "Enter support email address", id = "InputSupportEmail" })
                 @Html.ValidationMessageFor(model => model.SupportEmail, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.SupportContact, "Support phone number *", new { @for = "InputLastName" })
-                @Html.TextBoxFor(model => model.SupportContact, new { @class = "form-control", placeholder = "Enter phone number", id = "InputLastName" })
+                @Html.LabelFor(model => model.SupportContact, "Support phone number *", new { @for = "InputSupportContact" })
+                @Html.TextBoxFor(model => model.SupportContact, new { @class = "form-control", placeholder = "Enter phone number", id = "InputSupportContact" })
                 @Html.ValidationMessageFor(model => model.SupportContact, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Emails, "Email Address(es) (for various events system will send notifications to these users) *", new { @for = "InputEmail1" })
-                @Html.TextBoxFor(model => model.Emails, new { @class = "form-control", id = "InputEmail1", placeholder = "Enter email address" })
+                @Html.LabelFor(model => model.Emails, "Email Address(es) (for various events system will send notifications to these users) *", new { @for = "InputEmails" })
+                @Html.TextBoxFor(model => model.Emails, new { @class = "form-control", id = "InputEmails", placeholder = "Enter email address" })
                 @Html.ValidationMessageFor(model => model.Emails, "", new { @class = "text-danger" })
             </div>
 
@@ -55,7 +66,7 @@
             <div class="form-group">
                 <label for="file-image">Default image for notes (if seller do not upload)</label>
                 <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="NoteDisplayPicturePath" accept="image/*" />
+                    <input id="file-upload" type="file" name="NoteDisplayPicturePath" />
                     <label for="file-upload" id="file-drag">
                         <img id="file-image" src="#" alt="Preview" class="hidden">
                         <div id="start">
@@ -67,14 +78,15 @@
                             <div id="messages"></div>
                         </div>
                     </label>
+                    @Html.ValidationMessageFor(model => model.DefaultNoteImg, "", new { @class = "text-danger" })
+
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="file-image">Default profile picture (if seller do not upload)</label>
                 <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="fileUpload" class="form-control"
-                           accept="image/*" />
+                    <input id="file-upload" type="file" name="fileUpload" class="form-control" />
                     <label for="file-upload" id="file-drag">
                         <img id="file-image" src="#" alt="Preview" class="hidden">
                         <div id="start">
@@ -86,6 +98,8 @@
                             <div id="messages"></div>
                         </div>
                     </label>
+                    @Html.ValidationMessageFor(model => model.DefaultProfileImg, "", new { @class = "text-danger" })
+
                 </div>
             </div>
 

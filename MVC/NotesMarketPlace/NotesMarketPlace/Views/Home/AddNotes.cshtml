@@ -127,7 +127,7 @@
 
     @if (ViewBag.Show)
     {
-        <div class="alert alert-success alert-dismissible fade show m-2" role="alert">
+        <div class="alert @ViewBag.AlertClass alert-dismissible fade show m-2" role="alert">
             <strong>@ViewBag.message</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -154,7 +154,7 @@
 
                 <label for="file-image">Display Picture</label>
                 <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="NoteDisplayPicturePath" accept="image/*" />
+                    <input id="file-upload" type="file" name="NoteDisplayPicturePath" />
                     <label for="file-upload" id="file-drag">
                         <img id="file-image" src="#" alt="Preview" class="hidden">
                         <div id="start">
@@ -182,7 +182,7 @@
 
                 <label for="file-pdf">Upload Notes <span>*</span></label>
                 <div id="pdf-upload-form" class="uploader form-group">
-                    <input id="pdf-upload" type="file" name="NoteUploadFilePath" accept="pdf/*" />
+                    <input id="pdf-upload" type="file" name="NoteUploadFilePath" />
                     <label for="pdf-upload" id="pdf-drag">
                         <img id="file-pdf" src="#" alt="Preview" class="hidden">
                         <div id="start2">
@@ -201,6 +201,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.NumberOfPages, "Number of Pages", new { @for = "inputNumberofPages", id = "noOfPages" })
                     @Html.TextBoxFor(model => model.NumberOfPages, new { @class = "form-control", placeholder = "Enter number of note pages", id = "inputNumberofPages" })
+                    @Html.ValidationMessageFor(model => model.NumberOfPages, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -297,7 +298,7 @@
             <div class="col-md-6">
                 <label for="file-preview">Note Preview</label>
                 <div id="preview-upload-form" class="uploader form-group">
-                    <input id="preview-upload" type="file" name="NotePreviewFilePath" accept="pdf/*" />
+                    <input id="preview-upload" type="file" name="NotePreviewFilePath" />
                     <label for="preview-upload" id="preview-drag" class="customInput">
                         <img id="file-preview" src="#" alt="Preview" class="hidden">
                         <div id="start3">

@@ -8,6 +8,7 @@ using System;
 using System.Web.Routing;
 using System.Collections.Generic;
 using NotesMarketPlace.Email;
+using System.IO;
 
 namespace NotesMarketPlace.Controllers
 {
@@ -28,7 +29,7 @@ namespace NotesMarketPlace.Controllers
                 ViewBag.URLs = socialUrl;
             }
         }
-        
+
         #endregion Default Constructor
 
         #region Initialize User Information
@@ -376,6 +377,7 @@ namespace NotesMarketPlace.Controllers
 
         public ActionResult PublishedNotes(int? sellerId, string txtSearch, string SortOrder, string SortBy, int PageNumber = 1)
         {
+            ViewBag.WhiteNav = "white-nav-top";
             using (var context = new NotesMarketPlaceEntities())
             {
                 //Seller Names
@@ -898,13 +900,28 @@ namespace NotesMarketPlace.Controllers
                 details.PhoneNumber = profile.Phone;
                 details.PhoneNumberCountryCode = profile.Phonecode;
 
-                if (profile.ProfileImage == null)
+                if (profile.ProfileImage != null)
                 {
                     details.ProfilePicture = details.ProfilePicture;
                 }
                 else
                 {
-                    details.ProfilePicture = "../Members/" + user.UserID + "/" + profile.ProfileImage;
+                    string FileNameDelete = System.IO.Path.GetFileName(details.ProfilePicture);
+                    string PathPreview = Request.MapPath("~/Members/" + user.UserID + "/" + FileNameDelete);
+                    FileInfo file = new FileInfo(PathPreview);
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
+                    //UserProfilePicturePath
+                    string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(profile.UserProfilePicturePath.FileName);
+                    string userProfilePicturePathExtension = Path.GetExtension(profile.UserProfilePicturePath.FileName);
+                    userProfilePicturePathFileName = userProfilePicturePathFileName + DateTime.Now.ToString("yymmssff") + userProfilePicturePathExtension;
+                    details.ProfilePicture = "~/Members/" + user.UserID + "/" + userProfilePicturePathFileName;
+                    userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Members/" + user.UserID + "/"), userProfilePicturePathFileName);
+                    CreateDirectory(user.UserID);
+                    profile.UserProfilePicturePath.SaveAs(userProfilePicturePathFileName);
+                    //details.ProfilePicture = "../Members/" + user.UserID + "/" + profile.UserProfilePicturePath.FileName;
                 }
 
                 user.ModifiedBy = user.UserID;
@@ -3169,6 +3186,25 @@ namespace NotesMarketPlace.Controllers
         }
 
         #endregion Return File
+
+        #region Create Directory
+
+        public string CreateDirectory(int userid)
+        {
+            string path = @"E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\Members\" + userid;
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                return path;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion Create Directory
 
         #region LogOut
 

@@ -370,6 +370,13 @@ namespace NotesMarketPlace.Controllers
 
                         if (user.UserProfilePicturePath != null)
                         {
+                            string FileNameDelete = System.IO.Path.GetFileName(user.ProfilePicture);
+                            string PathPreview = Request.MapPath("~/Members/" + currentuser + "/" + FileNameDelete);
+                            FileInfo file = new FileInfo(PathPreview);
+                            if (file.Exists)
+                            {
+                                file.Delete();
+                            }
                             //UserProfilePicturePath
                             string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(user.UserProfilePicturePath.FileName);
                             string userProfilePicturePathExtension = Path.GetExtension(user.UserProfilePicturePath.FileName);

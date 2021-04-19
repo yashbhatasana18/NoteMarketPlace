@@ -13,13 +13,15 @@ namespace NotesMarketPlace.Models.Admin
         public string Key { get; set; }
         public string Value { get; set; }
 
-        [Required(ErrorMessage = "Required field")]
+        [Required(ErrorMessage = "Enter Support Email")]
         [EmailAddress]
         public string SupportEmail { get; set; }
 
-        [Required(ErrorMessage = "Required field")]
+        [Required(ErrorMessage = "Enter Support Phone Number")]
         public string SupportContact { get; set; }
 
+        [Required(ErrorMessage = "Enter Email")]
+        [EmailAddress]
         public string Emails { get; set; }
 
         public string FacebookUrl { get; set; }
@@ -28,11 +30,13 @@ namespace NotesMarketPlace.Models.Admin
 
         public string LinkedinUrl { get; set; }
 
-        //[Required(ErrorMessage = "Required field")]
-        public string DefaulProfileImg { get; set; }
+        [Required(ErrorMessage = "Select Default Profile Image")]
+        public string DefaultProfileImg { get; set; }
 
-        //[Required(ErrorMessage = "Required field")]
+        [Required(ErrorMessage = "Select Default Note Image")]
         public string DefaultNoteImg { get; set; }
+
+
 
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }

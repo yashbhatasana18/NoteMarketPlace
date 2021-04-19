@@ -69,7 +69,6 @@
     <Compile Include="CountriesModel.cs" />
     <Compile Include="DashboardModel.cs" />
     <Compile Include="DownloadsModel.cs" />
-    <Compile Include="EditNoteModel.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
     <Compile Include="LoginModel.cs" />
     <Compile Include="MyDownloadsModel.cs" />
