@@ -7,6 +7,7 @@ using System.Web.Security;
 using System;
 using System.Collections.Generic;
 using NotesMarketPlace.Models;
+using System.IO;
 
 namespace NotesMarketPlace.Controllers
 {
@@ -293,12 +294,33 @@ namespace NotesMarketPlace.Controllers
                         SupportEmail = systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value,
                         SupportContact = systemConfigurations.Single(m => m.Key == "SupportContact").Value,
                         DefaultNoteImg = systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value,
-                        DefaultProfileImg = systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value,
+                        //DefaultProfileImg = systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value,
                         Emails = systemConfigurations.Single(m => m.Key == "EmailAddresses").Value,
                         FacebookUrl = systemConfigurations.Single(m => m.Key == "Facebook").Value,
                         TwitterUrl = systemConfigurations.Single(m => m.Key == "Twitter").Value,
                         LinkedinUrl = systemConfigurations.Single(m => m.Key == "Linkedin").Value
                     };
+
+                    model.TempPath = model.DefaultNoteImg;
+
+                    if (model.DefaultNoteImg == null)
+                    {
+                        model.DefaultNoteImg = "~/Content/images/upload-file.png";
+                        ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                        ViewBag.ProfilePicturePreview = "#";
+                        ViewBag.HideClass = "";
+                        ViewBag.NonHideClass = "hidden";
+                        ViewBag.ProfilePictureName = "";
+                    }
+                    else
+                    {
+                        ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                        ViewBag.ProfilePicturePreview = model.DefaultNoteImg;
+                        ViewBag.ProfilePictureName = Path.GetFileName(model.DefaultNoteImg);
+                        ViewBag.HideClass = "hidden";
+                        ViewBag.NonHideClass = "";
+                    }
+
                     return View(model);
                 }
                 else
@@ -339,15 +361,36 @@ namespace NotesMarketPlace.Controllers
 
                     if (systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value != model.DefaultNoteImg)
                     {
-                        systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value = model.DefaultNoteImg;
-                        systemConfigurations.Single(m => m.Key == "DefaultBookImage").ModifiedDate = DateTime.Now;
+                        if (model.DefaultNotePicturePath != null)
+                        {
+                            string FileNameDelete = System.IO.Path.GetFileName(model.TempPath);
+                            string PathPreview = Request.MapPath("~/Content/NotesImages/Images/" + FileNameDelete);
+                            FileInfo file = new FileInfo(PathPreview);
+                            if (file.Exists)
+                            {
+                                file.Delete();
+                            }
+                            //UserProfilePicturePath
+                            string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(model.DefaultNotePicturePath.FileName);
+                            string userProfilePicturePathExtension = Path.GetExtension(model.DefaultNotePicturePath.FileName);
+                            userProfilePicturePathFileName = userProfilePicturePathFileName + DateTime.Now.ToString("yymmssff") + userProfilePicturePathExtension;
+
+                            ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                            ViewBag.ProfilePicturePreview = "~/Content/NotesImages/Images/" + userProfilePicturePathFileName;
+                            ViewBag.ProfilePictureName = userProfilePicturePathFileName;
+
+                            systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value = "~/Content/NotesImages/Images/" + userProfilePicturePathFileName;
+                            systemConfigurations.Single(m => m.Key == "DefaultBookImage").ModifiedDate = DateTime.Now;
+                            userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), userProfilePicturePathFileName);
+                            model.DefaultNotePicturePath.SaveAs(userProfilePicturePathFileName);
+                        }
                     }
 
-                    if (systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value != model.DefaultProfileImg)
-                    {
-                        systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value = model.DefaultProfileImg;
-                        systemConfigurations.Single(m => m.Key == "DefaultProfileImage").ModifiedDate = DateTime.Now;
-                    }
+                    //if (systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value != model.DefaultProfileImg)
+                    //{
+                    //    systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value = model.DefaultProfileImg;
+                    //    systemConfigurations.Single(m => m.Key == "DefaultProfileImage").ModifiedDate = DateTime.Now;
+                    //}
 
                     if (systemConfigurations.Single(m => m.Key == "EmailAddresses").Value != model.Emails)
                     {
@@ -378,6 +421,9 @@ namespace NotesMarketPlace.Controllers
                     ViewBag.Show = true;
                     ViewBag.AlertClass = "alert-success";
                     ViewBag.message = "Manage Syatem Configuration Has Been Successfully Updated.";
+
+                    ViewBag.HideClass = "hidden";
+                    ViewBag.NonHideClass = "";
                 }
                 catch (Exception ex)
                 {
@@ -385,6 +431,7 @@ namespace NotesMarketPlace.Controllers
                     ViewBag.AlertClass = "alert-danger";
                     ViewBag.message = ex.Message;
                 }
+
                 return View(model);
             }
         }

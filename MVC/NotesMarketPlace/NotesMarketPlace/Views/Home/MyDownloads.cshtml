@@ -5,30 +5,33 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-<style>
-    #btnSubmit, #btnPublish {
-        padding: 6px 10px;
-        margin-bottom: 0;
-        background-color: #6255a5;
-        width: 150px;
-        height: 40px;
-        border-radius: 3px;
-        color: #ffffff;
-        text-decoration: none;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 18px;
-        line-height: 22px;
-    }
+@section CustomStyle
+{
+    <style>
+        #btnSubmit, #btnPublish {
+            padding: 6px 10px;
+            margin-bottom: 0;
+            background-color: #6255a5;
+            width: 150px;
+            height: 40px;
+            border-radius: 3px;
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 18px;
+            line-height: 22px;
+        }
 
-    .modal-footer {
-        justify-content: flex-start;
-        padding: 15px 20px;
-    }
+        .modal-footer {
+            justify-content: flex-start;
+            padding: 15px 20px;
+        }
 
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
+        .cursor_pointer {
+            cursor: pointer;
+        }
+    </style>
+}
 
 <!-- Content -->
 <section id="content">
@@ -302,8 +305,11 @@
 </section>
 <!-- End Content -->
 
-<script>
-    function NoteDetail(id) {
-        location.href = "../Home/NoteDetails/" + id + "?ReadOnly=false";
-    }
-</script>
+@section CustomScript
+{
+    <script>
+        function NoteDetail(id) {
+            location.href = "../Home/NoteDetails/" + id + "?ReadOnly=false";
+        }
+    </script>
+}

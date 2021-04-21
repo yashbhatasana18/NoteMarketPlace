@@ -66,6 +66,10 @@
             height: 50px;
             border-radius: 5px;
         }
+
+        .heading p {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -84,10 +88,16 @@
                 {
                     //Html.HiddenFor(model => model.EmailID)
                     @Html.AntiForgeryToken()
+
                     <div class="heading">
                         <h4 class="text-center">Login</h4>
                         <p class="text-center">Enter your email address and password to login</p>
                     </div>
+
+                    if (ViewBag.Show)
+                    {
+                        <p class="form-text text-center" style="color: @ViewBag.Color;">@ViewBag.Message</p>
+                    }
 
                     //@Html.ValidationSummary(false, "", new { @class = "text-danger" })
 

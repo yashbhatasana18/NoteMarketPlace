@@ -5,36 +5,39 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    #btnSubmit, #btnPublish {
-        padding: 6px 10px;
-        margin-bottom: 0;
-        background-color: #6255a5;
-        width: 150px;
-        height: 40px;
-        border-radius: 3px;
-        color: #ffffff;
-        text-decoration: none;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 18px;
-        line-height: 22px;
-    }
+@section CustomStyle
+{
+    <style>
+        #btnSubmit, #btnPublish {
+            padding: 6px 10px;
+            margin-bottom: 0;
+            background-color: #6255a5;
+            width: 150px;
+            height: 40px;
+            border-radius: 3px;
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 18px;
+            line-height: 22px;
+        }
 
-    .modal-footer {
-        justify-content: flex-start;
-        padding: 15px 20px;
-    }
+        .modal-footer {
+            justify-content: flex-start;
+            padding: 15px 20px;
+        }
 
-    .count_link {
-        text-decoration: none !important;
-        color: #6255a5 !important;
-        cursor: pointer;
-    }
+        .count_link {
+            text-decoration: none !important;
+            color: #6255a5 !important;
+            cursor: pointer;
+        }
 
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
+        .cursor_pointer {
+            cursor: pointer;
+        }
+    </style>
+}
 
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
@@ -171,6 +174,7 @@
                             </tr>
 
                             //Note Reject Model
+
                             <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                                  aria-hidden="true">
                                 <div class="vertical-alignment-helper">
@@ -200,6 +204,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             //Note Reject Model End
                         }
                     }
@@ -271,30 +276,33 @@
     </div>
 }
 
-<script>
-    function MonthFilter(obj) {
-        location.href = "Dashboard?month=" + obj.value;
-    }
-    function NoteDetail(id) {
-        location.href = '../Home/NoteDetails/' + id;
-    }
-    function NotesUnderReview() {
-        location.href = '../Admin/NotesUnderReview';
-    }
-    function DownloadedNotes() {
-        location.href = '../Admin/DownloadedNotes';
-    }
-    function DownloadedNotesWithID(id) {
-        location.href = '../Admin/DownloadedNotes?noteid=' + id;
-    }
-    function Members() {
-        location.href = '../Admin/Members';
-    }
-    function setNoteId(id, title) {
-        $("#rejectModal input[type='hidden']").attr('value', id);
-        $('.reject-popup>h4').text(title);
-    }
-    $('#rejectModal form').on('submit', function () {
-        return confirm('Are you sure you want to Unpublish this note?');
-    });
-</script>
+@section CustomScript
+{
+    <script>
+        function MonthFilter(obj) {
+            location.href = "Dashboard?month=" + obj.value;
+        }
+        function NoteDetail(id) {
+            location.href = '../Home/NoteDetails/' + id;
+        }
+        function NotesUnderReview() {
+            location.href = '../Admin/NotesUnderReview';
+        }
+        function DownloadedNotes() {
+            location.href = '../Admin/DownloadedNotes';
+        }
+        function DownloadedNotesWithID(id) {
+            location.href = '../Admin/DownloadedNotes?noteid=' + id;
+        }
+        function Members() {
+            location.href = '../Admin/Members';
+        }
+        function setNoteId(id, title) {
+            $("#rejectModal input[type='hidden']").attr('value', id);
+            $('.reject-popup>h4').text(title);
+        }
+        $('#rejectModal form').on('submit', function () {
+            return confirm('Are you sure you want to Unpublish this note?');
+        });
+    </script>
+}

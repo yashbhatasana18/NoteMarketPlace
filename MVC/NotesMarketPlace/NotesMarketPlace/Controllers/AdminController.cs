@@ -852,6 +852,8 @@ namespace NotesMarketPlace.Controllers
 
         public ActionResult MyProfile()
         {
+            ViewBag.Show = false;
+
             using (var context = new NotesMarketPlaceEntities())
             {
                 var country = context.Countries.ToList();
@@ -874,7 +876,25 @@ namespace NotesMarketPlace.Controllers
                                         ProfileImage = Details.ProfilePicture
                                     }).Single();
 
-                ViewBag.Image = currentAdmin.ProfileImage;
+                //.Image = currentAdmin.ProfileImage;
+
+                if (currentAdmin.ProfileImage == null)
+                {
+                    currentAdmin.ProfileImage = "~/Content/images/upload-file.png";
+                    ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                    ViewBag.ProfilePicturePreview = "#";
+                    ViewBag.HideClass = "";
+                    ViewBag.NonHideClass = "hidden";
+                    ViewBag.ProfilePictureName = "";
+                }
+                else
+                {
+                    ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                    ViewBag.ProfilePicturePreview = currentAdmin.ProfileImage;
+                    ViewBag.ProfilePictureName = Path.GetFileNameWithoutExtension(currentAdmin.ProfileImage);
+                    ViewBag.HideClass = "hidden";
+                    ViewBag.NonHideClass = "";
+                }
 
                 return View(currentAdmin);
             }
@@ -883,6 +903,8 @@ namespace NotesMarketPlace.Controllers
         [HttpPost]
         public ActionResult MyProfile(MyProfile profile)
         {
+            ViewBag.Show = false;
+
             using (var context = new NotesMarketPlaceEntities())
             {
                 if (!ModelState.IsValid)

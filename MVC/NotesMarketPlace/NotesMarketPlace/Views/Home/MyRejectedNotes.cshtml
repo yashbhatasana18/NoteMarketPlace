@@ -5,11 +5,14 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-<style>
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
+@section CustomStyle
+{
+    <style>
+        .cursor_pointer {
+            cursor: pointer;
+        }
+    </style>
+}
 
 <section id="content">
     <div class="container">
@@ -153,12 +156,14 @@
 
     </div>
 </section>
-
-<script>
-    function Clone(id) {
-        location.href = "CloneNote?noteId=" + id;
-    }
-    function NoteDetail(id) {
-        location.href = "../Home/NoteDetails/" + id + "?ReadOnly=false";
-    }
-</script>
+@section CustomScript
+{
+    <script>
+        function Clone(id) {
+            location.href = "CloneNote?noteId=" + id;
+        }
+        function NoteDetail(id) {
+            location.href = "../Home/NoteDetails/" + id + "?ReadOnly=false";
+        }
+    </script>
+}

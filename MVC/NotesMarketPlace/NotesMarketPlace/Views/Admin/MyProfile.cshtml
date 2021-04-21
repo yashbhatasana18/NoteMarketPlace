@@ -57,22 +57,21 @@
                 <div id="file-upload-form" class="uploader form-group">
                     <input id="file-upload" type="file" name="UserProfilePicturePath" />
                     <label for="file-upload" id="file-drag">
-                        <img id="file-image" src="@Url.Content(@ViewBag.Image)" alt="Preview" class="hidden">
-                        <div id="start">
-                            <img src="~/Content/images/upload-file.png" height="46" width="50" />
+                        <img id="file-image" src="@Url.Content(ViewBag.ProfilePicturePreview)" alt="Preview" class="@ViewBag.NonHideClass">
+                        <div id="start" class="@ViewBag.HideClass">
+                            <img src="@Url.Content(ViewBag.ProfilePicture)" height="46" width="50" />
                             <div>Upload a picture</div>
                             <div id="notimage" class="hidden">Please select an image</div>
                         </div>
-                        <div id="response" class="hidden">
-                            <div id="messages"></div>
+                        <div id="response" class="@ViewBag.NonHideClass">
+                            <div id="messages">@ViewBag.ProfilePictureName</div>
                         </div>
                     </label>
+                    @*@Html.ValidationMessageFor(model => model.UserProfilePicturePath, "", new { @class = "text-danger" })*@
                 </div>
             </div>
-
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-12">
             <div class="form-group" style="margin-left: 15px">

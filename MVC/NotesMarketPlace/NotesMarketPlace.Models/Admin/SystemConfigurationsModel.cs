@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace NotesMarketPlace.Models.Admin
 {
@@ -30,13 +31,17 @@ namespace NotesMarketPlace.Models.Admin
 
         public string LinkedinUrl { get; set; }
 
-        [Required(ErrorMessage = "Select Default Profile Image")]
         public string DefaultProfileImg { get; set; }
 
-        [Required(ErrorMessage = "Select Default Note Image")]
         public string DefaultNoteImg { get; set; }
 
+        public string TempPath { get; set; }
 
+        [Required(ErrorMessage = "Select Default Profile Image")]
+        public HttpPostedFileBase DefaultNotePicturePath { get; set; }
+
+        //[Required(ErrorMessage = "Select Default Profile Image")]
+        public HttpPostedFileBase DefaultDefaultProfileImgPath { get; set; }
 
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }

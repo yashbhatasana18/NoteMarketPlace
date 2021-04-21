@@ -5,34 +5,37 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    .btn-action {
-        width: 100px;
-    }
+@section CustomStyle
+{
+    <style>
+        .btn-action {
+            width: 100px;
+        }
 
-    #btnSubmit, #btnPublish {
-        padding: 6px 10px;
-        margin-bottom: 0;
-        background-color: #6255a5;
-        width: 150px;
-        height: 40px;
-        border-radius: 3px;
-        color: #ffffff;
-        text-decoration: none;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 18px;
-        line-height: 22px;
-    }
+        #btnSubmit, #btnPublish {
+            padding: 6px 10px;
+            margin-bottom: 0;
+            background-color: #6255a5;
+            width: 150px;
+            height: 40px;
+            border-radius: 3px;
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 18px;
+            line-height: 22px;
+        }
 
-    .modal-footer {
-        justify-content: flex-start;
-        padding: 15px 20px;
-    }
+        .modal-footer {
+            justify-content: flex-start;
+            padding: 15px 20px;
+        }
 
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
+        .cursor_pointer {
+            cursor: pointer;
+        }
+    </style>
+}
 
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
@@ -230,67 +233,70 @@
     </div>
 }
 
-<script>
-    function FilterSeller(obj) {
-        $.ajax({
-            method: 'GET',
-            url: 'NotesUnderReview',
-            data: { sellerId: obj.value },
-            success: function (data) {
-                document.body.innerHTML = data;
-            },
-            error: function () {
-                alert("Try Again");
+@section CustomScript
+{
+    <script>
+        function FilterSeller(obj) {
+            $.ajax({
+                method: 'GET',
+                url: 'NotesUnderReview',
+                data: { sellerId: obj.value },
+                success: function (data) {
+                    document.body.innerHTML = data;
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
+
+        function NoteDetail(id) {
+            location.href = "../Home/NoteDetails/" + id;
+        }
+
+        function SellerDetail(id) {
+            location.href = "MemberDetails?id=" + id;
+        }
+
+        function InReview(id) {
+            if (confirm("Via marking the note In Review – System will let user know that review process has been initiated.Please press yes to continue.")) {
+                $.ajax({
+                    method: 'POST',
+                    url: 'NoteStatusUpdate',
+                    data: { noteid: id, status: "InReview" },
+                    success: function () {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Try Again");
+                    }
+                });
             }
+        }
+
+        function Approve(id) {
+            if (confirm("If you approve the notes – System will publish the notes over portal. Please press yes to continue.")) {
+                $.ajax({
+                    method: 'POST',
+                    url: 'NoteStatusUpdate',
+                    data: { noteid: id, status: "Approve" },
+                    success: function () {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Try Again");
+                    }
+                });
+            }
+        }
+
+        function setdata(id, title, category) {
+            $("#rejectModal input[type='hidden']").attr('value', id);
+            $('.reject-popup>h4').text(title + " - " + category);
+        }
+
+        $('#rejectModal form').on('submit', function () {
+            return confirm('Are you sure you want to reject seller request?');
         });
-    }
-
-    function NoteDetail(id) {
-        location.href = "../Home/NoteDetails/" + id;
-    }
-
-    function SellerDetail(id) {
-        location.href = "MemberDetails?id=" + id;
-    }
-
-    function InReview(id) {
-        if (confirm("Via marking the note In Review – System will let user know that review process has been initiated.Please press yes to continue.")) {
-            $.ajax({
-                method: 'POST',
-                url: 'NoteStatusUpdate',
-                data: { noteid: id, status: "InReview" },
-                success: function () {
-                    location.reload();
-                },
-                error: function () {
-                    alert("Try Again");
-                }
-            });
-        }
-    }
-
-    function Approve(id) {
-        if (confirm("If you approve the notes – System will publish the notes over portal. Please press yes to continue.")) {
-            $.ajax({
-                method: 'POST',
-                url: 'NoteStatusUpdate',
-                data: { noteid: id, status: "Approve" },
-                success: function () {
-                    location.reload();
-                },
-                error: function () {
-                    alert("Try Again");
-                }
-            });
-        }
-    }
-
-    function setdata(id, title, category) {
-        $("#rejectModal input[type='hidden']").attr('value', id);
-        $('.reject-popup>h4').text(title + " - " + category);
-    }
-
-    $('#rejectModal form').on('submit', function () {
-        return confirm('Are you sure you want to reject seller request?');
-    });
-</script>
+    </script>
+}

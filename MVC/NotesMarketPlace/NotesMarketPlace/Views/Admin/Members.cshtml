@@ -4,12 +4,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
-
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
         <h3 class="heading-1">Members</h3>
@@ -168,34 +162,37 @@
     </div>
 }
 
-<script>
+@section CustomScript
+{
+    <script>
 
-    function UnderReview(id) {
-        location.href = "NotesUnderReview?sellerId=" + id;
-    }
-
-    function Published(id) {
-        location.href = "PublishedNotes?sellerId=" + id;
-    }
-
-    function Downloaded(id) {
-        location.href = "DownloadedNotes?buyerId=" + id;
-    }
-
-    function Deactivate(id) {
-
-        if (confirm("Are you sure you want to make this member inactive?")) {
-            $.ajax({
-                method: 'POST',
-                url: 'DeactivateUser',
-                data: { userId: id },
-                success: function () {
-                    location.reload();
-                },
-                error: function () {
-                    alert("Try Again");
-                }
-            });
+        function UnderReview(id) {
+            location.href = "NotesUnderReview?sellerId=" + id;
         }
-    }
-</script>
+
+        function Published(id) {
+            location.href = "PublishedNotes?sellerId=" + id;
+        }
+
+        function Downloaded(id) {
+            location.href = "DownloadedNotes?buyerId=" + id;
+        }
+
+        function Deactivate(id) {
+
+            if (confirm("Are you sure you want to make this member inactive?")) {
+                $.ajax({
+                    method: 'POST',
+                    url: 'DeactivateUser',
+                    data: { userId: id },
+                    success: function () {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Try Again");
+                    }
+                });
+            }
+        }
+    </script>
+}

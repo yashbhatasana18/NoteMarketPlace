@@ -5,12 +5,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
-
 <div class="row heading">
     <div class="col-md-12 p-0">
         <h3 class="heading-1">Member Details</h3>
@@ -248,15 +242,18 @@
     </div>
 }
 
-<script>
-    function Downloaded(id) {
-        location.href = "DownloadedNotes?noteId=" + id;
-    }
+@section CustomScript
+{
+    <script>
+        function Downloaded(id) {
+            location.href = "DownloadedNotes?noteId=" + id;
+        }
 
-    function NoteDetail(id) {
-        location.href = "../Home/NoteDetails/" + id;
-    }
-    function DownloadedNotesWithID(id) {
-        location.href = '../Admin/DownloadedNotes?noteid=' + id;
-    }
-</script>
+        function NoteDetail(id) {
+            location.href = "../Home/NoteDetails/" + id;
+        }
+        function DownloadedNotesWithID(id) {
+            location.href = '../Admin/DownloadedNotes?noteid=' + id;
+        }
+    </script>
+}

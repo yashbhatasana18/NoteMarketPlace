@@ -30,189 +30,192 @@
     }
 }
 
-<style>
-    /* note detail section left */
+@section CustomStyle
+{
+    <style>
+        /* note detail section left */
 
-    #note-detail .content-box {
-        padding: 150px 0 60px 0;
-    }
+        #note-detail .content-box {
+            padding: 150px 0 60px 0;
+        }
 
-    .note-detail-img img {
-        width: 100%;
-        height: 300px;
-    }
+        .note-detail-img img {
+            width: 100%;
+            height: 300px;
+        }
 
-    .note-detail-img h4,
-    .note-info h4 {
-        color: #6255a5;
-        font-weight: 600;
-        margin-bottom: 20px;
-        font-size: 24px;
-    }
-
-    .note-info h4 {
-        font-size: 34px;
-    }
-
-    #note-detail .note-detail-img,
-    #note-detail .note-info {
-        height: 100%;
-    }
-
-    #note-detail .note-info {
-        padding: 0;
-    }
-
-        #note-detail .note-info h6 {
+        .note-detail-img h4,
+        .note-info h4 {
+            color: #6255a5;
+            font-weight: 600;
             margin-bottom: 20px;
+            font-size: 24px;
         }
 
-        #note-detail .note-info p {
-            color: #333333;
-            font-weight: 400;
+        .note-info h4 {
+            font-size: 34px;
         }
 
-    .note-info {
-        margin-top: 50px;
-    }
-
-    /* note download button */
-    #note-detail .note-info .btn-primary {
-        background-color: #6255a5;
-        border-color: #6255a5;
-    }
-
-    /* note detail section right */
-
-    ul.note-full-detail {
-        list-style: none;
-    }
-
-    .note-details {
-        min-height: 270px;
-        padding: 35px 5px 5px 115px;
-    }
-
-    ul.note-full-detail li > span {
-        float: right;
-        color: #6255a5;
-    }
-
-    ul.note-full-detail li {
-        color: #333333;
-        padding-bottom: 9px;
-        font-weight: 400;
-    }
-
-        ul.note-full-detail li:last-child {
-            color: #d53434;
-            font-size: 12px;
-            padding-top: 5px;
+        #note-detail .note-detail-img,
+        #note-detail .note-info {
+            height: 100%;
         }
 
-
-    /* note preview left side */
-
-    #note-detail-preview .note-preview iframe {
-        width: 100%;
-        height: 450px;
-    }
-
-    .note-preview h4,
-    #customer-review h4 {
-        color: #6255a5;
-        font-weight: 600;
-        margin-bottom: 20px;
-        font-size: 24px;
-        line-height: 28px;
-    }
-
-    .note-preview,
-    #customer-review {
-        min-height: 450px;
-    }
-
-        /* note preview right side (customer preview) */
-
-        #customer-review .reviews img {
-            width: 60px;
-            border-radius: 50%;
-            height: 60px;
+        #note-detail .note-info {
+            padding: 0;
         }
 
-        #customer-review .reviews ul {
+            #note-detail .note-info h6 {
+                margin-bottom: 20px;
+            }
+
+            #note-detail .note-info p {
+                color: #333333;
+                font-weight: 400;
+            }
+
+        .note-info {
+            margin-top: 50px;
+        }
+
+        /* note download button */
+        #note-detail .note-info .btn-primary {
+            background-color: #6255a5;
+            border-color: #6255a5;
+        }
+
+        /* note detail section right */
+
+        ul.note-full-detail {
             list-style: none;
         }
 
-        #customer-review ul > li > h6 {
-            font-weight: 600;
-            color: #575757;
-            margin-bottom: 10px;
+        .note-details {
+            min-height: 270px;
+            padding: 35px 5px 5px 115px;
         }
 
-        #customer-review ul > li > p {
+        ul.note-full-detail li > span {
+            float: right;
+            color: #6255a5;
+        }
+
+        ul.note-full-detail li {
             color: #333333;
+            padding-bottom: 9px;
             font-weight: 400;
-            margin-bottom: 0;
         }
 
-        #customer-review .reviews {
-            border: 1px solid #d1d1d1;
-            padding: 25px;
+            ul.note-full-detail li:last-child {
+                color: #d53434;
+                font-size: 12px;
+                padding-top: 5px;
+            }
+
+
+        /* note preview left side */
+
+        #note-detail-preview .note-preview iframe {
+            width: 100%;
             height: 450px;
         }
 
-            #customer-review .reviews hr {
-                margin: 15px 0;
+        .note-preview h4,
+        #customer-review h4 {
+            color: #6255a5;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        .note-preview,
+        #customer-review {
+            min-height: 450px;
+        }
+
+            /* note preview right side (customer preview) */
+
+            #customer-review .reviews img {
+                width: 60px;
+                border-radius: 50%;
+                height: 60px;
             }
 
-    .modal-body {
-        padding: 0 55px 0 40px;
-    }
+            #customer-review .reviews ul {
+                list-style: none;
+            }
 
-    .modal {
-        margin-top: 55px;
-    }
+            #customer-review ul > li > h6 {
+                font-weight: 600;
+                color: #575757;
+                margin-bottom: 10px;
+            }
 
-    .popup-close-btn {
-        padding: 10px 10px 0 0;
-    }
+            #customer-review ul > li > p {
+                color: #333333;
+                font-weight: 400;
+                margin-bottom: 0;
+            }
 
-    .modal-body img {
-        height: auto;
-        margin: auto;
-        text-align: center;
-        left: 50%;
-        position: relative;
-        transform: translateX(-50%);
-        width: 63px;
-        height: 63px;
-    }
+            #customer-review .reviews {
+                border: 1px solid #d1d1d1;
+                padding: 25px;
+                height: 450px;
+            }
 
-    .modal-body h2 {
-        font-size: 26px;
-        font-weight: 600;
-        line-height: 30px;
-        color: #6255a5;
-        padding-top: 10px;
-        padding-bottom: 20px;
-    }
+                #customer-review .reviews hr {
+                    margin: 15px 0;
+                }
 
-    .modal-body p {
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 22px;
-        color: #333333;
-        padding-bottom: 5px;
-    }
+        .modal-body {
+            padding: 0 55px 0 40px;
+        }
 
-    .modal-body h5 {
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 22px;
-        color: #333333;
-    }
-</style>
+        .modal {
+            margin-top: 55px;
+        }
+
+        .popup-close-btn {
+            padding: 10px 10px 0 0;
+        }
+
+        .modal-body img {
+            height: auto;
+            margin: auto;
+            text-align: center;
+            left: 50%;
+            position: relative;
+            transform: translateX(-50%);
+            width: 63px;
+            height: 63px;
+        }
+
+        .modal-body h2 {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 30px;
+            color: #6255a5;
+            padding-top: 10px;
+            padding-bottom: 20px;
+        }
+
+        .modal-body p {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 22px;
+            color: #333333;
+            padding-bottom: 5px;
+        }
+
+        .modal-body h5 {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 22px;
+            color: #333333;
+        }
+    </style>
+}
 
 @{
     foreach (var item in ViewBag.NoteDetails)
@@ -241,13 +244,13 @@
                                         <p>@item.Description</p>
                                         @if (item.IsPaid)
                                         {
-                                        <button type="submit" class="btn btn-primary btn-lg" id="purchase_btn" onclick="purchaseNote('@item.ID')">
-                                            DOWNLOAD / $@item.Price
-                                        </button>
+                                            <button type="submit" class="btn btn-primary btn-lg" id="purchase_btn" onclick="purchaseNote('@item.ID')">
+                                                DOWNLOAD / $@item.Price
+                                            </button>
                                         }
                                         else
                                         {
-                                        <button class="btn btn-primary btn-lg" type="button" onclick="DownloadFile('@item.ID')">DOWNLOAD/$0</button>
+                                            <button class="btn btn-primary btn-lg" type="button" onclick="DownloadFile('@item.ID')">DOWNLOAD/$0</button>
                                         }
 
                                     </div>
@@ -417,8 +420,10 @@
     }
 }
 
-<script>
-    if (Readonly) {
+@section CustomScript
+{
+    <script>
+    if (Readonly==true) {
         $('#purchase_btn').attr('disabled', 'disabled');
     }
 
@@ -437,4 +442,5 @@
         var m = "@(showModal)";
         $('#exampleModalScrollable').modal(m);
     });
-</script>
+    </script>
+}

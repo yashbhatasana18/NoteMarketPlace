@@ -151,22 +151,25 @@
     </div>
 }
 
-<script>
-    function NoteDetail(id) {
-        location.href = "../Home/NoteDetails/" + id;
-    }
+@section CustomScript
+{
+    <script>
+        function NoteDetail(id) {
+            location.href = "../Home/NoteDetails/" + id;
+        }
 
-    function DeleteSpam(id) {
-        $.ajax({
-            method: 'POST',
-            url: 'DeleteSpamReport',
-            data: { Id: id },
-            success: function () {
-                location.reload();
-            },
-            error: function () {
-                alert("Try Again");
-            }
-        });
-    }
-</script>
+        function DeleteSpam(id) {
+            $.ajax({
+                method: 'POST',
+                url: 'DeleteSpamReport',
+                data: { Id: id },
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
+    </script>
+}

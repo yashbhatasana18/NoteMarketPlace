@@ -69,46 +69,6 @@ namespace NotesMarketPlace.Controllers
 
         #endregion Initialize User Information
 
-        #region User CRUD
-
-        public ActionResult GetAllUsers()
-        {
-            var result = signUpRepository.GetAllUser();
-            return View(result);
-        }
-
-        public ActionResult GetUsers(int id)
-        {
-            var result = signUpRepository.GetUser(id);
-            return View(result);
-        }
-
-        public ActionResult EditUsers(int id)
-        {
-            var result = signUpRepository.GetUser(id);
-            return View(result);
-        }
-
-        [HttpPost]
-        public ActionResult EditUsers(SignUpModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                signUpRepository.EditUsers(model.UserID, model);
-                return RedirectToAction("GetAllUsers");
-            }
-            return View(model);
-        }
-
-        [HttpGet]
-        public ActionResult Delete(int id)
-        {
-            signUpRepository.DeleteUsers(id);
-            return RedirectToAction("GetAllUsers");
-        }
-
-        #endregion User CRUD
-
         #region SignUp
 
         [AllowAnonymous]
@@ -128,10 +88,15 @@ namespace NotesMarketPlace.Controllers
                 if (id > 0)
                 {
                     ModelState.Clear();
+                    ViewBag.Color = "rgb(14, 185, 14)";
                     ViewBag.message = "Your account has been successfully created.Check your mail for activation.";
+                    BuildEmailTemplate(id);
                 }
-
-                BuildEmailTemplate(id);
+                else
+                {
+                    ViewBag.Color = "rgb(255, 0, 0)";
+                    ViewBag.message = "This Email Address Already Exist.Please Enter Other One.";
+                }
             }
             return View();
         }
@@ -143,6 +108,7 @@ namespace NotesMarketPlace.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
+            ViewBag.Show = false;
             //HttpCookie cookie = Request.Cookies["LoginModel"];
             //if (cookie != null)
             //{
@@ -162,6 +128,7 @@ namespace NotesMarketPlace.Controllers
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
+            ViewBag.Show = false;
             using (var context = new NotesMarketPlaceEntities())
             {
                 if (!ModelState.IsValid)
@@ -173,17 +140,32 @@ namespace NotesMarketPlace.Controllers
 
                 if (isValid == null)
                 {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                if (isValid.IsActive == false)
-                {
-                    return RedirectToAction("Login", "Account");
+                    TempData["WrongPassword"] = "";
+                    ViewBag.Show = true;
+                    ViewBag.Color = "rgb(255, 0, 0)";
+                    ViewBag.Message = "Your EmailID Is Invalid.";
+                    //return RedirectToAction("Login", "Account");
+                    return View("Login");
                 }
 
                 if (isValid.IsEmailVerified == false)
                 {
-                    return RedirectToAction("Login", "Account");
+                    TempData["WrongPassword"] = "";
+                    ViewBag.Show = true;
+                    ViewBag.Color = "rgb(255, 0, 0)";
+                    ViewBag.message = "Please Verify Your Account. We Sended Email Verify Link In Your EmailID.";
+                    //return RedirectToAction("Login", "Account");
+                    return View("Login");
+                }
+
+                if (isValid.IsActive == false)
+                {
+                    TempData["WrongPassword"] = "";
+                    ViewBag.Show = true;
+                    ViewBag.Color = "rgb(255, 0, 0)";
+                    ViewBag.Message = "Your Account Has Been InActive. Please Contact Admin For Activation.";
+                    //return RedirectToAction("Login", "Account");
+                    return View("Login");
                 }
 
                 //HttpCookie cookie = new HttpCookie("LoginModel");
@@ -556,6 +538,7 @@ namespace NotesMarketPlace.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public JsonResult RegisterConfirm(int userID)
         {
             using (var context = new NotesMarketPlaceEntities())

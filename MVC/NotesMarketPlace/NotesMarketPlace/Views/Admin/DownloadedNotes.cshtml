@@ -5,12 +5,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
-
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
         <h3 class="heading-1">Downloaded Notes</h3>
@@ -187,53 +181,56 @@
     </div>
 }
 
-<script>
-    var sellerId, noteId, buyerId;
+@section CustomScript
+{
+    <script>
+        var sellerId, noteId, buyerId;
 
-    function Filter(obj) {
+        function Filter(obj) {
 
-        var data = {};
+            var data = {};
 
-        if (obj.id == "NoteId") {
-            noteId = obj.value;
-        }
-        if (obj.id == "SellerId") {
-            sellerId = obj.value;
-        }
-        if (obj.id == "BuyerId") {
-            buyerId = obj.value;
-        }
-
-        if (sellerId != null) {
-            data.sellerId = sellerId;
-        }
-        if (noteId != null) {
-            data.noteId = noteId;
-        }
-        if (buyerId != null) {
-            data.buyerId = buyerId;
-        }
-
-        console.log(data);
-
-        $.ajax({
-            method: 'GET',
-            url: 'DownloadedNotes',
-            data: data,
-            success: function (data) {
-                document.body.innerHTML = data;
-            },
-            error: function () {
-                alert("Try Again");
+            if (obj.id == "NoteId") {
+                noteId = obj.value;
             }
-        });
-    }
+            if (obj.id == "SellerId") {
+                sellerId = obj.value;
+            }
+            if (obj.id == "BuyerId") {
+                buyerId = obj.value;
+            }
 
-    function NoteDetail(id) {
-        location.href = '../Home/NoteDetails/' + id;
-    }
+            if (sellerId != null) {
+                data.sellerId = sellerId;
+            }
+            if (noteId != null) {
+                data.noteId = noteId;
+            }
+            if (buyerId != null) {
+                data.buyerId = buyerId;
+            }
 
-    function Member(id) {
-        location.href = 'MemberDetails?id=' + id;
-    }
-</script>
+            console.log(data);
+
+            $.ajax({
+                method: 'GET',
+                url: 'DownloadedNotes',
+                data: data,
+                success: function (data) {
+                    document.body.innerHTML = data;
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
+
+        function NoteDetail(id) {
+            location.href = '../Home/NoteDetails/' + id;
+        }
+
+        function Member(id) {
+            location.href = 'MemberDetails?id=' + id;
+        }
+    </script>
+}

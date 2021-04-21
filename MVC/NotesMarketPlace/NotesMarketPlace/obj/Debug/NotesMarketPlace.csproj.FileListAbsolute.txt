@@ -60,8 +60,6 @@ E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace\obj\Debug\
 E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csproj.CopyComplete
 E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.dll
 E:\TatvaSoft\Projects\.Net\Projects\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.pdb
-E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Numerics.Vectors.dll
-E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Reflection.Metadata.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\NotesMarketPlace.dll.config
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\NotesMarketPlace.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\NotesMarketPlace.pdb
@@ -85,6 +83,8 @@ E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bi
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Buffers.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Collections.Immutable.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Memory.dll
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Numerics.Vectors.dll
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Reflection.Metadata.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Runtime.CompilerServices.Unsafe.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Text.Encoding.CodePages.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\roslyn\System.Threading.Tasks.Extensions.dll

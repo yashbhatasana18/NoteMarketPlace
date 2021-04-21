@@ -816,7 +816,7 @@ namespace NotesMarketPlace.Controllers
 
                 if (isDownloadAllow == null)
                 {
-                    ReadOnly = true;
+                    ReadOnly = false;
                 }
 
                 if (ReadOnly == null || ReadOnly == true)

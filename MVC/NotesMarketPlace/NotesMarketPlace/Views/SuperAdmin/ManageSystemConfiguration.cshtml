@@ -23,7 +23,7 @@
 
 @using (Html.BeginForm("ManageSystemConfiguration", "SuperAdmin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-
+    @Html.HiddenFor(m => m.TempPath);
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
@@ -66,27 +66,26 @@
             <div class="form-group">
                 <label for="file-image">Default image for notes (if seller do not upload)</label>
                 <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="NoteDisplayPicturePath" />
+                    <input id="file-upload" type="file" name="DefaultNotePicturePath" class="form-control" />
                     <label for="file-upload" id="file-drag">
-                        <img id="file-image" src="#" alt="Preview" class="hidden">
-                        <div id="start">
-                            <img src="~/Content/images/upload-file.png" height="46" width="50" />
+                        <img id="file-image" src="@Url.Content(ViewBag.ProfilePicturePreview)" alt="Preview" class="@ViewBag.NonHideClass">
+                        <div id="start" class="@ViewBag.HideClass">
+                            <img src="@Url.Content(ViewBag.ProfilePicture)" height="46" width="50" />
                             <div>Upload a picture</div>
                             <div id="notimage" class="hidden">Please select an image</div>
                         </div>
-                        <div id="response" class="hidden">
-                            <div id="messages"></div>
+                        <div id="response" class="@ViewBag.NonHideClass">
+                            <div id="messages">@ViewBag.ProfilePictureName</div>
                         </div>
                     </label>
-                    @Html.ValidationMessageFor(model => model.DefaultNoteImg, "", new { @class = "text-danger" })
-
+                    @Html.ValidationMessageFor(model => model.DefaultNotePicturePath , "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="file-image">Default profile picture (if seller do not upload)</label>
                 <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="fileUpload" class="form-control" />
+                    <input id="file-upload" type="file" name="DefaultDefaultProfileImgPath" class="form-control" />
                     <label for="file-upload" id="file-drag">
                         <img id="file-image" src="#" alt="Preview" class="hidden">
                         <div id="start">
@@ -98,9 +97,8 @@
                             <div id="messages"></div>
                         </div>
                     </label>
-                    @Html.ValidationMessageFor(model => model.DefaultProfileImg, "", new { @class = "text-danger" })
-
-                </div>
+            @Html.ValidationMessageFor(model => model.DefaultDefaultProfileImgPath, "", new { @class = "text-danger" })
+            </div>
             </div>
 
         </div>

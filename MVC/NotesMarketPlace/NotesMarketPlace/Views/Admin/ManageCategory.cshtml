@@ -5,12 +5,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
-
 <div class="row heading">
     <div class="col-md-12 p-0">
         <h3 class="heading-1">Manage Category</h3>
@@ -153,8 +147,11 @@
     </div>
 }
 
-<script>
-    function Edit(id) {
-        location.href = "AddCategory?edit=" + id;
-    }
-</script>
+@section CustomScript
+{
+    <script>
+        function Edit(id) {
+            location.href = "AddCategory?edit=" + id;
+        }
+    </script>
+}

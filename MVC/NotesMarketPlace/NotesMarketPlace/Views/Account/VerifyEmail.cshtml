@@ -1,36 +1,53 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "VerifyEmail";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-<h2>VerifyEmail</h2>
+<!-- Head -->
+<section class="head">
+    <div class="head-content">
+        <div class="container">
+            <div class="row">
+                <div class="head-content-inner">
+                    <div class="head-heading">
+                        VerifyEmail
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Head -->
 
-<br />
-<br />
-<div class="alert alert-info" id="previous">
-    <strong>Confirm Your Account</strong>
-    <input type="submit" class="btn btn-primary" value="Confirm" onclick="Verified()" />
-</div>
+<section class="container">
+    <div class="row heading">
+        <div class="col-md-12">
+            <div class="alert alert-info" id="previous">
+                <strong>Confirm Your Account</strong>
+                <input type="submit" class="btn btn-primary" value="Confirm" onclick="Verified()" />
+            </div>
 
-<div class="alert alert-success" id="after" style="display:none;">
-    <strong>
-        Your Account Is Active Now
-    </strong>
-</div>
+            <div class="alert alert-success" id="after" style="display:none;">
+                <b>Your Account Is Active Now</b>. Please <strong>@Html.ActionLink("Click here to Login", "Login")</strong>
+            </div>
+        </div>
+    </div>
+</section>
 
-<script>
-function Verified() {
-    $.ajax({
-        type: "post",
-        url: "/Account/RegisterConfirm",
-        data: { 'userID': '@ViewBag.userID' },
-        success: function (msg) {
-            $("#previous").hide();
-            $("#after").show();
-            alert(msg);
+@section CustomScript
+{
+    <script>
+        function Verified() {
+            $.ajax({
+                type: "post",
+                url: "/Account/RegisterConfirm",
+                data: { 'userID': '@ViewBag.userID' },
+                success: function (msg) {
+                    $("#previous").hide();
+                    $("#after").show();
+                    alert(msg);
+                }
+            })
         }
-    })
+    </script>
 }
-</script>
-

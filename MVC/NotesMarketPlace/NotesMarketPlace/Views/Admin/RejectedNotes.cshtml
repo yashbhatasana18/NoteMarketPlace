@@ -5,12 +5,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<style>
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
-
 <div class="row heading">
     <div class="col-md-6 col-sm-6 p-0">
         <h3 class="heading-1">Rejected Notes</h3>
@@ -171,42 +165,45 @@
     </div>
 }
 
-<script>
-    function Filter(obj) {
-        $.ajax({
-            method: 'GET',
-            url: 'RejectedNotes',
-            data: { sellerId: obj.value },
-            success: function (data) {
-                document.body.innerHTML = data;
-            },
-            error: function () {
-                alert("Try Again");
-            }
-        });
-    }
+@section CustomScript
+{
+    <script>
+        function Filter(obj) {
+            $.ajax({
+                method: 'GET',
+                url: 'RejectedNotes',
+                data: { sellerId: obj.value },
+                success: function (data) {
+                    document.body.innerHTML = data;
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
 
-    console.log(data);
+        console.log(data);
 
-    function Approve(id) {
-        $.ajax({
-            method: 'POST',
-            url: 'NoteStatusUpdate',
-            data: { noteid: id, status: 'Approve' },
-            success: function () {
-                location.reload();
-            },
-            error: function () {
-                alert("Try Again");
-            }
-        });
-    }
+        function Approve(id) {
+            $.ajax({
+                method: 'POST',
+                url: 'NoteStatusUpdate',
+                data: { noteid: id, status: 'Approve' },
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
 
-    function NoteDetail(id) {
-        location.href = '../Home/NoteDetails/' + id;
-    }
+        function NoteDetail(id) {
+            location.href = '../Home/NoteDetails/' + id;
+        }
 
-    function Member(id) {
-        location.href = 'MemberDetails?id=' + id;
-    }
-</script>
+        function Member(id) {
+            location.href = 'MemberDetails?id=' + id;
+        }
+    </script>
+}

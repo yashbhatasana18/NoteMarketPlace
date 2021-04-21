@@ -1479,6 +1479,10 @@
     <Content Include="Content\icons-1.4.0\icons\zoom-in.svg" />
     <Content Include="Content\icons-1.4.0\icons\zoom-out.svg" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Members\1\member.jpeg21241169.png" />
+    <Content Include="Members\2\member.jpeg21241169.png" />
+    <Content Include="Members\3\member.jpeg21241169.png" />
+    <Content Include="Members\5\customer-121471654.png" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -3069,9 +3073,6 @@
     <Content Include="Views\Home\SearchNotes.cshtml" />
     <Content Include="Views\Home\BuyerRequest.cshtml" />
     <Content Include="Views\Home\SellYourNotes.cshtml" />
-    <Content Include="Views\Account\GetAllUsers.cshtml" />
-    <Content Include="Views\Account\GetUsers.cshtml" />
-    <Content Include="Views\Account\EditUsers.cshtml" />
     <Content Include="Views\Account\UserProfile.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Home\NoteDetails.cshtml" />
@@ -3112,7 +3113,6 @@
     <Folder Include="Content\NotesImages\Images\" />
     <Folder Include="Content\NotesImages\NotesPDF\" />
     <Folder Include="Content\NotesImages\NotesPreview\" />
-    <Folder Include="Members\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

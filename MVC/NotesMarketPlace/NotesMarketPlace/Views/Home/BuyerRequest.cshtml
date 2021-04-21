@@ -5,11 +5,14 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-<style>
-    .cursor_pointer {
-        cursor: pointer;
-    }
-</style>
+@section CustomStyle
+{
+    <style>
+        .cursor_pointer {
+            cursor: pointer;
+        }
+    </style>
+}
 
 <!-- Content -->
 <section id="content">
@@ -174,24 +177,27 @@
 </section>
 <!-- End Content -->
 
-<script>
+@section CustomScript
+{
+    <script>
 
-    function NoteDetail(id) {
-        location.href = "../Home/NoteDetails/" + id + "?ReadOnly=false";
-    }
+        function NoteDetail(id) {
+            location.href = "../Home/NoteDetails/" + id + "?ReadOnly=false";
+        }
 
-    function Allow(id) {
-        $.ajax({
-            method: 'POST',
-            url: 'AllowDownload',
-            data: { id: id },
-            success: function () {
-                location.reload();
-            },
-            error: function () {
-                alert("Try Again");
-            }
-        });
-    }
+        function Allow(id) {
+            $.ajax({
+                method: 'POST',
+                url: 'AllowDownload',
+                data: { id: id },
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Try Again");
+                }
+            });
+        }
 
-</script>
+    </script>
+}
