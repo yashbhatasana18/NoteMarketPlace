@@ -80,9 +80,9 @@
 
             <div class="wrap-login">
 
-                <span class="login-form-title">
+                <a class="login-form-title" href="@Url.Action("Home", "Home")">
                     <img src="~/Content/images/top-logo.png" alt="Logo">
-                </span>
+                </a>
 
                 @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
                 {

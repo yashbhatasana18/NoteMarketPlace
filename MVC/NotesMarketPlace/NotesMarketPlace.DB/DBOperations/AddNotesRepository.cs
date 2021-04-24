@@ -1,6 +1,5 @@
-﻿using System;
-using System.Linq;
-using NotesMarketPlace.Models;
+﻿using NotesMarketPlace.Models;
+using System;
 namespace NotesMarketPlace.DB.DBOperations
 {
     public class AddNotesRepository
@@ -9,31 +8,32 @@ namespace NotesMarketPlace.DB.DBOperations
         {
             using (var context = new NotesMarketPlaceEntities())
             {
-                SellerNotes addNotes = new SellerNotes();
-
-                addNotes.SellerID = model.SellerID;
-                addNotes.Title = model.Title;
-                addNotes.Category = model.Category;
-                addNotes.ActionedBy = model.SellerID;
-                addNotes.DisplayPicture = model.DisplayPicture;
-                addNotes.NotesPreview = model.NotesPreview;
-                addNotes.NoteType = model.NoteType;
-                addNotes.Status = Command == "Save" ? 6 : 7;
-                addNotes.NumberOfPages = model.NumberOfPages;
-                addNotes.Description = model.Description;
-                addNotes.Country = model.Country;
-                addNotes.UniversityName = model.UniversityName;
-                addNotes.Course = model.Course;
-                addNotes.CourseCode = model.CourseCode;
-                addNotes.Professor = model.Professor;
-                addNotes.SellingPrice = model.SellingPrice;
-                addNotes.PublishedDate = DateTime.Now;
-                addNotes.CreatedDate = DateTime.Now;
-                addNotes.CreatedBy = model.SellerID;
-                addNotes.ModifiedDate = DateTime.Now;
-                addNotes.ModifiedBy = model.SellerID;
-                addNotes.IsPaid = model.IsPaid;
-                addNotes.IsActive = true;
+                SellerNotes addNotes = new SellerNotes
+                {
+                    SellerID = model.SellerID,
+                    Title = model.Title,
+                    Category = model.Category,
+                    ActionedBy = model.SellerID,
+                    DisplayPicture = model.DisplayPicture,
+                    NotesPreview = model.NotesPreview,
+                    NoteType = model.NoteType,
+                    Status = Command == "Save" ? 6 : 7,
+                    NumberOfPages = model.NumberOfPages,
+                    Description = model.Description,
+                    Country = model.Country,
+                    UniversityName = model.UniversityName,
+                    Course = model.Course,
+                    CourseCode = model.CourseCode,
+                    Professor = model.Professor,
+                    SellingPrice = model.SellingPrice,
+                    PublishedDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = model.SellerID,
+                    ModifiedDate = DateTime.Now,
+                    ModifiedBy = model.SellerID,
+                    IsPaid = model.IsPaid,
+                    IsActive = true
+                };
 
                 if (addNotes.Status == 7)
                 {

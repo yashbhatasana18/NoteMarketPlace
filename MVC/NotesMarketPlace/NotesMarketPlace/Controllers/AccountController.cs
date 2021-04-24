@@ -1,24 +1,22 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using NotesMarketPlace.DB;
+﻿using NotesMarketPlace.DB;
 using NotesMarketPlace.DB.DBOperations;
 using NotesMarketPlace.Models;
-using System.Web.Security;
-using System.Web.Hosting;
-using System.Text;
-using System.Net.Mail;
 using System;
-using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Net.Mail;
+using System.Text;
+using System.Web.Hosting;
+using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web;
+using System.Web.Security;
 
 namespace NotesMarketPlace.Controllers
 {
     [Authorize(Roles = "Admin, Super Admin, Member")]
     public class AccountController : Controller
     {
-        SignUpRepository signUpRepository = null;
+        readonly SignUpRepository signUpRepository = null;
 
         #region Default Constructor
         public AccountController()
@@ -482,22 +480,25 @@ namespace NotesMarketPlace.Controllers
 
         #region Mail Send
 
+        [HandleError]
         public static void SendEmail(MailMessage mail)
         {
-            SmtpClient client = new SmtpClient();
-            client.Host = "smtp.gmail.com";
-            client.Port = 587;
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Credentials = new System.Net.NetworkCredential("ynpatel2000@gmail.com", "Mahakal@18@52");
+            SmtpClient client = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new System.Net.NetworkCredential("ynpatel2000@gmail.com", "Mahakal@18@52")
+            };
             try
             {
                 client.Send(mail);
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -577,8 +578,10 @@ namespace NotesMarketPlace.Controllers
             StringBuilder sb = new StringBuilder();
             sb.Append(bodyText);
             body = sb.ToString();
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress(from);
+            MailMessage mail = new MailMessage
+            {
+                From = new MailAddress(from)
+            };
             mail.To.Add(new MailAddress(to));
             if (!string.IsNullOrEmpty(bcc))
             {
@@ -601,6 +604,7 @@ namespace NotesMarketPlace.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
+            ViewBag.Show = false;
             return View();
         }
 
@@ -608,8 +612,24 @@ namespace NotesMarketPlace.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPassword(SignUpModel model)
         {
-            BuildForgotPasswordTemplate(model.EmailID);
-            return View();
+            ViewBag.Show = false;
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var users = context.Users.Where(m => m.EmailID == model.EmailID).Count();
+
+                if (users != 0)
+                {
+                    BuildForgotPasswordTemplate(model.EmailID);
+
+                }
+                else
+                {
+                    ViewBag.Show = true;
+                    ViewBag.Color = "rgb(255, 0, 0)";
+                    ViewBag.message = "This EmailID is not registered with us.";
+                }
+                return View();
+            }
         }
 
         public void BuildForgotPasswordTemplate(string emailID)
@@ -643,8 +663,10 @@ namespace NotesMarketPlace.Controllers
             StringBuilder sb = new StringBuilder();
             sb.Append(bodyText);
             body = sb.ToString();
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress(from);
+            MailMessage mail = new MailMessage
+            {
+                From = new MailAddress(from)
+            };
             mail.To.Add(new MailAddress(to));
             if (!string.IsNullOrEmpty(bcc))
             {
@@ -666,6 +688,7 @@ namespace NotesMarketPlace.Controllers
 
         public ActionResult ChangePassword()
         {
+            ViewBag.Show = false;
             return View();
         }
 
@@ -673,6 +696,7 @@ namespace NotesMarketPlace.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
+            ViewBag.Show = false;
             using (var context = new NotesMarketPlaceEntities())
             {
                 if (ModelState.IsValid)
@@ -682,7 +706,9 @@ namespace NotesMarketPlace.Controllers
                     //Old Password Not Match
                     if (!currentUser.Password.Equals(model.OldPassword))
                     {
-                        TempData["Oldpwd"] = "1";
+                        ViewBag.Show = true;
+                        ViewBag.Color = "rgb(255, 0, 0)";
+                        ViewBag.message = "Please Enter Correct Old Password.";
                         return View();
                     }
 
@@ -695,7 +721,6 @@ namespace NotesMarketPlace.Controllers
                     //Old Password & New Password Same
                     if (currentUser.Password == model.ConfirmPassword)
                     {
-                        TempData["OldpwdSame"] = "1";
                         return View();
                     }
 

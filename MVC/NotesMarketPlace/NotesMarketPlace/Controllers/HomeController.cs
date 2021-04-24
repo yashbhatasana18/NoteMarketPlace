@@ -19,8 +19,8 @@ namespace NotesMarketPlace.Controllers
     [Authorize(Roles = "Admin, Super Admin, Member")]
     public class HomeController : Controller
     {
-        AddNotesRepository addNoteRepository = null;
-        SellYourNotesRepository sellYourNotesRepository = null;
+        readonly AddNotesRepository addNoteRepository = null;
+        readonly SellYourNotesRepository sellYourNotesRepository = null;
 
         readonly NotesMarketPlaceEntities db;
 
@@ -387,12 +387,13 @@ namespace NotesMarketPlace.Controllers
             var CountryList = db.Countries.ToList();
             ViewBag.NotesCountry = new SelectList(CountryList, "CountriesID", "Name");
 
-            AddNotesModel editnote = new AddNotesModel();
-
-            editnote.SellerNotesID = note.SellerNotesID;
-            editnote.NoteType = note.NoteType;
-            editnote.Title = note.Title;
-            editnote.Category = note.Category;
+            AddNotesModel editnote = new AddNotesModel
+            {
+                SellerNotesID = note.SellerNotesID,
+                NoteType = note.NoteType,
+                Title = note.Title,
+                Category = note.Category
+            };
             editnote.NoteType = note.NoteType;
             editnote.NumberOfPages = note.NumberOfPages;
             editnote.Description = note.Description;
@@ -642,7 +643,7 @@ namespace NotesMarketPlace.Controllers
                 var category = context.NoteCategories.Where(m => m.IsActive == true).ToList();
                 var university = context.SellerNotes.Where(m => m.UniversityName != null).Select(x => x.UniversityName).Distinct().ToList();
                 var course = context.SellerNotes.Where(m => m.Course != null).Select(x => x.Course).Distinct().ToList();
-                var country = context.SellerNotes.Where(m => m.Countries != null).Select(x => x.Countries).Distinct().ToList();
+                var country = context.SellerNotes.Where(m => m.Countries != null).Select(x => x.Countries).ToList();
 
                 var notes = (from Notes in context.SellerNotes
                              join Status in context.ReferenceData on Notes.Status equals Status.ReferenceDataID
@@ -707,11 +708,11 @@ namespace NotesMarketPlace.Controllers
                 }
                 if (University != null)
                 {
-                    filternotes = filternotes.Where(m => m.UniversityName == University).ToList();
+                    filternotes = filternotes.Where(m => m.UniversityName.ToLower() == University.ToLower()).ToList();
                 }
                 if (Course != null)
                 {
-                    filternotes = filternotes.Where(m => m.Course == Course).ToList();
+                    filternotes = filternotes.Where(m => m.Course.ToLower() == Course.ToLower()).ToList();
                 }
                 if (!Country.Equals(null))
                 {
@@ -760,11 +761,11 @@ namespace NotesMarketPlace.Controllers
                                  Image = Notes.DisplayPicture,
                                  Price = Notes.SellingPrice,
                                  IsPaid = Notes.IsPaid,
-                                 Institute = Notes.UniversityName == null ? "--" : Notes.UniversityName,
-                                 Country = Country.Name == null ? "--" : Country.Name,
-                                 CourseName = Notes.Course == null ? "--" : Notes.Course,
-                                 CourseCode = Notes.CourseCode == null ? "--" : Notes.CourseCode,
-                                 Professor = Notes.Professor == null ? "--" : Notes.Professor,
+                                 Institute = Notes.UniversityName ?? "--",
+                                 Country = Country.Name ?? "--",
+                                 CourseName = Notes.Course ?? "--",
+                                 CourseCode = Notes.CourseCode ?? "--",
+                                 Professor = Notes.Professor ?? "--",
                                  Pages = (decimal)(Notes.NumberOfPages == null ? 0 : Notes.NumberOfPages),
                                  ApprovedDate = Notes.PublishedDate,
                                  NotePreview = Notes.NotesPreview,
@@ -805,7 +806,7 @@ namespace NotesMarketPlace.Controllers
                                {
                                    FirstName = User.FirstName,
                                    LastName = User.LastName,
-                                   Image = UserDetail.ProfilePicture == null ? defaultuserImg : UserDetail.ProfilePicture,
+                                   Image = UserDetail.ProfilePicture ?? defaultuserImg,
                                    Ratings = Review.Ratings,
                                    Review = Review.Comments
                                }).OrderByDescending(m => m.Ratings).ToList();
@@ -814,9 +815,11 @@ namespace NotesMarketPlace.Controllers
 
                 var isDownloadAllow = context.Downloads.FirstOrDefault(m => m.NoteID == id);
 
-                if (isDownloadAllow == null)
+                if (isDownloadAllow != null)
                 {
                     ReadOnly = false;
+                    ViewBag.NoteDetails = notes.Where(m => m.Status == 9).ToList();
+                    return View();
                 }
 
                 if (ReadOnly == null || ReadOnly == true)
@@ -825,7 +828,6 @@ namespace NotesMarketPlace.Controllers
                     TempData["ReadOnly"] = "true";
                     return View();
                 }
-                else
                 {
                     ViewBag.NoteDetails = notes.Where(m => m.Status == 9).ToList();
                     return View();
@@ -1395,8 +1397,10 @@ namespace NotesMarketPlace.Controllers
             StringBuilder sb = new StringBuilder();
             sb.Append(bodyText);
             body = sb.ToString();
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress(from);
+            MailMessage mail = new MailMessage
+            {
+                From = new MailAddress(from)
+            };
             mail.To.Add(new MailAddress(to));
             if (!string.IsNullOrEmpty(bcc))
             {
@@ -1414,13 +1418,15 @@ namespace NotesMarketPlace.Controllers
 
         public static void SendEmail(MailMessage mail)
         {
-            SmtpClient client = new SmtpClient();
-            client.Host = "smtp.gmail.com";
-            client.Port = 587;
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Credentials = new System.Net.NetworkCredential("ynpatel2000@gmail.com", "Yash@1852");
+            SmtpClient client = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new System.Net.NetworkCredential("ynpatel2000@gmail.com", "Mahakal@18@52")
+            };
             try
             {
                 client.Send(mail);

@@ -124,3 +124,8 @@ E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\ob
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csproj.CopyComplete
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.pdb
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\Antlr3.Runtime.dll
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Optimization.dll
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\WebGrease.dll
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\Antlr3.Runtime.pdb
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Optimization.xml

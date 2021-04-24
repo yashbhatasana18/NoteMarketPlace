@@ -4,6 +4,15 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
+@section CustomStyle
+{
+    <style>
+        .card_border_bottom {
+            border-bottom: 1px solid rgba(0,0,0,.125) !important;
+        }
+    </style>
+}
+
 <!-- Head -->
 <section class="head">
     <div class="head-content">
@@ -27,18 +36,19 @@
                 <h1 class="uploaders">General Questions</h1>
             </div>
         </div>
+
         <div class="accordion" id="accordionExample">
-            <div class="card col-md-12 m-0 p-0">
+
+            <div class="card col-md-12 m-0 p-0 card_border_bottom">
                 <div id="headingone">
                     <h2 class="mb-0 panel-title">
                         <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
-                             data-target="#collapseOne" aria-expanded="false" aria-controls="collapseThree">
+                             data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                             What is Marketplace-Notes?
                         </div>
                     </h2>
                 </div>
-                <div id="collapseOne" class="collapse" aria-labelledby="headingThree"
-                     data-parent="#accordionExample">
+                <div id="collapseOne" class="collapse" aria-labelledby="headingone" data-parent="#accordionExample">
                     <div class="card-body">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
                         consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa
@@ -47,19 +57,17 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="accordion" id="accordionExample">
-            <div class="card col-md-12 m-0 p-0">
-                <div id="headingone">
+
+            <div class="card col-md-12 m-0 p-0 card_border_bottom">
+                <div id="headingTwo">
                     <h2 class="mb-0 panel-title">
                         <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
-                             data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseThree">
+                             data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                             What do the University say?
                         </div>
                     </h2>
                 </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingThree"
-                     data-parent="#accordionExample">
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                     <div class="card-body">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
                         consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa
@@ -68,10 +76,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="accordion" id="accordionExample">
-            <div class="card col-md-12 m-0 p-0">
-                <div id="headingone">
+
+            <div class="card col-md-12 m-0 p-0 card_border_bottom">
+                <div id="headingThree">
                     <h2 class="mb-0 panel-title">
                         <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
                              data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -79,8 +86,7 @@
                         </div>
                     </h2>
                 </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                     data-parent="#accordionExample">
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                     <div class="card-body">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
                         consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa
@@ -89,25 +95,24 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row heading">
-            <div class="col-md-12 p-0">
-                <h1 class="uploaders">Uploaders</h1>
+
+            <div class="row heading">
+                <div class="col-md-12 p-0">
+                    <h1 class="uploaders">Uploaders</h1>
+                </div>
             </div>
-        </div>
-        <div class="accordion" id="accordionExample">
-            <div class="card col-md-12 m-0 p-0">
-                <div id="headingone">
+
+            <div class="card col-md-12 m-0 p-0 card_border_bottom">
+                <div id="headingFour">
                     <h2 class="mb-0 panel-title">
                         <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
-                             data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                             data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                             What can't I sell?
                         </div>
                     </h2>
                 </div>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingThree"
-                     data-parent="#accordionExample">
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
                     <div class="card-body">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
                         consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa
@@ -116,19 +121,17 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="accordion" id="accordionExample">
-            <div class="card col-md-12 m-0 p-0">
-                <div id="headingone">
+
+            <div class="card col-md-12 m-0 p-0 card_border_bottom">
+                <div id="headingFive">
                     <h2 class="mb-0 panel-title">
                         <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
-                             data-target="#collapseFive" aria-expanded="false" aria-controls="collapseThree">
+                             data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                             What notes can I sell?
                         </div>
                     </h2>
                 </div>
-                <div id="collapseFive" class="collapse" aria-labelledby="headingThree"
-                     data-parent="#accordionExample">
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
                     <div class="card-body">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, laboriosam
                         consectetur! Dolorum doloribus optio iusto maiores aperiam? Molestias voluptatum culpa
@@ -137,19 +140,19 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row heading">
-            <div class="col-md-12 p-0">
-                <h1 class="downloaders">Downloaders</h1>
+
+            <div class="row heading">
+                <div class="col-md-12 p-0">
+                    <h1 class="downloaders">Downloaders</h1>
+                </div>
             </div>
-        </div>
-        <div class="accordion" id="accordionExample">
-            <div class="card col-md-12 m-0 p-0">
+
+            <div class="card col-md-12 m-0 p-0 card_border_bottom">
                 <div id="headingone">
                     <h2 class="mb-0 panel-title">
                         <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
-                             data-target="#collapseSix" aria-expanded="false" aria-controls="collapseThree">
+                             data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                             How do I buy notes?
                         </div>
                     </h2>
@@ -164,13 +167,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="accordion" id="accordionExample">
+
             <div class="card col-md-12 m-0 p-0">
                 <div id="headingone">
                     <h2 class="mb-0 panel-title">
                         <div class="btn btn-block text-left collapsed collapse-heading" data-toggle="collapse"
-                             data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseThree">
+                             data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
                             Can I edit the notes I purchased?
                         </div>
                     </h2>
@@ -185,6 +187,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>

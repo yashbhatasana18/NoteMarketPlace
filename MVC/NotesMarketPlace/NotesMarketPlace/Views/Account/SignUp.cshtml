@@ -33,9 +33,9 @@
 
             <div class="wrap-login">
 
-                <span class="login-form-title">
+                <a class="login-form-title" href="@Url.Action("Home", "Home")">
                     <img src="~/Content/images/top-logo.png">
-                </span>
+                </a>
                 @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { @class = "login-form" }))
                 {
                     @Html.AntiForgeryToken()

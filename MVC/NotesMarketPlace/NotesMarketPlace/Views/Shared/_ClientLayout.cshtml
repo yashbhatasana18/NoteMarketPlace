@@ -11,16 +11,8 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap CSS -->
-    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/icons-1.4.0/font/bootstrap-icons.css" rel="stylesheet" />
-
-    <!-- Custom CSS -->
-    <link href="~/Content/FrontPanel/css/upload.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/FrontPanel/css/style.css" rel="stylesheet" type="text/css" />
-
-    <!-- Responsive CSS -->
-    <link href="~/Content/FrontPanel/css/responsive.css" rel="stylesheet" type="text/css" />
+    <!-- Custom Front Panel CSS -->
+    @Styles.Render("~/content/css")
 
     <style>
         .cursor_pointer {
@@ -77,11 +69,11 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="nav-item"><a class="nav-link" href="@Url.Action("LogOut", "Account")">LogOut</a></li>
+                                <li class="nav-item" style="margin-left: 15px;"><a class="nav-link" href="@Url.Action("LogOut", "Account")">LogOut</a></li>
                             }
                             else
                             {
-                                <li class="nav-item"><a class="nav-link" href="@Url.Action("Login", "Account")">LogIn</a></li>
+                                <li class="nav-item" style="margin-left: 15px;"><a class="nav-link" href="@Url.Action("Login", "Account")">LogIn</a></li>
                             }
                         </ul>
                     </div>
@@ -183,22 +175,19 @@
     </div>
 
     <!-- JQuery -->
-    <script src="~/Scripts/jquery-3.5.1.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @Scripts.Render("~/JqueryBundles/js")
 
     <!-- Modernizr JS -->
-    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    @Scripts.Render("~/ModernizrBundles/js")
 
     <!-- Popper JS -->
-    <script src="~/Scripts/popper.min.js"></script>
+    @Scripts.Render("~/PopperBundles/js")
 
     <!-- Bootstrap JS -->
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    @Scripts.Render("~/BootstrapBundles/js")
 
     <!-- Custom JS -->
-    <script src="~/Content/FrontPanel/js/upload.js"></script>
-    <script src="~/Content/FrontPanel/js/script.js"></script>
+    @Scripts.Render("~/FrontPanelBundles/js")
 
     <script>
         $(function () {

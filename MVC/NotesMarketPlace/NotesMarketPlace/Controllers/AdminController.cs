@@ -1,21 +1,21 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using NotesMarketPlace.DB;
+﻿using NotesMarketPlace.DB;
 using NotesMarketPlace.DB.DBOperations;
-using NotesMarketPlace.Models.Admin;
-using System.Web.Security;
-using System;
-using System.Web.Routing;
-using System.Collections.Generic;
 using NotesMarketPlace.Email;
+using NotesMarketPlace.Models.Admin;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.Routing;
+using System.Web.Security;
 
 namespace NotesMarketPlace.Controllers
 {
     [Authorize(Roles = "Admin, Super Admin")]
     public class AdminController : Controller
     {
-        AdminRepository adminRepository = null;
+        readonly AdminRepository adminRepository = null;
 
         #region Default Constructor
 

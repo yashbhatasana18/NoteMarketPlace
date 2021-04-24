@@ -594,7 +594,7 @@ label {
     width: 100%;
     height: 250px;
     position: relative;
-    background-image: url('../../images/banner-with-overlay-2.jpg');
+    background-image: url('../../Content/images/banner-with-overlay-2.jpg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
@@ -649,7 +649,7 @@ label {
 }
 
 .panel-title > div::before {
-    content: url("../../images/minus.png");
+    content: url("../../Content/images/minus.png");
     float: right !important;
     position: relative;
     top: 1px;
@@ -663,7 +663,7 @@ label {
 }
 
 .panel-title > div.collapsed::before {
-    content: url("../../images/plus.png");
+    content: url("../../Content/images/plus.png");
 }
 
 /* =======================================================================
