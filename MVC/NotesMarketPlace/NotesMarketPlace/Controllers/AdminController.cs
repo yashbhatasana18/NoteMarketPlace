@@ -25,8 +25,18 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
+                Models.SocialUrlModel socialUrlModel = new Models.SocialUrlModel();
+
+                // social URL
                 var socialUrl = context.SystemConfigurations.Where(m => m.Key == "Facebook" || m.Key == "Twitter" || m.Key == "Linkedin").ToList();
-                ViewBag.URLs = socialUrl;
+
+                socialUrlModel.Facebook = socialUrl[0].Value;
+                socialUrlModel.Twitter = socialUrl[1].Value;
+                socialUrlModel.Linkedin = socialUrl[2].Value;
+
+                ViewBag.Facebook = socialUrlModel.Facebook;
+                ViewBag.Twitter = socialUrlModel.Twitter;
+                ViewBag.Linkedin = socialUrlModel.Linkedin;
             }
         }
 
@@ -922,9 +932,9 @@ namespace NotesMarketPlace.Controllers
                 details.PhoneNumber = profile.Phone;
                 details.PhoneNumberCountryCode = profile.Phonecode;
 
-                if (profile.ProfileImage != null)
+                if (profile.UserProfilePicturePath == null)
                 {
-                    details.ProfilePicture = details.ProfilePicture;
+                    details.ProfilePicture = profile.ProfileImage;
                 }
                 else
                 {
@@ -956,6 +966,9 @@ namespace NotesMarketPlace.Controllers
 
                 var CountryCodeList = country;
                 ViewBag.CountryCodeList = new SelectList(CountryCodeList, "CountriesID", "CountryCode");
+
+                ViewBag.Show = true;
+                ViewBag.message = "Your profile has been updated successfully.";
 
                 return RedirectToAction("MyProfile");
             }

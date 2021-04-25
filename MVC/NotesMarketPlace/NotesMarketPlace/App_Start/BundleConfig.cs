@@ -13,6 +13,7 @@ namespace NotesMarketPlace.App_Start
             bundles.Add(new ScriptBundle("~/JqueryBundles/js").Include(
                 "~/Scripts/jquery-{version}.min.js",
                 "~/Scripts/jquery.validate.min.js",
+                "~/Scripts/jquery.validate.date.js",
                 "~/Scripts/jquery.validate.unobtrusive.min.js"));
 
             bundles.Add(new ScriptBundle("~/ModernizrBundles/js").Include(

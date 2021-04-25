@@ -30,20 +30,38 @@
             <p id="pera1">Let us know how to get back to you</p>
         </div>
     </div>
+
     @using (Html.BeginForm("ContactUs", "Home", FormMethod.Post))
     {
         <div class="row heading">
             <div class="col-md-6">
-                <div class="form-group">
-                    <label for="exampleInputFullName1">Full Name <span>*</span></label>
-                    @Html.TextBoxFor(model => model.FullName, new { @class = "form-control", placeholder = "Enter your full name" })
-                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address <span>*</span></label>
-                    @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", type = "email", placeholder = "Enter your email address" })
-                    @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
-                </div>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="form-group">
+                        <label for="exampleInputFullName1">Full Name <span>*</span></label>
+                        @Html.TextBoxFor(model => model.FullName, new { @class = "form-control readonly", placeholder = "Enter your full name", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address <span>*</span></label>
+                        @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", type = "email", placeholder = "Enter your email address", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label for="exampleInputFullName1">Full Name <span>*</span></label>
+                        @Html.TextBoxFor(model => model.FullName, new { @class = "form-control readonly", placeholder = "Enter your full name" })
+                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address <span>*</span></label>
+                        @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control", type = "email", placeholder = "Enter your email address" })
+                        @Html.ValidationMessageFor(model => model.EmailID, "", new { @class = "text-danger" })
+                    </div>
+                }
                 <div class="form-group">
                     <label for="exampleInputSubject1">Subject <span>*</span></label>
                     @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", placeholder = "Enter your subject" })

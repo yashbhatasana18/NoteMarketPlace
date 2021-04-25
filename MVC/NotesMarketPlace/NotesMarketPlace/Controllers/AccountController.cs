@@ -19,17 +19,28 @@ namespace NotesMarketPlace.Controllers
         readonly SignUpRepository signUpRepository = null;
 
         #region Default Constructor
+
         public AccountController()
         {
             signUpRepository = new SignUpRepository();
 
             using (var context = new NotesMarketPlaceEntities())
             {
+                SocialUrlModel socialUrlModel = new SocialUrlModel();
+
                 // social URL
                 var socialUrl = context.SystemConfigurations.Where(m => m.Key == "Facebook" || m.Key == "Twitter" || m.Key == "Linkedin").ToList();
-                ViewBag.URLs = socialUrl;
+
+                socialUrlModel.Facebook = socialUrl[0].Value;
+                socialUrlModel.Twitter = socialUrl[1].Value;
+                socialUrlModel.Linkedin = socialUrl[2].Value;
+
+                ViewBag.Facebook = socialUrlModel.Facebook;
+                ViewBag.Twitter = socialUrlModel.Twitter;
+                ViewBag.Linkedin = socialUrlModel.Linkedin;
             }
         }
+
         #endregion Default Constructor
 
         #region Initialize User Information
@@ -365,13 +376,24 @@ namespace NotesMarketPlace.Controllers
                             userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Members/" + currentuser + "/"), userProfilePicturePathFileName);
                             user.UserProfilePicturePath.SaveAs(userProfilePicturePathFileName);
                         }
-
-                        if (user.ProfilePicture == null || user.ProfilePicture == "~/Content/images/upload-file.png")
+                        else if (user.ProfilePicture != null)
+                        {
+                            user.ProfilePicture = user.ProfilePicture;
+                        }
+                        else
                         {
                             user.ProfilePicture = systemConfiguration.ToString();
                         }
 
-                        detailsUpdate.DOB = user.DOB;
+                        if (user.DOB != null)
+                        {
+                            detailsUpdate.DOB = user.DOB;
+                        }
+                        else
+                        {
+                            detailsUpdate.DOB = isDetailsAvailable.DOB;
+                        }
+
                         detailsUpdate.Gender = user.Gender;
                         detailsUpdate.PhoneNumberCountryCode = user.PhoneNumberCountryCode;
                         detailsUpdate.PhoneNumber = user.PhoneNumber;

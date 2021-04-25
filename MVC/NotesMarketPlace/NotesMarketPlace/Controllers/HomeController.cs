@@ -46,8 +46,18 @@ namespace NotesMarketPlace.Controllers
 
             using (var context = new NotesMarketPlaceEntities())
             {
+                SocialUrlModel socialUrlModel = new SocialUrlModel();
+
+                // social URL
                 var socialUrl = context.SystemConfigurations.Where(m => m.Key == "Facebook" || m.Key == "Twitter" || m.Key == "Linkedin").ToList();
-                ViewBag.URLs = socialUrl;
+
+                socialUrlModel.Facebook = socialUrl[0].Value;
+                socialUrlModel.Twitter = socialUrl[1].Value;
+                socialUrlModel.Linkedin = socialUrl[2].Value;
+
+                ViewBag.Facebook = socialUrlModel.Facebook;
+                ViewBag.Twitter = socialUrlModel.Twitter;
+                ViewBag.Linkedin = socialUrlModel.Linkedin;
             }
         }
 
@@ -1372,7 +1382,25 @@ namespace NotesMarketPlace.Controllers
         [AllowAnonymous]
         public ActionResult ContactUs()
         {
-            return View();
+            using (var context = new NotesMarketPlaceEntities())
+            {
+                var currentuser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
+
+                if (currentuser != null)
+                {
+                    var UserDetails = (from Detail in context.Users
+                                       join User in context.Users on Detail.UserID equals currentuser.UserID
+                                       where Detail.UserID == currentuser.UserID
+                                       select new ContactUsModel
+                                       {
+                                           FullName = User.FirstName + " " + User.LastName,
+                                           EmailID = User.EmailID,
+                                       }).FirstOrDefault<ContactUsModel>();
+
+                    return View(UserDetails);
+                }
+                return View();
+            }
         }
 
         [AllowAnonymous]

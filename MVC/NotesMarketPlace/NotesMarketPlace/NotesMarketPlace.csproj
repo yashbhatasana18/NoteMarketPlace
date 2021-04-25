@@ -108,6 +108,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\CommonCSS\upload.css" />
     <Content Include="Content\CommonJS\upload.js" />
     <Content Include="Content\icons-1.4.0\.fantasticonrc.js" />
@@ -1489,14 +1491,17 @@
     <Content Include="Content\icons-1.4.0\icons\zoom-in.svg" />
     <Content Include="Content\icons-1.4.0\icons\zoom-out.svg" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Members\1\member.jpeg21241169.png" />
-    <Content Include="Members\2\member.jpeg21241169.png" />
-    <Content Include="Members\3\member.jpeg21241169.png" />
-    <Content Include="Members\5\customer-121471654.png" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\jquery.validate.date.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Views\EmailTemplate\AccountConfirmation.html" />
     <Content Include="Content\Account\responsive.css" />
     <Content Include="Content\Account\signup.css" />
@@ -3126,6 +3131,7 @@
     <Folder Include="Content\NotesImages\Images\" />
     <Folder Include="Content\NotesImages\NotesPDF\" />
     <Folder Include="Content\NotesImages\NotesPreview\" />
+    <Folder Include="Members\1\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

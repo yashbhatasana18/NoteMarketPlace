@@ -86,6 +86,7 @@
     <Compile Include="SellerNotesReviewsModel.cs" />
     <Compile Include="SignUpModel.cs" />
     <Compile Include="Admin\SystemConfigurationsModel.cs" />
+    <Compile Include="SocialUrlModel.cs" />
     <Compile Include="UserProfileModel.cs" />
     <Compile Include="UserRolesModel.cs" />
   </ItemGroup>

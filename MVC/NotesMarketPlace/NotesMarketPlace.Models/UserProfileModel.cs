@@ -31,7 +31,7 @@ namespace NotesMarketPlace.Models
         [EmailAddress]
         public string EmailID { get; set; }
 
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DOB { get; set; }
 
@@ -45,7 +45,10 @@ namespace NotesMarketPlace.Models
 
         public string PhoneNumberCountryCode { get; set; }
 
-        [MaxLength(10, ErrorMessage = "Length should be <10")]
+        [StringLength(10, ErrorMessage = "Length should be = 10")]
+        [Display(Name = "Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
 
         public string ProfilePicture { get; set; }

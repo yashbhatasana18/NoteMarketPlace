@@ -331,7 +331,7 @@ table tr:hover {
 ======================================================================= */
 textarea {
     border: 1px solid #d1d1d1;
-    height: 238px !important;
+    height: 210px !important;
     border-radius: 3px;
 }
 
@@ -348,13 +348,13 @@ textarea {
 [id="dropdownType"],
 [id="dropdownCategory"],
 [id="dropdownGender"] {
-    background: url("../../images/arrow-down.png") 98% no-repeat;
+    background: url("../Content/images/arrow-down.png") 98% no-repeat;
     appearance: none;
 }
 
 .customDropDown-Multiple {
     padding-right: 60px !important;
-    background: url("../../images/arrow-down.png") 85% no-repeat;
+    background: url("../Content/images/arrow-down.png") 85% no-repeat;
     appearance: none;
     margin-right: 10px;
 }
@@ -367,7 +367,7 @@ textarea {
 /* Calendar */
 [id="example-date"],
 [type="date"] {
-    background: #fff url("../../images/calendar.png") 97% 50% no-repeat;
+    background: #fff url("../Content/images/calendar.png") 97% 50% no-repeat;
 }
 
     [type="date"]::-webkit-inner-spin-button {
