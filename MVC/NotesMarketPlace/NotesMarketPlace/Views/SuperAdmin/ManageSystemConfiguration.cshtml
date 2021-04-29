@@ -24,6 +24,7 @@
 @using (Html.BeginForm("ManageSystemConfiguration", "SuperAdmin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(m => m.TempPath);
+    @Html.HiddenFor(m => m.TempPath1);
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
@@ -78,27 +79,41 @@
                             <div id="messages">@ViewBag.ProfilePictureName</div>
                         </div>
                     </label>
-                    @Html.ValidationMessageFor(model => model.DefaultNotePicturePath , "", new { @class = "text-danger" })
+                    @*@if (Model.DefaultNotePicturePath != null)
+                    {
+                        @Html.ValidationMessageFor(model => model.DefaultNotePicturePath, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                        @Html.ValidationMessageFor(model => model.DefaultNoteImg, "", new { @class = "text-danger" })
+                    }*@
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="file-image">Default profile picture (if seller do not upload)</label>
-                <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="DefaultDefaultProfileImgPath" class="form-control" />
-                    <label for="file-upload" id="file-drag">
-                        <img id="file-image" src="#" alt="Preview" class="hidden">
-                        <div id="start">
-                            <img src="../Content/images/upload-file.png" height="46" width="50" />
+                <label for="file-image2">Default profile picture (if seller do not upload)</label>
+                <div id="file-upload-form2" class="uploader form-group">
+                    <input id="file-upload2" type="file" name="DefaultProfileImgPath" class="form-control" />
+                    <label for="file-upload2" id="file-drag2">
+                        <img id="file-image2" src="@Url.Content(ViewBag.ProfilePicturePreview2)" alt="Preview" class="@ViewBag.NonHideClass2">
+                        <div id="start2" class="@ViewBag.HideClass2">
+                            <img src="@Url.Content(ViewBag.ProfilePicture2)" height="46" width="50" />
                             <div>Upload a picture</div>
-                            <div id="notimage" class="hidden">Please select an image</div>
+                            <div id="notimage2" class="hidden">Please select an image</div>
                         </div>
-                        <div id="response" class="hidden">
-                            <div id="messages"></div>
+                        <div id="response2" class="@ViewBag.NonHideClass2">
+                            <div id="messages2">@ViewBag.ProfilePictureName2</div>
                         </div>
                     </label>
-            @Html.ValidationMessageFor(model => model.DefaultDefaultProfileImgPath, "", new { @class = "text-danger" })
-            </div>
+                    @*@if (Model.DefaultProfileImgPath != null)
+                    {
+                        @Html.ValidationMessageFor(model => model.DefaultProfileImgPath, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                        @Html.ValidationMessageFor(model => model.DefaultProfileImg, "", new { @class = "text-danger" })
+                    }*@
+                </div>
             </div>
 
         </div>

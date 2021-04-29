@@ -294,7 +294,7 @@ namespace NotesMarketPlace.Controllers
                         SupportEmail = systemConfigurations.Single(m => m.Key == "SupportEmailAddress").Value,
                         SupportContact = systemConfigurations.Single(m => m.Key == "SupportContact").Value,
                         DefaultNoteImg = systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value,
-                        //DefaultProfileImg = systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value,
+                        DefaultProfileImg = systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value,
                         Emails = systemConfigurations.Single(m => m.Key == "EmailAddresses").Value,
                         FacebookUrl = systemConfigurations.Single(m => m.Key == "Facebook").Value,
                         TwitterUrl = systemConfigurations.Single(m => m.Key == "Twitter").Value,
@@ -302,6 +302,7 @@ namespace NotesMarketPlace.Controllers
                     };
 
                     model.TempPath = model.DefaultNoteImg;
+                    model.TempPath1 = model.DefaultProfileImg;
 
                     if (model.DefaultNoteImg == null)
                     {
@@ -319,6 +320,24 @@ namespace NotesMarketPlace.Controllers
                         ViewBag.ProfilePictureName = Path.GetFileName(model.DefaultNoteImg);
                         ViewBag.HideClass = "hidden";
                         ViewBag.NonHideClass = "";
+                    }
+
+                    if (model.DefaultProfileImg == null)
+                    {
+                        model.DefaultProfileImg = "~/Content/images/upload-file.png";
+                        ViewBag.ProfilePicture2 = "~/Content/images/upload-file.png";
+                        ViewBag.ProfilePicturePreview2 = "#";
+                        ViewBag.HideClass2 = "";
+                        ViewBag.NonHideClass2 = "hidden";
+                        ViewBag.ProfilePictureName2 = "";
+                    }
+                    else
+                    {
+                        ViewBag.ProfilePicture2 = "~/Content/images/upload-file.png";
+                        ViewBag.ProfilePicturePreview2 = model.DefaultProfileImg;
+                        ViewBag.ProfilePictureName2 = Path.GetFileName(model.DefaultProfileImg);
+                        ViewBag.HideClass2 = "hidden";
+                        ViewBag.NonHideClass2 = "";
                     }
 
                     return View(model);
@@ -370,27 +389,48 @@ namespace NotesMarketPlace.Controllers
                             {
                                 file.Delete();
                             }
-                            //UserProfilePicturePath
-                            string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(model.DefaultNotePicturePath.FileName);
-                            string userProfilePicturePathExtension = Path.GetExtension(model.DefaultNotePicturePath.FileName);
+                            //DefaultNotePicture
+                            string defaultNotePictureFileName = Path.GetFileNameWithoutExtension(model.DefaultNotePicturePath.FileName);
+                            string defaultNotePictureExtension = Path.GetExtension(model.DefaultNotePicturePath.FileName);
+                            defaultNotePictureFileName = defaultNotePictureFileName + DateTime.Now.ToString("yymmssff") + defaultNotePictureExtension;
+
+                            ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                            ViewBag.ProfilePicturePreview = "~/Content/NotesImages/Images/" + defaultNotePictureFileName;
+                            ViewBag.ProfilePictureName = defaultNotePictureFileName;
+
+                            systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value = "~/Content/NotesImages/Images/" + defaultNotePictureFileName;
+                            systemConfigurations.Single(m => m.Key == "DefaultBookImage").ModifiedDate = DateTime.Now;
+                            defaultNotePictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), defaultNotePictureFileName);
+                            model.DefaultNotePicturePath.SaveAs(defaultNotePictureFileName);
+                        }
+                    }
+
+                    if (systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value != model.DefaultProfileImg)
+                    {
+                        if (model.DefaultProfileImgPath != null)
+                        {
+                            string FileNameDelete = System.IO.Path.GetFileName(model.TempPath1);
+                            string PathPreview = Request.MapPath("~/Content/NotesImages/Images/" + FileNameDelete);
+                            FileInfo file = new FileInfo(PathPreview);
+                            if (file.Exists)
+                            {
+                                file.Delete();
+                            }
+                            //DefaultProfileImg
+                            string userProfilePicturePathFileName = Path.GetFileNameWithoutExtension(model.DefaultProfileImgPath.FileName);
+                            string userProfilePicturePathExtension = Path.GetExtension(model.DefaultProfileImgPath.FileName);
                             userProfilePicturePathFileName = userProfilePicturePathFileName + DateTime.Now.ToString("yymmssff") + userProfilePicturePathExtension;
 
                             ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
                             ViewBag.ProfilePicturePreview = "~/Content/NotesImages/Images/" + userProfilePicturePathFileName;
                             ViewBag.ProfilePictureName = userProfilePicturePathFileName;
 
-                            systemConfigurations.Single(m => m.Key == "DefaultBookImage").Value = "~/Content/NotesImages/Images/" + userProfilePicturePathFileName;
-                            systemConfigurations.Single(m => m.Key == "DefaultBookImage").ModifiedDate = DateTime.Now;
+                            systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value = "~/Content/NotesImages/Images/" + userProfilePicturePathFileName;
+                            systemConfigurations.Single(m => m.Key == "DefaultProfileImage").ModifiedDate = DateTime.Now;
                             userProfilePicturePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), userProfilePicturePathFileName);
-                            model.DefaultNotePicturePath.SaveAs(userProfilePicturePathFileName);
+                            model.DefaultProfileImgPath.SaveAs(userProfilePicturePathFileName);
                         }
                     }
-
-                    //if (systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value != model.DefaultProfileImg)
-                    //{
-                    //    systemConfigurations.Single(m => m.Key == "DefaultProfileImage").Value = model.DefaultProfileImg;
-                    //    systemConfigurations.Single(m => m.Key == "DefaultProfileImage").ModifiedDate = DateTime.Now;
-                    //}
 
                     if (systemConfigurations.Single(m => m.Key == "EmailAddresses").Value != model.Emails)
                     {
@@ -432,7 +472,7 @@ namespace NotesMarketPlace.Controllers
                     ViewBag.message = ex.Message;
                 }
 
-                return View(model);
+                return RedirectToAction("ManageSystemConfiguration");
             }
         }
 

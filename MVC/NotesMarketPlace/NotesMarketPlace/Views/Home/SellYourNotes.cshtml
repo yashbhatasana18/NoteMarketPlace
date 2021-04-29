@@ -337,11 +337,7 @@
                                         <td>@item.SellType</td>
                                         <td>$@item.Price</td>
                                         <td class="text-center">
-                                            @if (true)
-                                            {
-
-                                            }
-                                            <a href="@Url.Action("NoteDetails", "Home" , new { id=@item.Id,ReadOnly=false })"><img src="~/Content/images/eye.png" alt="edit-image"></a>
+                                            <a href="@Url.Action("NoteDetails", "Home" , new { id=@item.Id,ReadOnly=false })"><img src="~/Content/images/eye.png" alt="eye-image"></a>
                                         </td>
                                     </tr>
                                 }

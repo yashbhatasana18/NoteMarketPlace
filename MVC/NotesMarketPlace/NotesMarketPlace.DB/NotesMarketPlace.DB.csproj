@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,7 +65,6 @@
     <Compile Include="DBOperations\SearchRepository.cs" />
     <Compile Include="DBOperations\SellYourNotesRepository.cs" />
     <Compile Include="DBOperations\SignUpRepository.cs" />
-    <Compile Include="DBOperations\SuperAdminRepository.cs" />
     <Compile Include="Downloads.cs">
       <DependentUpon>NMPModel.tt</DependentUpon>
     </Compile>

@@ -24,7 +24,7 @@
 @using (Html.BeginForm("MyProfile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    //@Html.ValidationSummary(false, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ProfileImage)
 
     <div class="row heading">
@@ -51,6 +51,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.SecondaryEmail, "Secondary Email *", new { @for = "InputEmail2" })
                 @Html.TextBoxFor(model => model.SecondaryEmail, new { @class = "form-control", id = "InputEmail2", placeholder = "Enter your email address" })
+                @Html.ValidationMessageFor(model => model.SecondaryEmail, "", new { @class = "text-danger" })
             </div>
 
             <div class="mb-3">
@@ -61,6 +62,7 @@
                     </div>
                     @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", placeholder = "Enter your phone number", id = "phoneNo" })
                 </div>
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">

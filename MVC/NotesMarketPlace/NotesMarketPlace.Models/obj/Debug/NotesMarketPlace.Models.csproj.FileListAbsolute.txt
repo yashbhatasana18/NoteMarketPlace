@@ -8,6 +8,7 @@ E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Mo
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\bin\Debug\NotesMarketPlace.Models.pdb
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\bin\Debug\Newtonsoft.Json.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\bin\Debug\Newtonsoft.Json.xml
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.csprojAssemblyReference.cache
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.csproj.CoreCompileInputs.cache
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.csproj.CopyComplete
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace.Models\obj\Debug\NotesMarketPlace.Models.dll

@@ -1215,7 +1215,6 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <FunctionImport Name="SP_Users_SelectAll" ReturnType="Collection(NotesMarketPlaceModel.SP_Users_SelectAll_Result)" />
           <FunctionImport Name="SP_Notes_Search" ReturnType="Collection(NotesMarketPlaceModel.SP_Notes_Search_Result)">
             <Parameter Name="NotesTitle" Mode="In" Type="String" />
             <Parameter Name="Category" Mode="In" Type="Int32" />
@@ -1230,6 +1229,7 @@
           </FunctionImport>
           <FunctionImport Name="SP_SellerNotes_SelectAll" ReturnType="Collection(NotesMarketPlaceModel.SP_SellerNotes_SelectAll_Result)" />
           <FunctionImport Name="FN_SellerNotes_SelectAll" EntitySet="SellerNotes" ReturnType="Collection(NotesMarketPlaceModel.SellerNotes)" />
+          <FunctionImport Name="SP_Users_SelectAll" EntitySet="Users" ReturnType="Collection(NotesMarketPlaceModel.Users)" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1542,24 +1542,6 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="NotesMarketPlaceModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="NotesMarketPlaceModel.Store.sp_upgraddiagrams" />
-          <FunctionImportMapping FunctionImportName="SP_Users_SelectAll" FunctionName="NotesMarketPlaceModel.Store.SP_Users_SelectAll">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="NotesMarketPlaceModel.SP_Users_SelectAll_Result">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="IsEmailVerified" ColumnName="IsEmailVerified" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_Notes_Search" FunctionName="NotesMarketPlaceModel.Store.SP_Notes_Search">
             <ResultMapping>
               <ComplexTypeMapping TypeName="NotesMarketPlaceModel.SP_Notes_Search_Result">
@@ -1586,6 +1568,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="FN_SellerNotes_SelectAll" FunctionName="NotesMarketPlaceModel.Store.SP_SellerNotes_SelectAll" />
+          <FunctionImportMapping FunctionImportName="SP_Users_SelectAll" FunctionName="NotesMarketPlaceModel.Store.SP_Users_SelectAll" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

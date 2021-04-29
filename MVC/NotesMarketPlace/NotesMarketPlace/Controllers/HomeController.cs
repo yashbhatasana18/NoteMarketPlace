@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
@@ -23,18 +22,6 @@ namespace NotesMarketPlace.Controllers
         readonly SellYourNotesRepository sellYourNotesRepository = null;
 
         readonly NotesMarketPlaceEntities db;
-
-        [AllowAnonymous]
-        public ActionResult Home()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        public ActionResult Faq()
-        {
-            return View();
-        }
 
         #region Default Constructor
 
@@ -97,6 +84,26 @@ namespace NotesMarketPlace.Controllers
         }
 
         #endregion Initialize User Information
+
+        #region Home
+
+        [AllowAnonymous]
+        public ActionResult Home()
+        {
+            return View();
+        }
+
+        #endregion Home
+
+        #region Faq
+
+        [AllowAnonymous]
+        public ActionResult Faq()
+        {
+            return View();
+        }
+
+        #endregion Faq
 
         #region Sell Your Notes
 
@@ -272,7 +279,7 @@ namespace NotesMarketPlace.Controllers
                         }
                         else
                         {
-                            model.DisplayPicture = defaultProfileImage;
+                            model.DisplayPicture = defaultBookImage;
                         }
 
                         //NoteUploadFilePath
@@ -284,20 +291,13 @@ namespace NotesMarketPlace.Controllers
                         noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
                         model.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
 
-                        if (model.NotePreviewFilePath != null)
-                        {
-                            //NotePreviewFilePath
-                            string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(model.NotePreviewFilePath.FileName);
-                            string notePreviewFilePathExtension = Path.GetExtension(model.NotePreviewFilePath.FileName);
-                            notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
-                            model.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
-                            notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
-                            model.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
-                        }
-                        else
-                        {
-                            model.NotesPreview = defaultBookImage;
-                        }
+                        //NotePreviewFilePath
+                        string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(model.NotePreviewFilePath.FileName);
+                        string notePreviewFilePathExtension = Path.GetExtension(model.NotePreviewFilePath.FileName);
+                        notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
+                        model.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
+                        notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
+                        model.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
 
                         if (model.IsPaid)
                         {
@@ -316,6 +316,10 @@ namespace NotesMarketPlace.Controllers
 
                                 return View("AddNotes");
                             }
+                        }
+                        else
+                        {
+                            model.SellingPrice = 0;
                         }
 
                         int id = addNoteRepository.AddNotes(model, Command);
@@ -626,9 +630,12 @@ namespace NotesMarketPlace.Controllers
                     context.SaveChanges();
                 }
 
-                string notePreviewPath = Server.MapPath(note.NotesPreview);
-                DirectoryInfo previewPath = new DirectoryInfo(notePreviewPath);
-                System.IO.File.Delete(notePreviewPath);
+                if (note.NotesPreview != null)
+                {
+                    string notePreviewPath = Server.MapPath(note.NotesPreview);
+                    DirectoryInfo previewPath = new DirectoryInfo(notePreviewPath);
+                    System.IO.File.Delete(notePreviewPath);
+                }
 
                 string noteImagesPath = Server.MapPath(note.DisplayPicture);
                 DirectoryInfo imagesPath = new DirectoryInfo(noteImagesPath);
@@ -1390,7 +1397,7 @@ namespace NotesMarketPlace.Controllers
                 {
                     var UserDetails = (from Detail in context.Users
                                        join User in context.Users on Detail.UserID equals currentuser.UserID
-                                       where Detail.UserID == currentuser.UserID
+                                       where User.UserID == currentuser.UserID
                                        select new ContactUsModel
                                        {
                                            FullName = User.FirstName + " " + User.LastName,

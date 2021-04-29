@@ -23,12 +23,12 @@ namespace NotesMarketPlace.Models
 
         public string DisplayPicture { get; set; }
 
-        //[Required(ErrorMessage = "Please Select File")]
-        //[DataType(DataType.Upload)]
-        //[Display(Name = "Upload File")]
+        public string NotesPreview { get; set; }
+
         public string FilePath { get; set; }
 
         public string FileName { get; set; }
+
         public int? NoteType { get; set; }
 
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "Only digits allowed")]
@@ -38,6 +38,7 @@ namespace NotesMarketPlace.Models
         public string Description { get; set; }
 
         public string UniversityName { get; set; }
+
         public int? Country { get; set; }
 
         public string Course { get; set; }
@@ -53,7 +54,6 @@ namespace NotesMarketPlace.Models
 
         public decimal? SellingPrice { get; set; }
 
-        public string NotesPreview { get; set; }
 
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
@@ -72,8 +72,11 @@ namespace NotesMarketPlace.Models
         public HttpPostedFileBase NoteDisplayPicturePath { get; set; }
 
         [Required(ErrorMessage = "Please Select File.")]
+        //[DataType(DataType.Upload)]
         public HttpPostedFileBase NoteUploadFilePath { get; set; }
 
+        [Required(ErrorMessage = "Please Select File.")]
+        //[DataType(DataType.Upload)]
         public HttpPostedFileBase NotePreviewFilePath { get; set; }
     }
 }

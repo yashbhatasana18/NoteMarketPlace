@@ -1,8 +1,5 @@
 <stylecopresultscache>
   <version>12</version>
-  <project key="-326393409">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
   <sourcecode name="AddNotesModel.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2021-02-15 17:17:04.311</styleCop>
@@ -2718,4 +2715,7 @@
       </violation>
     </violations>
   </sourcecode>
+  <project key="-326393409">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
 </stylecopresultscache>

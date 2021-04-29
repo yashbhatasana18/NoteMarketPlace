@@ -145,11 +145,6 @@ namespace NotesMarketPlace.DB
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
         }
     
-        public virtual ObjectResult<SP_Users_SelectAll_Result> SP_Users_SelectAll()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Users_SelectAll_Result>("SP_Users_SelectAll");
-        }
-    
         public virtual ObjectResult<SP_Notes_Search_Result> SP_Notes_Search(string notesTitle, Nullable<int> category, Nullable<int> noteType, Nullable<int> university, Nullable<int> course, Nullable<int> country, Nullable<int> rating)
         {
             var notesTitleParameter = notesTitle != null ?
@@ -205,6 +200,16 @@ namespace NotesMarketPlace.DB
         public virtual ObjectResult<SellerNotes> FN_SellerNotes_SelectAll(MergeOption mergeOption)
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SellerNotes>("FN_SellerNotes_SelectAll", mergeOption);
+        }
+    
+        public virtual ObjectResult<Users> SP_Users_SelectAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Users>("SP_Users_SelectAll");
+        }
+    
+        public virtual ObjectResult<Users> SP_Users_SelectAll(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Users>("SP_Users_SelectAll", mergeOption);
         }
     }
 }

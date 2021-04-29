@@ -143,7 +143,7 @@
     @using (Html.BeginForm("AddNotes", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        @*@Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -276,13 +276,13 @@
                     <div class="contact-inputs">
                         <label class="radio1">
                             @*<input type="radio" checked="checked" name="radio" value="free">*@
-                            @Html.RadioButtonFor(model => model.IsPaid, false, new { @name = "IsPaid", @id = "Free" })
+                            @Html.RadioButtonFor(model => model.IsPaid, false, new { @name = "IsPaid", @id = "Free", onclick = "EnableDisableTextBox()" })
                             <span class="checkmark"></span>
                             <label class="label-2">Free</label>
                         </label>
                         <label class="radio1">
                             @*<input type="radio" name="radio" value="paid">*@
-                            @Html.RadioButtonFor(model => model.IsPaid, true, new { @name = "IsPaid", @id = "Paid" })
+                            @Html.RadioButtonFor(model => model.IsPaid, true, new { @name = "IsPaid", @id = "Paid", onclick = "EnableDisableTextBox()" })
                             <span class="checkmark"></span>
                             <label class="label-2">Paid</label>
                         </label>
@@ -292,6 +292,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.SellingPrice, "Sell Price", new { @for = "sellPrice" })
                     @Html.TextBoxFor(model => model.SellingPrice, new { @class = "form-control", placeholder = "Enter your price", id = "sellPrice" })
+                    @Html.ValidationMessageFor(model => model.SellingPrice, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -299,7 +300,7 @@
                 <label for="file-preview">Note Preview</label>
                 <div id="preview-upload-form" class="uploader form-group">
                     <input id="preview-upload" type="file" name="NotePreviewFilePath" />
-                    <label for="preview-upload" id="preview-drag" class="customInput">
+                    <label for="preview-upload" id="preview-drag">
                         <img id="file-preview" src="#" alt="Preview" class="hidden">
                         <div id="start3">
                             <img src="~/Content/images/upload-file.png" height="46" width="50" />
@@ -309,6 +310,7 @@
                         <div id="response3" class="hidden">
                             <div id="messages3"></div>
                         </div>
+                        @Html.ValidationMessageFor(model => model.NotePreviewFilePath, "", new { @class = "text-danger" })
                     </label>
                 </div>
             </div>
@@ -325,6 +327,7 @@
         </div>
 
         <!-- Published note popup box -->
+
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
@@ -353,9 +356,25 @@
                 </div>
             </div>
         </div>
+
+        <!-- Published note popup box End -->
     }
 </section>
 
 
 <!-- End of popup box -->
 <!-- End Add Notes   -->
+
+@section CustomScript
+{
+    <script>
+        function EnableDisableTextBox() {
+            var Paid = document.getElementById("Paid");
+            var txtSellPrice = document.getElementById("sellPrice");
+            txtSellPrice.disabled = Paid.checked ? false : true;
+            if (!txtSellPrice.disabled) {
+                txtSellPrice.focus();
+            }
+        }
+    </script>
+}

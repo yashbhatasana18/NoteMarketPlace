@@ -77,6 +77,7 @@
         }
 
     .uploader #file-image,
+    .uploader #file-image2,
     .uploader #file-pdf,
     .uploader #file-preview {
         display: inline;
@@ -87,6 +88,7 @@
     }
 
         .uploader #file-image.hidden,
+        .uploader #file-image2.hidden,
         .uploader #file-pdf.hidden,
         .uploader #file-preview.hidden {
             display: none;

@@ -631,7 +631,6 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
-    <FunctionImport Name="SP_Users_SelectAll" ReturnType="Collection(NotesMarketPlaceModel.SP_Users_SelectAll_Result)" />
     <FunctionImport Name="SP_Notes_Search" ReturnType="Collection(NotesMarketPlaceModel.SP_Notes_Search_Result)">
       <Parameter Name="NotesTitle" Mode="In" Type="String" />
       <Parameter Name="Category" Mode="In" Type="Int32" />
@@ -646,6 +645,7 @@
     </FunctionImport>
     <FunctionImport Name="SP_SellerNotes_SelectAll" ReturnType="Collection(NotesMarketPlaceModel.SP_SellerNotes_SelectAll_Result)" />
     <FunctionImport Name="FN_SellerNotes_SelectAll" EntitySet="SellerNotes" ReturnType="Collection(NotesMarketPlaceModel.SellerNotes)" />
+    <FunctionImport Name="SP_Users_SelectAll" EntitySet="Users" ReturnType="Collection(NotesMarketPlaceModel.Users)" />
   </EntityContainer>
   <ComplexType Name="sp_helpdiagramdefinition_Result">
     <Property Type="Int32" Name="version" Nullable="true" />

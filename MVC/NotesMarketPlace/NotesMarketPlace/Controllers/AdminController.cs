@@ -919,7 +919,7 @@ namespace NotesMarketPlace.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return RedirectToAction("MyProfile");
+                    return View(profile);
                 }
 
                 var user = context.Users.Single(x => x.EmailID == User.Identity.Name);

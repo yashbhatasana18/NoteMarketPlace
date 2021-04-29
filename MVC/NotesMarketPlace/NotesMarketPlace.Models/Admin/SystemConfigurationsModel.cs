@@ -37,11 +37,13 @@ namespace NotesMarketPlace.Models.Admin
 
         public string TempPath { get; set; }
 
-        [Required(ErrorMessage = "Select Default Profile Image")]
+        public string TempPath1 { get; set; }
+
+        //[Required(ErrorMessage = "Select Default Image For Notes")]
         public HttpPostedFileBase DefaultNotePicturePath { get; set; }
 
         //[Required(ErrorMessage = "Select Default Profile Image")]
-        public HttpPostedFileBase DefaultDefaultProfileImgPath { get; set; }
+        public HttpPostedFileBase DefaultProfileImgPath { get; set; }
 
         public DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
