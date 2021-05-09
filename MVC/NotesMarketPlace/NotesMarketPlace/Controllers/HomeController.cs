@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
@@ -391,7 +390,6 @@ namespace NotesMarketPlace.Controllers
 
             var notesAttachements = db.SellerNotesAttachements.FirstOrDefault(x => x.NoteID == id);
 
-
             var NoteCategoryList = db.NoteCategories.ToList();
             ViewBag.NotesCategory = new SelectList(NoteCategoryList, "NoteCategoriesID", "Name");
 
@@ -401,40 +399,86 @@ namespace NotesMarketPlace.Controllers
             var CountryList = db.Countries.ToList();
             ViewBag.NotesCountry = new SelectList(CountryList, "CountriesID", "Name");
 
-            AddNotesModel editnote = new AddNotesModel
+            EditNotesModel editnote = new EditNotesModel
             {
                 SellerNotesID = note.SellerNotesID,
                 NoteType = note.NoteType,
                 Title = note.Title,
-                Category = note.Category
+                Category = note.Category,
+                NumberOfPages = note.NumberOfPages,
+                Description = note.Description,
+                Country = note.Country,
+                UniversityName = note.UniversityName,
+                Course = note.Course,
+                CourseCode = note.CourseCode,
+                Professor = note.Professor,
+                IsPaid = note.IsPaid,
+                SellingPrice = note.SellingPrice,
+                DisplayPicture = note.DisplayPicture,
+                NotesPreview = note.NotesPreview,
+                FilePath = notesAttachements.FilePath
             };
-            editnote.NoteType = note.NoteType;
-            editnote.NumberOfPages = note.NumberOfPages;
-            editnote.Description = note.Description;
-            editnote.Country = note.Country;
-            editnote.UniversityName = note.UniversityName;
-            editnote.Course = note.Course;
-            editnote.CourseCode = note.CourseCode;
-            editnote.Professor = note.Professor;
-            editnote.IsPaid = note.IsPaid;
-            editnote.SellingPrice = note.SellingPrice;
 
-            editnote.DisplayPicture = note.DisplayPicture;
-            editnote.NotesPreview = note.NotesPreview;
-            editnote.FilePath = notesAttachements.FilePath;
+            if (editnote.DisplayPicture == null)
+            {
+                editnote.DisplayPicture = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicturePreview = "#";
+                ViewBag.HideClass = "";
+                ViewBag.NonHideClass = "hidden";
+                ViewBag.ProfilePictureName = "";
+            }
+            else
+            {
+                ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicturePreview = editnote.DisplayPicture;
+                ViewBag.ProfilePictureName = Path.GetFileNameWithoutExtension(editnote.DisplayPicture);
+                ViewBag.HideClass = "hidden";
+                ViewBag.NonHideClass = "";
+            }
 
-            ViewBag.ImagePath = note.DisplayPicture;
-            ViewBag.PreviewPath = note.NotesPreview;
+            if (editnote.FilePath == null)
+            {
+                editnote.FilePath = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicture2 = "~/Content/images/upload-file.png";
+                ViewBag.UploadNotePreview = "#";
+                ViewBag.HideClass2 = "";
+                ViewBag.NonHideClass2 = "hidden";
+                ViewBag.ProfilePictureName2 = "";
+            }
+            else
+            {
+                ViewBag.ProfilePicture2 = "~/Content/images/upload-file.png";
+                ViewBag.UploadNotePreview = editnote.FilePath;
+                ViewBag.ProfilePictureName2 = Path.GetFileNameWithoutExtension(editnote.FilePath);
+                ViewBag.HideClass2 = "hidden";
+                ViewBag.NonHideClass2 = "";
+            }
 
-            ViewBag.ImageName = Path.GetFileName(note.DisplayPicture);
-            ViewBag.PreviewName = Path.GetFileName(note.NotesPreview);
+            if (editnote.NotesPreview == null)
+            {
+                editnote.NotesPreview = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicture3 = "~/Content/images/upload-file.png";
+                ViewBag.NotePreview = "#";
+                ViewBag.HideClass3 = "";
+                ViewBag.NonHideClass3 = "hidden";
+                ViewBag.ProfilePictureName3 = "";
+            }
+            else
+            {
+                ViewBag.ProfilePicture3 = "~/Content/images/upload-file.png";
+                ViewBag.NotePreview = editnote.NotesPreview;
+                ViewBag.ProfilePictureName3 = Path.GetFileNameWithoutExtension(editnote.NotesPreview);
+                ViewBag.HideClass3 = "hidden";
+                ViewBag.NonHideClass3 = "";
+            }
 
             return View(editnote);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditNote(AddNotesModel editnote, string Command)
+        public ActionResult EditNote(EditNotesModel editnote, string Command)
         {
             ViewBag.Show = false;
 
@@ -448,28 +492,11 @@ namespace NotesMarketPlace.Controllers
             {
                 if (user != null && ModelState.IsValid)
                 {
-                    if (editnote.DisplayPicture != null)
+                    if (editnote.EditNoteDisplayPicturePath == null)
                     {
-                        //string FileNameDelete = System.IO.Path.GetFileName(note.DisplayPicture);
-                        //string PathImage = Request.MapPath("~/Content/NotesImages/Images/" + FileNameDelete);
-                        //FileInfo file = new FileInfo(PathImage);
-                        //if (file.Exists)
-                        //{
-                        //    file.Delete();
-                        //}
-                        //string displayPictureFileName = Path.GetFileNameWithoutExtension(editnote.NoteDisplayPicturePath.FileName);
-                        //string displayPictureExtension = Path.GetExtension(editnote.NoteDisplayPicturePath.FileName);
-                        //displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
-                        //note.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
-                        //displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
-                        //editnote.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
                         note.DisplayPicture = editnote.DisplayPicture;
-
-                        db.Configuration.ValidateOnSaveEnabled = false;
-                        db.SaveChanges();
                     }
-
-                    if (editnote.NoteDisplayPicturePath != null)
+                    else
                     {
                         string FileNameDelete = System.IO.Path.GetFileName(note.DisplayPicture);
                         string PathImage = Request.MapPath("~/Content/NotesImages/Images/" + FileNameDelete);
@@ -478,40 +505,22 @@ namespace NotesMarketPlace.Controllers
                         {
                             file.Delete();
                         }
-                        string displayPictureFileName = Path.GetFileNameWithoutExtension(editnote.NoteDisplayPicturePath.FileName);
-                        string displayPictureExtension = Path.GetExtension(editnote.NoteDisplayPicturePath.FileName);
+                        string displayPictureFileName = Path.GetFileNameWithoutExtension(editnote.EditNoteDisplayPicturePath.FileName);
+                        string displayPictureExtension = Path.GetExtension(editnote.EditNoteDisplayPicturePath.FileName);
                         displayPictureFileName = displayPictureFileName + DateTime.Now.ToString("yymmssff") + displayPictureExtension;
                         note.DisplayPicture = "~/Content/NotesImages/Images/" + displayPictureFileName;
                         displayPictureFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/Images/"), displayPictureFileName);
-                        editnote.NoteDisplayPicturePath.SaveAs(displayPictureFileName);
+                        editnote.EditNoteDisplayPicturePath.SaveAs(displayPictureFileName);
 
                         db.Configuration.ValidateOnSaveEnabled = false;
                         db.SaveChanges();
                     }
 
-                    if (editnote.NotesPreview != null)
+                    if (editnote.EditNotePreviewFilePath == null)
                     {
-                        //string FileNameDelete = System.IO.Path.GetFileName(note.NotesPreview);
-                        //string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
-                        //FileInfo file = new FileInfo(PathPreview);
-                        //if (file.Exists)
-                        //{
-                        //    file.Delete();
-                        //}
-                        //string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NotePreviewFilePath.FileName);
-                        //string notePreviewFilePathExtension = Path.GetExtension(editnote.NotePreviewFilePath.FileName);
-                        //notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
-                        //note.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
-                        //notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
-                        //editnote.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
-
                         note.NotesPreview = editnote.NotesPreview;
-
-                        db.Configuration.ValidateOnSaveEnabled = false;
-                        db.SaveChanges();
                     }
-
-                    if (editnote.NotePreviewFilePath != null)
+                    else
                     {
                         string FileNameDelete = System.IO.Path.GetFileName(note.NotesPreview);
                         string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
@@ -520,41 +529,22 @@ namespace NotesMarketPlace.Controllers
                         {
                             file.Delete();
                         }
-                        string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NotePreviewFilePath.FileName);
-                        string notePreviewFilePathExtension = Path.GetExtension(editnote.NotePreviewFilePath.FileName);
+                        string notePreviewFilePathFileName = Path.GetFileNameWithoutExtension(editnote.EditNotePreviewFilePath.FileName);
+                        string notePreviewFilePathExtension = Path.GetExtension(editnote.EditNotePreviewFilePath.FileName);
                         notePreviewFilePathFileName = notePreviewFilePathFileName + DateTime.Now.ToString("yymmssff") + notePreviewFilePathExtension;
                         note.NotesPreview = "~/Content/NotesImages/NotesPreview/" + notePreviewFilePathFileName;
                         notePreviewFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPreview/"), notePreviewFilePathFileName);
-                        editnote.NotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
+                        editnote.EditNotePreviewFilePath.SaveAs(notePreviewFilePathFileName);
 
                         db.Configuration.ValidateOnSaveEnabled = false;
                         db.SaveChanges();
                     }
 
-                    if (editnote.FilePath != null)
+                    if (editnote.EditNoteUploadFilePath == null)
                     {
-                        //string FileNameDelete = System.IO.Path.GetFileName(editnote.FilePath);
-                        //string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
-                        //FileInfo file = new FileInfo(PathPreview);
-                        //if (file.Exists)
-                        //{
-                        //    file.Delete();
-                        //}
-                        //string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
-                        //editnote.FileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
-                        //string noteUploadFilePathExtension = Path.GetExtension(editnote.NoteUploadFilePath.FileName);
-                        //noteUploadFilePathFileName = noteUploadFilePathFileName + DateTime.Now.ToString("yymmssff") + noteUploadFilePathExtension;
-                        //editnote.FilePath = "~/Content/NotesImages/NotesPDF/" + noteUploadFilePathFileName;
-                        //noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
-                        //editnote.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
-
                         AttachFile.FilePath = editnote.FilePath;
-
-                        db.Configuration.ValidateOnSaveEnabled = false;
-                        db.SaveChanges();
                     }
-
-                    if (editnote.NoteUploadFilePath != null)
+                    else
                     {
                         string FileNameDelete = System.IO.Path.GetFileName(editnote.FilePath);
                         string PathPreview = Request.MapPath("~/Content/NotesImages/NotesPreview/" + FileNameDelete);
@@ -563,16 +553,36 @@ namespace NotesMarketPlace.Controllers
                         {
                             file.Delete();
                         }
-                        string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
-                        editnote.FileName = Path.GetFileNameWithoutExtension(editnote.NoteUploadFilePath.FileName);
-                        string noteUploadFilePathExtension = Path.GetExtension(editnote.NoteUploadFilePath.FileName);
+                        string noteUploadFilePathFileName = Path.GetFileNameWithoutExtension(editnote.EditNoteUploadFilePath.FileName);
+                        editnote.FileName = Path.GetFileNameWithoutExtension(editnote.EditNoteUploadFilePath.FileName);
+                        string noteUploadFilePathExtension = Path.GetExtension(editnote.EditNoteUploadFilePath.FileName);
                         noteUploadFilePathFileName = noteUploadFilePathFileName + DateTime.Now.ToString("yymmssff") + noteUploadFilePathExtension;
                         editnote.FilePath = "~/Content/NotesImages/NotesPDF/" + noteUploadFilePathFileName;
                         noteUploadFilePathFileName = Path.Combine(Server.MapPath("~/Content/NotesImages/NotesPDF/"), noteUploadFilePathFileName);
-                        editnote.NoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
+                        editnote.EditNoteUploadFilePath.SaveAs(noteUploadFilePathFileName);
 
                         db.Configuration.ValidateOnSaveEnabled = false;
                         db.SaveChanges();
+                    }
+
+                    if (editnote.IsPaid)
+                    {
+                        if (editnote.SellingPrice == null || editnote.SellingPrice < 1)
+                        {
+                            EditNotesModel(editnote);
+
+                            ModelState.AddModelError("SellingPrice", "Enter valid Selling price");
+
+                            return View(editnote);
+                        }
+                        else
+                        {
+                            note.SellingPrice = editnote.SellingPrice;
+                        }
+                    }
+                    else
+                    {
+                        note.SellingPrice = 0;
                     }
 
                     note.Title = editnote.Title;
@@ -587,7 +597,7 @@ namespace NotesMarketPlace.Controllers
                     note.CourseCode = editnote.CourseCode;
                     note.Professor = editnote.Professor;
                     note.IsPaid = editnote.IsPaid;
-                    note.SellingPrice = editnote.IsPaid == false ? 0 : note.SellingPrice;
+                    //note.SellingPrice = editnote.IsPaid == false ? 0 : editnote.SellingPrice;
                     note.ModifiedDate = DateTime.Now;
 
                     db.Configuration.ValidateOnSaveEnabled = false;
@@ -603,6 +613,102 @@ namespace NotesMarketPlace.Controllers
                 ViewBag.message = ex.Message;
             }
             return View(editnote);
+        }
+
+        public EditNotesModel EditNotesModel(EditNotesModel editnote)
+        {
+            var user1 = db.Users.FirstOrDefault(x => x.EmailID == User.Identity.Name);
+
+            var note1 = db.SellerNotes.Where(x => x.SellerNotesID == editnote.SellerNotesID && x.SellerID == user1.UserID && x.Status == 6).FirstOrDefault();
+
+            var FileNote = db.SellerNotesAttachements.Where(x => x.NoteID == note1.SellerNotesID).ToList();
+
+            var notesAttachements = db.SellerNotesAttachements.FirstOrDefault(x => x.NoteID == editnote.SellerNotesID);
+
+            var NoteCategoryList = db.NoteCategories.ToList();
+            ViewBag.NotesCategory = new SelectList(NoteCategoryList, "NoteCategoriesID", "Name");
+
+            var NotesTypeList = db.NoteTypes.ToList();
+            ViewBag.NotesType = new SelectList(NotesTypeList, "NoteTypesID", "Name");
+
+            var CountryList = db.Countries.ToList();
+            ViewBag.NotesCountry = new SelectList(CountryList, "CountriesID", "Name");
+
+            EditNotesModel editnote1 = new EditNotesModel
+            {
+                SellerNotesID = note1.SellerNotesID,
+                NoteType = note1.NoteType,
+                Title = note1.Title,
+                Category = note1.Category,
+                NumberOfPages = note1.NumberOfPages,
+                Description = note1.Description,
+                Country = note1.Country,
+                UniversityName = note1.UniversityName,
+                Course = note1.Course,
+                CourseCode = note1.CourseCode,
+                Professor = note1.Professor,
+                IsPaid = note1.IsPaid,
+                SellingPrice = note1.SellingPrice,
+                DisplayPicture = note1.DisplayPicture,
+                NotesPreview = note1.NotesPreview,
+                FilePath = notesAttachements.FilePath
+            };
+
+            if (editnote1.DisplayPicture == null)
+            {
+                editnote1.DisplayPicture = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicturePreview = "#";
+                ViewBag.HideClass = "";
+                ViewBag.NonHideClass = "hidden";
+                ViewBag.ProfilePictureName = "";
+            }
+            else
+            {
+                ViewBag.ProfilePicture = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicturePreview = editnote1.DisplayPicture;
+                ViewBag.ProfilePictureName = Path.GetFileNameWithoutExtension(editnote1.DisplayPicture);
+                ViewBag.HideClass = "hidden";
+                ViewBag.NonHideClass = "";
+            }
+
+            if (editnote1.FilePath == null)
+            {
+                editnote1.FilePath = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicture2 = "~/Content/images/upload-file.png";
+                ViewBag.UploadNotePreview = "#";
+                ViewBag.HideClass2 = "";
+                ViewBag.NonHideClass2 = "hidden";
+                ViewBag.ProfilePictureName2 = "";
+            }
+            else
+            {
+                ViewBag.ProfilePicture2 = "~/Content/images/upload-file.png";
+                ViewBag.UploadNotePreview = editnote1.FilePath;
+                ViewBag.ProfilePictureName2 = Path.GetFileNameWithoutExtension(editnote1.FilePath);
+                ViewBag.HideClass2 = "hidden";
+                ViewBag.NonHideClass2 = "";
+            }
+
+            if (editnote1.NotesPreview == null)
+            {
+                editnote1.NotesPreview = "~/Content/images/upload-file.png";
+                ViewBag.ProfilePicture3 = "~/Content/images/upload-file.png";
+                ViewBag.NotePreview = "#";
+                ViewBag.HideClass3 = "";
+                ViewBag.NonHideClass3 = "hidden";
+                ViewBag.ProfilePictureName3 = "";
+            }
+            else
+            {
+                ViewBag.ProfilePicture3 = "~/Content/images/upload-file.png";
+                ViewBag.NotePreview = editnote1.NotesPreview;
+                ViewBag.ProfilePictureName3 = Path.GetFileNameWithoutExtension(editnote1.NotesPreview);
+                ViewBag.HideClass3 = "hidden";
+                ViewBag.NonHideClass3 = "";
+            }
+
+            return editnote;
         }
 
         #endregion Edit Note
@@ -739,7 +845,7 @@ namespace NotesMarketPlace.Controllers
                 {
                     filternotes = filternotes.Where(m => m.Reviews >= Rating).ToList();
                 }
-                if (search != null)
+                if (!search.Equals(null))
                 {
                     filternotes = filternotes.Where(m => m.Title.ToLower().Contains(search.ToLower())).ToList();
                 }
@@ -1389,6 +1495,7 @@ namespace NotesMarketPlace.Controllers
         [AllowAnonymous]
         public ActionResult ContactUs()
         {
+            ViewBag.Show = false;
             using (var context = new NotesMarketPlaceEntities())
             {
                 var currentuser = context.Users.FirstOrDefault(m => m.EmailID == User.Identity.Name);
@@ -1414,43 +1521,43 @@ namespace NotesMarketPlace.Controllers
         [HttpPost]
         public ActionResult ContactUs(ContactUsModel model)
         {
-            string Body = "Hello, \n \n" + model.Comments + "\n \n" + "Regards,\n" + model.FullName;
+            ViewBag.Show = false;
+            if (ModelState.IsValid)
+            {
+                string Body = "Hello, \n\n" + model.Comments + "\n\n" + "Regards,\n" + model.FullName;
 
-            BuildEmailTemplate(model.EmailID, model.Subject, Body);
+                BuildEmailTemplate(model.EmailID, model.Subject, Body);
+
+                ModelState.Clear();
+                ViewBag.Show = true;
+                ViewBag.AlertClass = "alert-success";
+                ViewBag.message = "Your inquiry has been successfully send.";
+            }
 
             return View();
         }
-
         public static void BuildEmailTemplate(string sendTo, string subjectText, string bodyText)
         {
-            string from, to, bcc, cc, subject, body;
-            from = sendTo.Trim();
-            to = "ynpatel2000@gmail.com";
-            bcc = "";
-            cc = "";
-            subject = subjectText + " - Query";
-            StringBuilder sb = new StringBuilder();
-            sb.Append(bodyText);
-            body = sb.ToString();
-            MailMessage mail = new MailMessage
-            {
-                From = new MailAddress(from)
-            };
-            mail.To.Add(new MailAddress(to));
-            if (!string.IsNullOrEmpty(bcc))
-            {
-                mail.Bcc.Add(new MailAddress(bcc));
-            }
-            if (!string.IsNullOrEmpty(cc))
-            {
-                mail.CC.Add(new MailAddress(cc));
-            }
-            mail.Subject = subject;
-            mail.Body = body;
-            mail.IsBodyHtml = true;
-            SendEmail(mail);
-        }
+            MailMessage messageobj = new MailMessage();
 
+            messageobj.From = new MailAddress("ynpatel2000@gmail.com");
+
+            if (subjectText != null)
+            {
+                messageobj.Subject = subjectText;
+            }
+
+            messageobj.Body = bodyText;
+
+            messageobj.To.Add("ynpatel2000@gmail.com");
+
+            if (sendTo != null)
+            {
+                messageobj.To.Add(sendTo.ToString().Trim());
+            }
+
+            SendEmail(messageobj);
+        }
         public static void SendEmail(MailMessage mail)
         {
             SmtpClient client = new SmtpClient

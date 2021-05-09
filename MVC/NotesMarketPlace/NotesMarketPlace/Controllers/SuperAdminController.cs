@@ -1,13 +1,12 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using NotesMarketPlace.DB;
+﻿using NotesMarketPlace.DB;
 using NotesMarketPlace.Models.Admin;
-using System.Web.Routing;
-using System.Web.Security;
 using System;
 using System.Collections.Generic;
-using NotesMarketPlace.Models;
 using System.IO;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.Routing;
+using System.Web.Security;
 
 namespace NotesMarketPlace.Controllers
 {

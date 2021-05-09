@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NotesMarketPlace.Models.Admin
 {
@@ -25,5 +21,5 @@ namespace NotesMarketPlace.Models.Admin
         public string Remarks { get; set; }
 
         public bool IsPaid { get; set; }
-}
+    }
 }

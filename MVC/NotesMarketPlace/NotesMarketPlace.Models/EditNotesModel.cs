@@ -4,7 +4,7 @@ using System.Web;
 
 namespace NotesMarketPlace.Models
 {
-    public class AddNotesModel
+    public class EditNotesModel
     {
         public int SellerNotesID { get; set; }
 
@@ -77,14 +77,10 @@ namespace NotesMarketPlace.Models
 
         public CountriesModel CountryList { get; set; }
 
-        public HttpPostedFileBase NoteDisplayPicturePath { get; set; }
+        public HttpPostedFileBase EditNoteDisplayPicturePath { get; set; }
 
-        [Required(ErrorMessage = "Please Select File.")]
-        //[DataType(DataType.Upload)]
-        public HttpPostedFileBase NoteUploadFilePath { get; set; }
+        public HttpPostedFileBase EditNoteUploadFilePath { get; set; }
 
-        [Required(ErrorMessage = "Please Select File.")]
-        //[DataType(DataType.Upload)]
-        public HttpPostedFileBase NotePreviewFilePath { get; set; }
+        public HttpPostedFileBase EditNotePreviewFilePath { get; set; }
     }
 }

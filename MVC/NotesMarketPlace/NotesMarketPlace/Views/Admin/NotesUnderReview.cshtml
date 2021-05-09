@@ -107,7 +107,7 @@
                                 <td>@item.Category</td>
                                 <td>@item.Seller</td>
                                 <td>
-                                    <img src="../Content/images/eye.png" alt="eye-image" onclick="Member('@item.SellerId')">
+                                    <img src="../Content/images/eye.png" class="cursor_pointer" alt="eye-image" onclick="SellerDetail('@item.SellerId')">
                                 </td>
                                 <td style="white-space: nowrap;">@item.CreatedDate.Value.ToString("dd-MM-yyyy, HH:mm")</td>
                                 <td>@item.status</td>

@@ -109,7 +109,7 @@
                     <div class="col-md-12">
                         <div class="filter-search">
                             <img src="~/Content/images/search-icon.png" alt="search" class="form-control-feedback">
-                            @Html.TextBox("Search", "", new { @id = "Search", @class = "form-control input-search", @placeholder = "Search notes here...", onkeyup = "searchNotes(this)" })
+                            @Html.TextBox("Search", "", new { @id = "Search", @class = "form-control input-search", @placeholder = "Search notes here..." })
                         </div>
                     </div>
                 </div>
@@ -349,49 +349,36 @@
             });
         }
 
-        //$('#Search').on('keypress', function (e) {
-        //    if (e) {
-        //        location.href = "SearchNotes?search=" + $(this).val();
-        //    }
-        //});
+        $('#Search').on('input', function () {
+            clearTimeout(this.delay);
+            this.delay = setTimeout(function () {
+                $(this).trigger('search');
+            }.bind(this), 800);
+        }).on('search', function () {
+            if (this.value) {
 
-        //document.onkeydown = function (e) {
-        //    var re = e.keyCode;
+                var data = {};
 
-        //    console.log("key " + e.keyCode);
-        //    console.log("test");
+                console.log(this.value);
 
-        //    if (re == 32) {
-        //        location.href = "SearchNotes?search=" + $(this).val();
-        //    }
-        //}
+                data.search = this.value;
 
-        function searchNotes(e) {
-            clearTimeout($.data(this, 'timer'));
-            if (e.keyCode == 32)
-                location.href = "SearchNotes?search=" + $(this).val();
-            else
-                $(this).data('timer', setTimeout(search, 500));
-        }
+                $.ajax({
+                    method: 'GET',
+                    url: '',
+                    data: data,
+                    success: function (data) {
+                        document.body.innerHTML = data;
+                    },
+                    error: function () {
+                        alert("Try Again");
+                    }
+                });
+            }
+        });
 
         $('.card-title > a').click(function () {
             location.href = "NoteDetails/" + $(this).attr('noteId');
         });
-
-                    //function SearchNotes() {
-                    //    let input = document.getElementById('search').value
-                    //    input = input.toLowerCase();
-                    //    let x = document.getElementsByClassName('note-title');
-
-                    //    for (i = 0; i < x.length; i++) {
-                    //        if (!x[i].innerHTML.toLowerCase().includes(input)) {
-                    //            x[i].style.display = "none";
-                    //        }
-                    //        else {
-                    //            x[i].style.display = "list-item";
-                    //        }
-                    //    }
-                    //}
-
     </script>
 }

@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-@model NotesMarketPlace.Models.AddNotesModel
+@model NotesMarketPlace.Models.EditNotesModel
 
 @section CustomStyle
 {
@@ -120,8 +120,7 @@
     </div>
 </section>
 <!-- End Head -->
-<!-- Add Notes  -->
-
+<!-- Edit Notes  -->
 <section class="container">
     <!-- Basic Note Details -->
 
@@ -143,8 +142,11 @@
     @using (Html.BeginForm("EditNote", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.SellerNotesID)
+        @Html.HiddenFor(model => model.DisplayPicture)
+        @Html.HiddenFor(model => model.FilePath)
+        @Html.HiddenFor(model => model.NotesPreview)
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -155,16 +157,16 @@
 
                 <label for="file-image">Display Picture</label>
                 <div id="file-upload-form" class="uploader form-group">
-                    <input id="file-upload" type="file" name="NoteDisplayPicturePath" />
+                    <input id="file-upload" type="file" name="EditNoteDisplayPicturePath" class="form-control" />
                     <label for="file-upload" id="file-drag">
-                        <img id="file-image" src="#" alt="Preview" class="hidden">
-                        <div id="start">
-                            <img src="~/Content/images/upload-file.png" height="46" width="50" />
+                        <img id="file-image" src="@Url.Content(ViewBag.ProfilePicturePreview)" alt="Preview" class="@ViewBag.NonHideClass">
+                        <div id="start" class="@ViewBag.HideClass">
+                            <img src="@Url.Content(ViewBag.ProfilePicture)" height="46" width="50" />
                             <div>Upload a picture</div>
                             <div id="notimage" class="hidden">Please select an image</div>
                         </div>
-                        <div id="response" class="hidden">
-                            <div id="messages"></div>
+                        <div id="response" class="@ViewBag.NonHideClass">
+                            <div id="messages">@ViewBag.ProfilePictureName</div>
                         </div>
                     </label>
                 </div>
@@ -183,18 +185,18 @@
 
                 <label for="file-pdf">Upload Notes <span>*</span></label>
                 <div id="pdf-upload-form" class="uploader form-group">
-                    <input id="pdf-upload" type="file" name="NoteUploadFilePath" />
+                    <input id="pdf-upload" type="file" name="EditNoteUploadFilePath" />
                     <label for="pdf-upload" id="pdf-drag">
-                        <img id="file-pdf" src="#" alt="Preview" class="hidden">
-                        <div id="start2">
-                            <img src="~/Content/images/upload-note.png" height="46" width="50" />
+                        <img id="file-pdf" src="@Url.Content(ViewBag.UploadNotePreview)" alt="Preview" class="@ViewBag.NonHideClass2">
+                        <div id="start2" class="@ViewBag.HideClass2">
+                            <img src="@Url.Content(ViewBag.ProfilePicture2)" height="46" width="50" />
                             <div>Upload your notes</div>
                             <div id="notimage2" class="hidden">Please select an PDF</div>
                         </div>
-                        <div id="response2" class="hidden">
-                            <div id="messages2"></div>
+                        <div id="response2" class="@ViewBag.NonHideClass2">
+                            <div id="messages2">@ViewBag.ProfilePictureName2</div>
                         </div>
-                        @Html.ValidationMessageFor(model => model.NoteUploadFilePath, "", new { @class = "text-danger" })
+                        @*@Html.ValidationMessageFor(model => model.EditNoteUploadFilePath, "", new { @class = "text-danger" })*@
                     </label>
                 </div>
 
@@ -276,13 +278,13 @@
                     <div class="contact-inputs">
                         <label class="radio1">
                             @*<input type="radio" checked="checked" name="radio" value="free">*@
-                            @Html.RadioButtonFor(model => model.IsPaid, false, new { @name = "IsPaid", @id = "Free" })
+                            @Html.RadioButtonFor(model => model.IsPaid, false, new { @name = "IsPaid", @id = "Free", onclick = "EnableDisableTextBox()" })
                             <span class="checkmark"></span>
                             <label class="label-2">Free</label>
                         </label>
                         <label class="radio1">
                             @*<input type="radio" name="radio" value="paid">*@
-                            @Html.RadioButtonFor(model => model.IsPaid, true, new { @name = "IsPaid", @id = "Paid" })
+                            @Html.RadioButtonFor(model => model.IsPaid, true, new { @name = "IsPaid", @id = "Paid", onclick = "EnableDisableTextBox()" })
                             <span class="checkmark"></span>
                             <label class="label-2">Paid</label>
                         </label>
@@ -291,22 +293,23 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.SellingPrice, "Sell Price", new { @for = "sellPrice" })
                     @Html.TextBoxFor(model => model.SellingPrice, new { @class = "form-control", placeholder = "Enter your price", id = "sellPrice" })
+                    @Html.ValidationMessageFor(model => model.SellingPrice, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="col-md-6">
                 <label for="file-preview">Note Preview</label>
                 <div id="preview-upload-form" class="uploader form-group">
-                    <input id="preview-upload" type="file" name="NotePreviewFilePath" />
+                    <input id="preview-upload" type="file" name="EditNotePreviewFilePath" />
                     <label for="preview-upload" id="preview-drag" class="customInput">
-                        <img id="file-preview" src="#" alt="Preview" class="hidden">
-                        <div id="start3">
-                            <img src="~/Content/images/upload-file.png" height="46" width="50" />
+                        <img id="file-preview" src="@Url.Content(ViewBag.NotePreview)" alt="Preview" class="@ViewBag.NonHideClass3">
+                        <div id="start3" class="@ViewBag.HideClass3">
+                            <img src="@Url.Content(ViewBag.ProfilePicture3)" height="46" width="50" />
                             <div>Upload a file</div>
                             <div id="notimage3" class="hidden">Please select an image</div>
                         </div>
-                        <div id="response3" class="hidden">
-                            <div id="messages3"></div>
+                        <div id="response3" class="@ViewBag.NonHideClass3">
+                            <div id="messages3">@ViewBag.ProfilePictureName3</div>
                         </div>
                     </label>
                 </div>
@@ -324,37 +327,48 @@
         </div>
 
         <!-- Published note popup box -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable" role="document">
-                <div class="modal-content">
 
-                    <!--popup close btn-->
-                    <div class="popup-close-btn">
-                        <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="exampleModalLabel">Publish Note</h2>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true"><img src="~/Content/images/close.png"></span>
                         </button>
                     </div>
-
                     <div class="modal-body">
-                        <h2 class="text-left">Publish Note</h2>
                         <p>
-                            Publishing this note will send note to administrator for review. <br /><br /> Once
-                            administrator review and approve then this note will be published to
-                            portal.
-                            <br />
-                            <br />Press yes to continue.
+                            Publishing this note will send note to administrator for review.
+                            <br /><br />
+                            Once administrator review and approve then this note will be published to portal.
+                            <br /><br />
+                            Press yes to continue.
                         </p>
-
+                    </div>
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-secondary exampleClose" data-dismiss="modal">Close</button>
-                        <button type="submit" name="Command" value="Publish" class="btn btn-primary btn-lg exampleYes">Yes</button>
-
+                        <button type="submit" name="Command" value="Publish" class="btn btn-primary exampleYes">Yes</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Published note popup box End -->
     }
 </section>
+<!-- End Edit Notes   -->
 
-
-<!-- End of popup box -->
-<!-- End Add Notes   -->
+@section CustomScript
+{
+    <script>
+        function EnableDisableTextBox() {
+            var Paid = document.getElementById("Paid");
+            var txtSellPrice = document.getElementById("sellPrice");
+            txtSellPrice.disabled = Paid.checked ? false : true;
+            if (!txtSellPrice.disabled) {
+                txtSellPrice.focus();
+            }
+        }
+    </script>
+}
