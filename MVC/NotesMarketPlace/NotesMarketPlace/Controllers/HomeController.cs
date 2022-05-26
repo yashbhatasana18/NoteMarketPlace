@@ -758,7 +758,8 @@ namespace NotesMarketPlace.Controllers
         #region Search Notes
 
         [AllowAnonymous]
-        public ActionResult SearchNotes(int? Type, int? Category, string University, string Course, int? Country, int? Rating, string search, int PageNumber = 1)
+        public ActionResult SearchNotes(int? Type, int? Category, string University, string Course, int? Country, int? Rating, string Search, int PageNumber = 1)
+        
         {
             using (var context = new NotesMarketPlaceEntities())
             {
@@ -845,9 +846,9 @@ namespace NotesMarketPlace.Controllers
                 {
                     filternotes = filternotes.Where(m => m.Reviews >= Rating).ToList();
                 }
-                if (!search.Equals(null))
+                if (Search != null)
                 {
-                    filternotes = filternotes.Where(m => m.Title.ToLower().Contains(search.ToLower())).ToList();
+                    filternotes = filternotes.Where(m => m.Title.ToLower().Contains(Search.ToLower())).ToList();
                 }
 
                 ViewBag.TotalNotes = filternotes.Count();

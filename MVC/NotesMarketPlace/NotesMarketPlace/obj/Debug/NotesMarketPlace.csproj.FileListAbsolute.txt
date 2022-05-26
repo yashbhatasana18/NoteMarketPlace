@@ -124,8 +124,8 @@ E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bi
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Webpages.Razor.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Helpers.xml
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\bin\System.Web.Mvc.xml
-E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csprojAssemblyReference.cache
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csproj.CoreCompileInputs.cache
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csproj.CopyComplete
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.dll
 E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.pdb
+E:\GitHub\TatvaSoft\NoteMarketPlaceHTML\MVC\NotesMarketPlace\NotesMarketPlace\obj\Debug\NotesMarketPlace.csproj.AssemblyReference.cache
